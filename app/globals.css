@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+:root {
+  --background: 255 255 255;
+  --foreground: 23 23 23;
+  --font-elegant: 'Playfair Display', serif;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: rgb(var(--background));
+  color: rgb(var(--foreground));
+}
+
+.font-elegant {
+  font-family: 'Playfair Display', serif;
+}
+
+
+
