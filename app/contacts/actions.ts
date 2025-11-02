@@ -11,7 +11,7 @@ export async function submitContactForm(formData: FormData) {
   }
 
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
+  const chatIds = process.env.TELEGRAM_CHAT_ID; // может быть один ID или несколько через запятую
 
   const telegramMessage = `
 🎯 Новая заявка с сайта «Золотой Дуб»
@@ -25,26 +25,39 @@ export async function submitContactForm(formData: FormData) {
   `.trim();
 
   // Fallback для тестирования без Telegram
-  if (!botToken || !chatId) {
+  if (!botToken || !chatIds) {
     console.log('[DEV MODE] Заявка (TELEGRAM_* не настроены):');
     console.log(telegramMessage);
     return { success: true } as const;
   }
 
-  const resp = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: chatId, text: telegramMessage }),
-    cache: 'no-store'
-  });
+  // Поддержка нескольких получателей через запятую
+  const recipients = chatIds.split(',').map(id => id.trim()).filter(Boolean);
 
-  if (!resp.ok) {
-    const errText = await resp.text();
-    console.error('[Telegram Error]', errText);
-    return { success: false, error: 'Не удалось отправить сообщение в Telegram' } as const;
+  try {
+    const results = await Promise.all(
+      recipients.map(chatId =>
+        fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: chatId, text: telegramMessage }),
+          cache: 'no-store'
+        })
+      )
+    );
+
+    const failed = results.filter(r => !r.ok);
+    if (failed.length > 0) {
+      const errText = await failed[0].text();
+      console.error('[Telegram Error]', errText);
+      return { success: false, error: 'Не удалось отправить сообщение в Telegram' } as const;
+    }
+
+    return { success: true } as const;
+  } catch (error) {
+    console.error('[Telegram Error]', error);
+    return { success: false, error: 'Ошибка отправки в Telegram' } as const;
   }
-
-  return { success: true } as const;
 }
 
 
