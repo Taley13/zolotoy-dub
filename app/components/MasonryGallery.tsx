@@ -18,13 +18,11 @@ export default function MasonryGallery() {
       const data = await res.json();
       if (!aborted) {
         setItems((prev) => [...prev, ...data.items]);
-        setHasMore(data.items.length > 0 && prevTotal(data) < data.total);
+        setHasMore(data.items.length > 0 && page * 24 < data.total);
       }
     })();
     return () => { aborted = true; };
   }, [page]);
-
-  function prevTotal(d: any) { return (page) * 24; }
 
   useEffect(() => {
     if (!loaderRef.current) return;

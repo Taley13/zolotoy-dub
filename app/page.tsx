@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 export default function Home() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
@@ -37,9 +39,11 @@ export default function Home() {
             'Create_hyper-realistic,_u (5).png',
           ].map((filename) => (
             <div key={filename} className="overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/50">
-              <img
+              <Image
                 src={`/images/${filename}`}
                 alt="Кухня Золотой Дуб"
+                width={1600}
+                height={1200}
                 className="h-48 w-full object-cover transition hover:scale-105"
                 loading="lazy"
               />
