@@ -39,7 +39,7 @@ export default function MasonryGallery() {
 
   return (
     <div>
-      <div className="columns-2 gap-3 sm:columns-3 lg:columns-4 [column-fill:_balance]"><!-- masonry via CSS columns -->
+      <div className="columns-2 gap-3 sm:columns-3 lg:columns-4 [column-fill:_balance]">{/* masonry via CSS columns */}
         {items.map((it, i) => (
           <div key={it.src + i} className="mb-3 break-inside-avoid overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/50">
             <Image
