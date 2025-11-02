@@ -1,16 +1,16 @@
 import Link from 'next/link';
-import Logo from './Logo';
+import PremiumLogo from './PremiumLogo';
 
 export default function Header() {
   return (
-    <header className="border-b border-neutral-800 bg-neutral-950/80 backdrop-blur supports-[backdrop-filter]:bg-neutral-950/60">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <Logo />
-        <nav className="flex items-center gap-6 text-sm text-neutral-300">
-          <Link href="/" className="hover:text-brand-400">Главная</Link>
-          <Link href="/catalog" className="hover:text-brand-400">Каталог</Link>
-          <Link href="/gallery" className="hover:text-brand-400">Галерея</Link>
-          <Link href="/contacts" className="hover:text-brand-400">Контакты</Link>
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-black/40 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+        <PremiumLogo />
+        <nav className="flex items-center gap-6 text-sm font-medium text-neutral-300">
+          <Link href="/" className="hover:text-yellow-400 transition-colors">Главная</Link>
+          <Link href="/catalog" className="hover:text-yellow-400 transition-colors">Каталог</Link>
+          <Link href="/gallery" className="hover:text-yellow-400 transition-colors">Галерея</Link>
+          <Link href="/contacts" className="hover:text-yellow-400 transition-colors">Контакты</Link>
         </nav>
       </div>
     </header>

@@ -1,140 +1,149 @@
-import Image from 'next/image';
+import ParallaxHero from '@/app/components/ParallaxHero';
+import FilterGallery from '@/app/components/FilterGallery';
+import ScrollReveal from '@/app/components/ScrollReveal';
 
 export default function Home() {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-      {/* Hero секция */}
-      <div className="text-center">
-        <h1 className="text-5xl font-bold tracking-tight text-brand-400 sm:text-6xl md:text-7xl font-elegant">
-          Золотой Дуб
-        </h1>
-        <p className="mt-4 max-w-2xl mx-auto text-lg text-neutral-300">
-          Изготовление кухонь и шкафов на заказ. ДСП, МДФ, Эмаль. Индивидуальный дизайн и установка под ключ.
-        </p>
-        <div className="mt-8 flex justify-center gap-3">
-          <a href="#portfolio" className="rounded-md bg-brand-500 px-6 py-3 text-lg text-white hover:bg-brand-600 transition">
-            Наши работы
-          </a>
-          <a href="/contacts" className="rounded-md border border-brand-500/50 px-6 py-3 text-lg text-brand-300 hover:bg-brand-500/10 transition">
-            Оставить заявку
-          </a>
+    <>
+      <ParallaxHero />
+
+      <div className="relative z-10 -mt-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          
+          {/* Галерея с фильтрами */}
+          <ScrollReveal>
+            <section id="portfolio" className="py-16">
+              <div className="glass-neon p-10">
+                <h2 className="text-center font-display text-4xl font-bold">
+                  <span className="bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent">
+                    Портфолио
+                  </span>
+                </h2>
+                <p className="mt-3 text-center text-neutral-400">Избранные работы наших мастеров</p>
+                <div className="mt-10">
+                  <FilterGallery />
+                </div>
+              </div>
+            </section>
+          </ScrollReveal>
+
+          {/* Услуги - плотная компоновка */}
+          <ScrollReveal>
+            <section id="services" className="py-16">
+              <h2 className="text-center font-display text-4xl font-bold">
+                <span className="bg-gradient-to-r from-yellow-400 to-amber-600 bg-clip-text text-transparent">
+                  Услуги
+                </span>
+              </h2>
+              <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {[
+                  { icon: '🍳', title: 'Кухни на заказ', desc: 'ДСП, МДФ, Эмаль. Любые размеры и стили' },
+                  { icon: '🚪', title: 'Шкафы-купе', desc: 'Встроенные и корпусные по вашим размерам' },
+                  { icon: '👔', title: 'Гардеробные', desc: 'Системы хранения премиум-класса' },
+                  { icon: '📐', title: 'Дизайн-проект', desc: '3D визуализация до начала работ' },
+                  { icon: '🔧', title: 'Установка', desc: 'Монтаж и подключение под ключ' },
+                  { icon: '⚡', title: 'Срочное производство', desc: 'Экспресс-изготовление за 14 дней' },
+                ].map((service, i) => (
+                  <div key={i} className="glass-panel p-6 card-hover">
+                    <div className="mb-3 text-4xl">{service.icon}</div>
+                    <h3 className="font-display text-lg font-semibold text-neutral-100">{service.title}</h3>
+                    <p className="mt-2 text-sm text-neutral-400">{service.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </ScrollReveal>
+
+          {/* Прайс с акцентами */}
+          <ScrollReveal>
+            <section id="pricing" className="py-16">
+              <h2 className="text-center font-display text-4xl font-bold">
+                <span className="bg-gradient-to-r from-yellow-400 to-amber-600 bg-clip-text text-transparent">
+                  Прайс-лист
+                </span>
+              </h2>
+              <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {[
+                  { title: 'Кухни ДСП', desc: 'Стандартные решения из ЛДСП', price: 'от 80 000 ₽', highlight: false },
+                  { title: 'Кухни МДФ', desc: 'МДФ плёнка/крашенный', price: 'от 150 000 ₽', highlight: true },
+                  { title: 'Кухни Эмаль', desc: 'Премиум МДФ + эмаль', price: 'от 250 000 ₽', highlight: false },
+                  { title: 'Шкафы-купе', desc: 'Встроенные и корпусные', price: 'от 40 000 ₽', highlight: false },
+                  { title: 'Гардеробные', desc: 'Системы хранения', price: 'от 60 000 ₽', highlight: false },
+                  { title: 'Замер + дизайн', desc: 'Выезд дизайнера на объект', price: 'бесплатно', highlight: true },
+                ].map((item, i) => (
+                  <div key={i} className={`${item.highlight ? 'glass-neon' : 'glass-panel'} p-6 card-hover`}>
+                    {item.highlight && (
+                      <div className="mb-3 inline-block rounded-full bg-yellow-500/20 px-3 py-1 text-xs font-medium text-yellow-400">
+                        ⭐ Популярно
+                      </div>
+                    )}
+                    <h3 className="font-display text-xl font-semibold text-neutral-100">{item.title}</h3>
+                    <p className="mt-2 text-sm text-neutral-400">{item.desc}</p>
+                    <p className="mt-4 font-display text-2xl font-bold text-yellow-400">{item.price}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </ScrollReveal>
+
+          {/* О фабрике */}
+          <ScrollReveal>
+            <section id="about" className="py-16">
+              <div className="glass-panel p-10">
+                <h2 className="font-display text-3xl font-bold">
+                  <span className="bg-gradient-to-r from-yellow-400 to-amber-600 bg-clip-text text-transparent">
+                    О фабрике «Золотой Дуб»
+                  </span>
+                </h2>
+                <div className="mt-6 grid gap-8 lg:grid-cols-2">
+                  <div>
+                    <p className="text-neutral-300 leading-relaxed">
+                      Мы — команда профессионалов с многолетним опытом изготовления корпусной мебели премиум-класса. 
+                      Специализируемся на производстве кухонь, шкафов-купе и гардеробных из ДСП, МДФ и Эмали.
+                    </p>
+                    <p className="mt-4 text-neutral-300 leading-relaxed">
+                      Собственное производство позволяет контролировать качество на каждом этапе и предлагать 
+                      конкурентные цены. Работаем по всей Москве и Московской области.
+                    </p>
+                  </div>
+                  <div className="space-y-4">
+                    {[
+                      { label: 'Бесплатный замер', value: 'в день обращения' },
+                      { label: 'Производство', value: '14-21 день' },
+                      { label: 'Гарантия', value: '3 года' },
+                      { label: 'Оплата', value: 'поэтапная' },
+                    ].map((item, i) => (
+                      <div key={i} className="flex justify-between border-b border-white/10 pb-3">
+                        <span className="text-neutral-400">{item.label}</span>
+                        <span className="font-semibold text-yellow-400">{item.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+          </ScrollReveal>
+
+          {/* Финальный CTA */}
+          <ScrollReveal>
+            <section className="py-16">
+              <div className="glass-neon p-12 text-center">
+                <h3 className="font-display text-3xl font-bold text-white">Начнём ваш проект?</h3>
+                <p className="mt-3 text-neutral-300">Оставьте заявку — мы свяжемся в течение 15 минут</p>
+                <div className="mt-8 flex flex-wrap justify-center gap-4">
+                  <a href="/contacts" className="btn-neon px-10 py-4 text-lg">
+                    Бесплатный замер
+                  </a>
+                  <a href="tel:+79301933420" className="btn-outline px-10 py-4 text-lg">
+                    8-930-193-34-20
+                  </a>
+                </div>
+              </div>
+            </section>
+          </ScrollReveal>
+
         </div>
       </div>
-
-      {/* Галерея */}
-      <section id="portfolio" className="mt-20">
-        <h2 className="text-center text-3xl font-semibold text-neutral-100 font-elegant">Портфолио</h2>
-        <p className="mt-2 text-center text-neutral-400">
-          Избранные работы
-        </p>
-        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {[
-            '1759474759.png',
-            '1759474837.png',
-            '1759474944.png',
-            'Create_a_hyper-realistic,.png',
-            'Create_hyper-realistic,_u (2).png',
-            'Create_hyper-realistic,_u (3).png',
-            'Create_hyper-realistic,_u (4).png',
-            'Create_hyper-realistic,_u (5).png',
-          ].map((filename) => (
-            <div key={filename} className="overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/50">
-              <Image
-                src={`/images/${filename}`}
-                alt="Кухня Золотой Дуб"
-                width={1600}
-                height={1200}
-                className="h-48 w-full object-cover transition hover:scale-105"
-                loading="lazy"
-              />
-            </div>
-          ))}
-        </div>
-        <div className="mt-8 text-center">
-          <a href="/gallery" className="text-brand-400 hover:text-brand-300 transition">
-            Смотреть все работы →
-          </a>
-        </div>
-      </section>
-
-      {/* Услуги */}
-      <section id="services" className="mt-20">
-        <h2 className="text-3xl font-semibold text-neutral-100 font-elegant">Услуги</h2>
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="panel p-6">
-            <h3 className="font-elegant text-xl text-neutral-100">Кухни на заказ</h3>
-            <p className="mt-2 text-neutral-400">Изготовление кухонь из ДСП, МДФ, Эмаль. Любые размеры и конфигурации</p>
-          </div>
-          <div className="panel p-6">
-            <h3 className="font-elegant text-xl text-neutral-100">Шкафы-купе</h3>
-            <p className="mt-2 text-neutral-400">Встроенные и корпусные шкафы-купе по индивидуальным размерам</p>
-          </div>
-          <div className="panel p-6">
-            <h3 className="font-elegant text-xl text-neutral-100">Гардеробные</h3>
-            <p className="mt-2 text-neutral-400">Проектирование и изготовление гардеробных систем</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Прайс */}
-      <section id="pricing" className="mt-20">
-        <h2 className="text-3xl font-semibold text-neutral-100 font-elegant">Прайс</h2>
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="panel p-6">
-            <h3 className="font-elegant text-xl text-neutral-100">Кухни ДСП</h3>
-            <p className="mt-2 text-neutral-400">Стандартные решения из ЛДСП</p>
-            <p className="mt-4 text-brand-400 text-lg">от 80 000 ₽</p>
-          </div>
-          <div className="panel p-6">
-            <h3 className="font-elegant text-xl text-neutral-100">Кухни МДФ</h3>
-            <p className="mt-2 text-neutral-400">МДФ плёнка/крашенный</p>
-            <p className="mt-4 text-brand-400 text-lg">от 150 000 ₽</p>
-          </div>
-          <div className="panel p-6">
-            <h3 className="font-elegant text-xl text-neutral-100">Кухни Эмаль</h3>
-            <p className="mt-2 text-neutral-400">Премиум МДФ + эмаль</p>
-            <p className="mt-4 text-brand-400 text-lg">от 250 000 ₽</p>
-          </div>
-          <div className="panel p-6">
-            <h3 className="font-elegant text-xl text-neutral-100">Шкафы-купе</h3>
-            <p className="mt-2 text-neutral-400">Встроенные и корпусные</p>
-            <p className="mt-4 text-brand-400 text-lg">от 40 000 ₽</p>
-          </div>
-          <div className="panel p-6">
-            <h3 className="font-elegant text-xl text-neutral-100">Гардеробные</h3>
-            <p className="mt-2 text-neutral-400">Системы хранения на заказ</p>
-            <p className="mt-4 text-brand-400 text-lg">от 60 000 ₽</p>
-          </div>
-          <div className="panel p-6">
-            <h3 className="font-elegant text-xl text-neutral-100">Замер + дизайн</h3>
-            <p className="mt-2 text-neutral-400">Бесплатный выезд дизайнера</p>
-            <p className="mt-4 text-brand-400 text-lg">бесплатно</p>
-          </div>
-        </div>
-      </section>
-
-      {/* О нас */}
-      <section id="about" className="mt-20">
-        <h2 className="text-3xl font-semibold text-neutral-100 font-elegant">О нас</h2>
-        <div className="panel mt-8 p-6">
-          <p className="text-neutral-300">
-            Мебельная фабрика «Золотой Дуб» — это команда профессионалов с многолетним опытом изготовления корпусной мебели. 
-            Мы специализируемся на производстве кухонь, шкафов-купе и гардеробных из ДСП, МДФ и Эмали. 
-            Предлагаем индивидуальный дизайн, собственное производство и установку под ключ. 
-            Работаем с клиентами в Москве и Московской области.
-          </p>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <div className="mt-20 text-center">
-        <a
-          href="/contacts"
-          className="inline-flex items-center gap-2 rounded-md bg-brand-500 px-8 py-4 text-lg font-medium text-white shadow-lg transition hover:bg-brand-600"
-        >
-          Оставить заявку
-        </a>
-      </div>
-    </div>
+    </>
   );
 }

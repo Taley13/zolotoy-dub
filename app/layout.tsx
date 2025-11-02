@@ -71,7 +71,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ru" className={cormorant.className}>
-      <body className="min-h-screen bg-velvet text-neutral-100 antialiased">
+      <body className="min-h-screen bg-ultra text-neutral-100 antialiased font-[family-name:var(--font-modern)]">
         <StructuredData />
         <div className="flex min-h-screen flex-col">
           <Header />
