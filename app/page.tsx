@@ -3,16 +3,16 @@ import Image from 'next/image';
 export default function Home() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-      {/* Hero секция без клиентских компонентов */}
+      {/* Hero секция */}
       <div className="text-center">
         <h1 className="text-5xl font-bold tracking-tight text-brand-400 sm:text-6xl md:text-7xl font-elegant">
           Золотой Дуб
         </h1>
         <p className="mt-4 max-w-2xl mx-auto text-lg text-neutral-300">
-          Премиальные кухни из массива дуба. Индивидуальный дизайн. Безупречное качество.
+          Изготовление кухонь и шкафов на заказ. ДСП, МДФ, Эмаль. Индивидуальный дизайн и установка под ключ.
         </p>
         <div className="mt-8 flex justify-center gap-3">
-          <a href="#services" className="rounded-md bg-brand-500 px-6 py-3 text-lg text-white hover:bg-brand-600 transition">
+          <a href="#portfolio" className="rounded-md bg-brand-500 px-6 py-3 text-lg text-white hover:bg-brand-600 transition">
             Наши работы
           </a>
           <a href="/contacts" className="rounded-md border border-brand-500/50 px-6 py-3 text-lg text-brand-300 hover:bg-brand-500/10 transition">
@@ -62,16 +62,16 @@ export default function Home() {
         <h2 className="text-3xl font-semibold text-neutral-100 font-elegant">Услуги</h2>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <div className="panel p-6">
-            <h3 className="font-elegant text-xl text-neutral-100">Дизайн кухни</h3>
-            <p className="mt-2 text-neutral-400">Индивидуальный проект под ваше пространство</p>
+            <h3 className="font-elegant text-xl text-neutral-100">Кухни на заказ</h3>
+            <p className="mt-2 text-neutral-400">Изготовление кухонь из ДСП, МДФ, Эмаль. Любые размеры и конфигурации</p>
           </div>
           <div className="panel p-6">
-            <h3 className="font-elegant text-xl text-neutral-100">Производство</h3>
-            <p className="mt-2 text-neutral-400">Изготовление из массива дуба</p>
+            <h3 className="font-elegant text-xl text-neutral-100">Шкафы-купе</h3>
+            <p className="mt-2 text-neutral-400">Встроенные и корпусные шкафы-купе по индивидуальным размерам</p>
           </div>
           <div className="panel p-6">
-            <h3 className="font-elegant text-xl text-neutral-100">Установка</h3>
-            <p className="mt-2 text-neutral-400">Профессиональный монтаж</p>
+            <h3 className="font-elegant text-xl text-neutral-100">Гардеробные</h3>
+            <p className="mt-2 text-neutral-400">Проектирование и изготовление гардеробных систем</p>
           </div>
         </div>
       </section>
@@ -81,19 +81,34 @@ export default function Home() {
         <h2 className="text-3xl font-semibold text-neutral-100 font-elegant">Прайс</h2>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <div className="panel p-6">
-            <h3 className="font-elegant text-xl text-neutral-100">Эконом</h3>
-            <p className="mt-2 text-neutral-400">Стандартные решения</p>
+            <h3 className="font-elegant text-xl text-neutral-100">Кухни ДСП</h3>
+            <p className="mt-2 text-neutral-400">Стандартные решения из ЛДСП</p>
+            <p className="mt-4 text-brand-400 text-lg">от 80 000 ₽</p>
+          </div>
+          <div className="panel p-6">
+            <h3 className="font-elegant text-xl text-neutral-100">Кухни МДФ</h3>
+            <p className="mt-2 text-neutral-400">МДФ плёнка/крашенный</p>
             <p className="mt-4 text-brand-400 text-lg">от 150 000 ₽</p>
           </div>
           <div className="panel p-6">
-            <h3 className="font-elegant text-xl text-neutral-100">Комфорт</h3>
-            <p className="mt-2 text-neutral-400">Индивидуальный дизайн</p>
-            <p className="mt-4 text-brand-400 text-lg">от 300 000 ₽</p>
+            <h3 className="font-elegant text-xl text-neutral-100">Кухни Эмаль</h3>
+            <p className="mt-2 text-neutral-400">Премиум МДФ + эмаль</p>
+            <p className="mt-4 text-brand-400 text-lg">от 250 000 ₽</p>
           </div>
           <div className="panel p-6">
-            <h3 className="font-elegant text-xl text-neutral-100">Премиум</h3>
-            <p className="mt-2 text-neutral-400">Эксклюзивные материалы</p>
-            <p className="mt-4 text-brand-400 text-lg">от 600 000 ₽</p>
+            <h3 className="font-elegant text-xl text-neutral-100">Шкафы-купе</h3>
+            <p className="mt-2 text-neutral-400">Встроенные и корпусные</p>
+            <p className="mt-4 text-brand-400 text-lg">от 40 000 ₽</p>
+          </div>
+          <div className="panel p-6">
+            <h3 className="font-elegant text-xl text-neutral-100">Гардеробные</h3>
+            <p className="mt-2 text-neutral-400">Системы хранения на заказ</p>
+            <p className="mt-4 text-brand-400 text-lg">от 60 000 ₽</p>
+          </div>
+          <div className="panel p-6">
+            <h3 className="font-elegant text-xl text-neutral-100">Замер + дизайн</h3>
+            <p className="mt-2 text-neutral-400">Бесплатный выезд дизайнера</p>
+            <p className="mt-4 text-brand-400 text-lg">бесплатно</p>
           </div>
         </div>
       </section>
@@ -103,8 +118,10 @@ export default function Home() {
         <h2 className="text-3xl font-semibold text-neutral-100 font-elegant">О нас</h2>
         <div className="panel mt-8 p-6">
           <p className="text-neutral-300">
-            Фабрика «Золотой Дуб» — это команда мастеров, которые создают кухни премиум-класса из натурального дуба. 
-            Мы проектируем, производим и устанавливаем мебель, которая служит десятилетиями и становится центром вашего дома.
+            Мебельная фабрика «Золотой Дуб» — это команда профессионалов с многолетним опытом изготовления корпусной мебели. 
+            Мы специализируемся на производстве кухонь, шкафов-купе и гардеробных из ДСП, МДФ и Эмали. 
+            Предлагаем индивидуальный дизайн, собственное производство и установку под ключ. 
+            Работаем с клиентами в Москве и Московской области.
           </p>
         </div>
       </section>
