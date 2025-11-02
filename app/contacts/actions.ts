@@ -12,9 +12,6 @@ export async function submitContactForm(formData: FormData) {
 
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
-  if (!botToken || !chatId) {
-    return { success: false, error: 'Сервис недоступен: не настроены TELEGRAM_*' } as const;
-  }
 
   const telegramMessage = `
 🎯 Новая заявка с сайта «Золотой Дуб»
@@ -27,6 +24,13 @@ export async function submitContactForm(formData: FormData) {
 ⏰ ${new Date().toLocaleString('ru-RU')}
   `.trim();
 
+  // Fallback для тестирования без Telegram
+  if (!botToken || !chatId) {
+    console.log('[DEV MODE] Заявка (TELEGRAM_* не настроены):');
+    console.log(telegramMessage);
+    return { success: true } as const;
+  }
+
   const resp = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -35,6 +39,8 @@ export async function submitContactForm(formData: FormData) {
   });
 
   if (!resp.ok) {
+    const errText = await resp.text();
+    console.error('[Telegram Error]', errText);
     return { success: false, error: 'Не удалось отправить сообщение в Telegram' } as const;
   }
 

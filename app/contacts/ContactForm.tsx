@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { submitContactForm } from './actions';
 
 export default function ContactForm() {
+  const formRef = useRef<HTMLFormElement>(null);
   const [status, setStatus] = useState<null | 'loading' | 'success' | 'error'>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -17,7 +18,7 @@ export default function ContactForm() {
     
     if (res.success) {
       setStatus('success');
-      e.currentTarget.reset();
+      formRef.current?.reset();
     } else {
       setStatus('error');
       setError(res.error || 'Ошибка отправки');
@@ -25,7 +26,7 @@ export default function ContactForm() {
   }
 
   return (
-    <form className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6 shadow-lg" onSubmit={handleSubmit}>
+    <form ref={formRef} className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6 shadow-lg" onSubmit={handleSubmit}>
       <div className="grid gap-5">
         <div>
           <label htmlFor="name" className="mb-1 block text-sm font-medium text-neutral-200">Имя</label>

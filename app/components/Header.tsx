@@ -9,6 +9,7 @@ export default function Header() {
         <nav className="flex items-center gap-6 text-sm text-neutral-300">
           <Link href="/" className="hover:text-brand-400">Главная</Link>
           <Link href="/catalog" className="hover:text-brand-400">Каталог</Link>
+          <Link href="/gallery" className="hover:text-brand-400">Галерея</Link>
           <Link href="/contacts" className="hover:text-brand-400">Контакты</Link>
         </nav>
       </div>

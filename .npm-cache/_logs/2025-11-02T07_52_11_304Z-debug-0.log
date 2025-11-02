@@ -1,0 +1,217 @@
+0 verbose cli /usr/local/bin/node /usr/local/bin/npm
+1 info using npm@11.6.1
+2 info using node@v24.11.0
+3 silly config load:file:/usr/local/lib/node_modules/npm/npmrc
+4 silly config load:file:/Users/taley13/Desktop/zdub/zolotoy-dub/.npmrc
+5 silly config load:file:/Users/taley13/.npmrc
+6 silly config load:file:/usr/local/etc/npmrc
+7 verbose title npm install
+8 verbose argv "install" "--cache" "./.npm-cache" "--no-audit" "--no-fund"
+9 verbose logfile logs-max:10 dir:/Users/taley13/Desktop/zdub/zolotoy-dub/.npm-cache/_logs/2025-11-02T07_52_11_304Z-
+10 verbose logfile /Users/taley13/Desktop/zdub/zolotoy-dub/.npm-cache/_logs/2025-11-02T07_52_11_304Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:2348810240 maxSize:587202560 maxEntrySize:293601280
+13 verbose shrinkwrap failed to load node_modules/.package-lock.json out of date, updated: node_modules
+14 silly idealTree buildDeps
+15 silly fetch manifest framer-motion@^10.18.0
+16 silly packumentCache full:https://registry.npmjs.org/framer-motion cache-miss
+17 http fetch GET 200 https://registry.npmjs.org/framer-motion 588ms (cache miss)
+18 silly packumentCache full:https://registry.npmjs.org/framer-motion set size:undefined disposed:false
+19 silly fetch manifest react@^18
+20 silly packumentCache full:https://registry.npmjs.org/react cache-miss
+21 http fetch GET 200 https://registry.npmjs.org/react 405ms (cache updated)
+22 silly packumentCache full:https://registry.npmjs.org/react set size:undefined disposed:false
+23 silly fetch manifest react-dom@^18
+24 silly packumentCache full:https://registry.npmjs.org/react-dom cache-miss
+25 http fetch GET 200 https://registry.npmjs.org/react-dom 304ms (cache updated)
+26 silly packumentCache full:https://registry.npmjs.org/react-dom set size:undefined disposed:false
+27 silly placeDep ROOT framer-motion@10.18.0 OK for: zolotoy-dub@0.1.0 want: ^10.18.0
+28 silly fetch manifest @emotion/is-prop-valid@^0.8.2
+29 silly packumentCache full:https://registry.npmjs.org/@emotion%2fis-prop-valid cache-miss
+30 http fetch GET 200 https://registry.npmjs.org/@emotion%2fis-prop-valid 110ms (cache miss)
+31 silly packumentCache full:https://registry.npmjs.org/@emotion%2fis-prop-valid set size:undefined disposed:false
+32 silly placeDep ROOT @emotion/is-prop-valid@0.8.8 OK for: framer-motion@10.18.0 want: ^0.8.2
+33 silly fetch manifest @emotion/memoize@0.7.4
+34 silly packumentCache full:https://registry.npmjs.org/@emotion%2fmemoize cache-miss
+35 http fetch GET 200 https://registry.npmjs.org/@emotion%2fmemoize 110ms (cache miss)
+36 silly packumentCache full:https://registry.npmjs.org/@emotion%2fmemoize set size:undefined disposed:false
+37 silly placeDep ROOT @emotion/memoize@0.7.4 OK for: @emotion/is-prop-valid@0.8.8 want: 0.7.4
+38 silly reify moves {}
+39 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-win32-x64-msvc
+40 silly reify mark deleted [
+40 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-win32-x64-msvc'
+40 silly reify ]
+41 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-win32-ia32-msvc
+42 silly reify mark deleted [
+42 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-win32-ia32-msvc'
+42 silly reify ]
+43 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-win32-arm64-msvc
+44 silly reify mark deleted [
+44 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-win32-arm64-msvc'
+44 silly reify ]
+45 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-wasm32-wasi
+46 silly reify mark deleted [
+46 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-wasm32-wasi'
+46 silly reify ]
+47 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@napi-rs/wasm-runtime
+48 silly reify mark deleted [
+48 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@napi-rs/wasm-runtime'
+48 silly reify ]
+49 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@emnapi/core
+50 silly reify mark deleted [ '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@emnapi/core' ]
+51 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@emnapi/runtime
+52 silly reify mark deleted [
+52 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@emnapi/runtime'
+52 silly reify ]
+53 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@tybys/wasm-util
+54 silly reify mark deleted [
+54 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@tybys/wasm-util'
+54 silly reify ]
+55 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@emnapi/wasi-threads
+56 silly reify mark deleted [
+56 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@emnapi/wasi-threads'
+56 silly reify ]
+57 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-linux-x64-musl
+58 silly reify mark deleted [
+58 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-linux-x64-musl'
+58 silly reify ]
+59 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-linux-x64-gnu
+60 silly reify mark deleted [
+60 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-linux-x64-gnu'
+60 silly reify ]
+61 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-linux-s390x-gnu
+62 silly reify mark deleted [
+62 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-linux-s390x-gnu'
+62 silly reify ]
+63 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-linux-riscv64-musl
+64 silly reify mark deleted [
+64 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-linux-riscv64-musl'
+64 silly reify ]
+65 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-linux-riscv64-gnu
+66 silly reify mark deleted [
+66 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-linux-riscv64-gnu'
+66 silly reify ]
+67 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-linux-ppc64-gnu
+68 silly reify mark deleted [
+68 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-linux-ppc64-gnu'
+68 silly reify ]
+69 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-linux-arm64-musl
+70 silly reify mark deleted [
+70 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-linux-arm64-musl'
+70 silly reify ]
+71 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-linux-arm64-gnu
+72 silly reify mark deleted [
+72 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-linux-arm64-gnu'
+72 silly reify ]
+73 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-linux-arm-musleabihf
+74 silly reify mark deleted [
+74 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-linux-arm-musleabihf'
+74 silly reify ]
+75 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-linux-arm-gnueabihf
+76 silly reify mark deleted [
+76 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-linux-arm-gnueabihf'
+76 silly reify ]
+77 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-freebsd-x64
+78 silly reify mark deleted [
+78 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-freebsd-x64'
+78 silly reify ]
+79 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-darwin-x64
+80 silly reify mark deleted [
+80 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-darwin-x64'
+80 silly reify ]
+81 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-android-arm64
+82 silly reify mark deleted [
+82 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-android-arm64'
+82 silly reify ]
+83 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-android-arm-eabi
+84 silly reify mark deleted [
+84 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@unrs/resolver-binding-android-arm-eabi'
+84 silly reify ]
+85 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@next/swc-win32-x64-msvc
+86 silly reify mark deleted [
+86 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@next/swc-win32-x64-msvc'
+86 silly reify ]
+87 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@next/swc-win32-ia32-msvc
+88 silly reify mark deleted [
+88 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@next/swc-win32-ia32-msvc'
+88 silly reify ]
+89 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@next/swc-win32-arm64-msvc
+90 silly reify mark deleted [
+90 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@next/swc-win32-arm64-msvc'
+90 silly reify ]
+91 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@next/swc-linux-x64-musl
+92 silly reify mark deleted [
+92 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@next/swc-linux-x64-musl'
+92 silly reify ]
+93 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@next/swc-linux-x64-gnu
+94 silly reify mark deleted [
+94 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@next/swc-linux-x64-gnu'
+94 silly reify ]
+95 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@next/swc-linux-arm64-musl
+96 silly reify mark deleted [
+96 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@next/swc-linux-arm64-musl'
+96 silly reify ]
+97 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@next/swc-linux-arm64-gnu
+98 silly reify mark deleted [
+98 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@next/swc-linux-arm64-gnu'
+98 silly reify ]
+99 verbose reify failed optional dependency /Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@next/swc-darwin-x64
+100 silly reify mark deleted [
+100 silly reify   '/Users/taley13/Desktop/zdub/zolotoy-dub/node_modules/@next/swc-darwin-x64'
+100 silly reify ]
+101 http cache @emotion/memoize@https://registry.npmjs.org/@emotion/memoize/-/memoize-0.7.4.tgz 0ms (cache hit)
+102 http cache @emotion/is-prop-valid@https://registry.npmjs.org/@emotion/is-prop-valid/-/is-prop-valid-0.8.8.tgz 0ms (cache hit)
+103 http cache @emnapi/wasi-threads@https://registry.npmjs.org/@emnapi/wasi-threads/-/wasi-threads-1.1.0.tgz 0ms (cache hit)
+104 http cache framer-motion@https://registry.npmjs.org/framer-motion/-/framer-motion-10.18.0.tgz 0ms (cache hit)
+105 http cache @tybys/wasm-util@https://registry.npmjs.org/@tybys/wasm-util/-/wasm-util-0.10.1.tgz 0ms (cache hit)
+106 http cache @napi-rs/wasm-runtime@https://registry.npmjs.org/@napi-rs/wasm-runtime/-/wasm-runtime-0.2.12.tgz 0ms (cache hit)
+107 http cache fsevents@https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz 0ms (cache hit)
+108 http cache @emnapi/runtime@https://registry.npmjs.org/@emnapi/runtime/-/runtime-1.6.0.tgz 0ms (cache hit)
+109 http cache @emnapi/core@https://registry.npmjs.org/@emnapi/core/-/core-1.6.0.tgz 0ms (cache hit)
+110 silly tarball no local data for @emotion/memoize@https://registry.npmjs.org/@emotion/memoize/-/memoize-0.7.4.tgz. Extracting by manifest.
+111 silly tarball no local data for @emotion/is-prop-valid@https://registry.npmjs.org/@emotion/is-prop-valid/-/is-prop-valid-0.8.8.tgz. Extracting by manifest.
+112 silly tarball no local data for framer-motion@https://registry.npmjs.org/framer-motion/-/framer-motion-10.18.0.tgz. Extracting by manifest.
+113 http fetch GET 200 https://registry.npmjs.org/@emotion/memoize/-/memoize-0.7.4.tgz 72ms (cache miss)
+114 http fetch GET 200 https://registry.npmjs.org/@emotion/is-prop-valid/-/is-prop-valid-0.8.8.tgz 239ms (cache miss)
+115 http fetch GET 200 https://registry.npmjs.org/framer-motion/-/framer-motion-10.18.0.tgz 662ms (cache miss)
+116 silly ADD node_modules/@emotion/memoize
+117 silly ADD node_modules/@emotion/is-prop-valid
+118 silly ADD node_modules/framer-motion
+119 silly ADD node_modules/fsevents
+120 silly ADD node_modules/@unrs/resolver-binding-win32-x64-msvc
+121 silly ADD node_modules/@unrs/resolver-binding-win32-ia32-msvc
+122 silly ADD node_modules/@unrs/resolver-binding-win32-arm64-msvc
+123 silly ADD node_modules/@unrs/resolver-binding-wasm32-wasi
+124 silly ADD node_modules/@unrs/resolver-binding-linux-x64-musl
+125 silly ADD node_modules/@unrs/resolver-binding-linux-x64-gnu
+126 silly ADD node_modules/@unrs/resolver-binding-linux-s390x-gnu
+127 silly ADD node_modules/@unrs/resolver-binding-linux-riscv64-musl
+128 silly ADD node_modules/@unrs/resolver-binding-linux-riscv64-gnu
+129 silly ADD node_modules/@unrs/resolver-binding-linux-ppc64-gnu
+130 silly ADD node_modules/@unrs/resolver-binding-linux-arm64-musl
+131 silly ADD node_modules/@unrs/resolver-binding-linux-arm64-gnu
+132 silly ADD node_modules/@unrs/resolver-binding-linux-arm-musleabihf
+133 silly ADD node_modules/@unrs/resolver-binding-linux-arm-gnueabihf
+134 silly ADD node_modules/@unrs/resolver-binding-freebsd-x64
+135 silly ADD node_modules/@unrs/resolver-binding-darwin-x64
+136 silly ADD node_modules/@unrs/resolver-binding-android-arm64
+137 silly ADD node_modules/@unrs/resolver-binding-android-arm-eabi
+138 silly ADD node_modules/@tybys/wasm-util
+139 silly ADD node_modules/@next/swc-win32-x64-msvc
+140 silly ADD node_modules/@next/swc-win32-ia32-msvc
+141 silly ADD node_modules/@next/swc-win32-arm64-msvc
+142 silly ADD node_modules/@next/swc-linux-x64-musl
+143 silly ADD node_modules/@next/swc-linux-x64-gnu
+144 silly ADD node_modules/@next/swc-linux-arm64-musl
+145 silly ADD node_modules/@next/swc-linux-arm64-gnu
+146 silly ADD node_modules/@next/swc-darwin-x64
+147 silly ADD node_modules/@napi-rs/wasm-runtime
+148 silly ADD node_modules/@emnapi/wasi-threads
+149 silly ADD node_modules/@emnapi/runtime
+150 silly ADD node_modules/@emnapi/core
+151 verbose cwd /Users/taley13/Desktop/zdub/zolotoy-dub
+152 verbose os Darwin 24.6.0
+153 verbose node v24.11.0
+154 verbose npm  v11.6.1
+155 verbose exit 0
+156 info ok

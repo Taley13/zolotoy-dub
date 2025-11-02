@@ -5,23 +5,53 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 :root {
-  --background: 255 255 255;
-  --foreground: 23 23 23;
   --font-elegant: 'Playfair Display', serif;
+  --gold-500: #C9A141; /* основной золотой */
 }
 
-html, body {
-  height: 100%;
+/* Подключение брендового шрифта (загрузите файлы в public/fonts) */
+@font-face {
+  font-family: 'ZolDubBrand';
+  src: url('/fonts/brand-regular.woff2') format('woff2'),
+       url('/fonts/brand-regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ZolDubBrand';
+  src: url('/fonts/brand-bold.woff2') format('woff2'),
+       url('/fonts/brand-bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
-body {
-  background-color: rgb(var(--background));
-  color: rgb(var(--foreground));
+.font-brand { font-family: 'ZolDubBrand', 'Playfair Display', serif; }
+
+html, body { height: 100%; }
+
+/* Бархатный тёмный фон со слабым золотистым свечением */
+.bg-velvet {
+  background-color: #0b0b0d; /* базовый тёмный */
+  background-image:
+    radial-gradient(80vmax 80vmax at 10% 0%, rgba(201,161,65,0.06), transparent 60%),
+    radial-gradient(90vmax 90vmax at 100% 20%, rgba(201,161,65,0.05), transparent 60%),
+    radial-gradient(120vmax 90vmax at 50% 120%, rgba(201,161,65,0.04), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.08));
 }
 
-.font-elegant {
-  font-family: 'Playfair Display', serif;
+/* Карточки/панели в едином стиле */
+.panel {
+  @apply rounded-xl border border-neutral-800 bg-neutral-900/50 shadow-lg;
 }
+
+/* Золотые интерактивные элементы */
+.btn-gold {
+  @apply inline-flex items-center justify-center rounded-md bg-brand-500 text-white transition hover:bg-brand-600 shadow;
+}
+
+.font-elegant { font-family: 'Playfair Display', serif; }
 
 
 

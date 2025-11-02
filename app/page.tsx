@@ -1,68 +1,119 @@
 export default function Home() {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+      {/* Hero секция без клиентских компонентов */}
       <div className="text-center">
-        <h1 className="text-4xl font-bold tracking-tight text-brand-400 sm:text-5xl md:text-6xl font-elegant">
+        <h1 className="text-5xl font-bold tracking-tight text-brand-400 sm:text-6xl md:text-7xl font-elegant">
           Золотой Дуб
         </h1>
-        <p className="mt-4 text-xl text-neutral-300 max-w-2xl mx-auto">
-          Кухни из массива дуба на заказ
+        <p className="mt-4 max-w-2xl mx-auto text-lg text-neutral-300">
+          Премиальные кухни из массива дуба. Индивидуальный дизайн. Безупречное качество.
         </p>
-        <p className="mt-6 text-lg text-neutral-400">
-          Индивидуальный подход. Качественные материалы. Современные технологии.
-        </p>
-      </div>
-
-      <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6 text-center shadow-lg">
-          <div className="mx-auto h-16 w-16 rounded-full bg-brand-500 flex items-center justify-center">
-            <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
-          </div>
-          <h3 className="mt-4 text-lg font-semibold text-neutral-100 font-elegant">Гарантия качества</h3>
-          <p className="mt-2 text-sm text-neutral-400">
-            Используем только проверенные материалы от надежных поставщиков
-          </p>
-        </div>
-
-        <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6 text-center shadow-lg">
-          <div className="mx-auto h-16 w-16 rounded-full bg-brand-500 flex items-center justify-center">
-            <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-          <h3 className="mt-4 text-lg font-semibold text-neutral-100 font-elegant">Соблюдение сроков</h3>
-          <p className="mt-2 text-sm text-neutral-400">
-            Четкое планирование и контроль производства на каждом этапе
-          </p>
-        </div>
-
-        <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6 text-center shadow-lg">
-          <div className="mx-auto h-16 w-16 rounded-full bg-brand-500 flex items-center justify-center">
-            <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-          <h3 className="mt-4 text-lg font-semibold text-neutral-100 font-elegant">Индивидуальный дизайн</h3>
-          <p className="mt-2 text-sm text-neutral-400">
-            Учитываем все ваши пожелания и особенности помещения
-          </p>
+        <div className="mt-8 flex justify-center gap-3">
+          <a href="#services" className="rounded-md bg-brand-500 px-6 py-3 text-lg text-white hover:bg-brand-600 transition">
+            Наши работы
+          </a>
+          <a href="/contacts" className="rounded-md border border-brand-500/50 px-6 py-3 text-lg text-brand-300 hover:bg-brand-500/10 transition">
+            Оставить заявку
+          </a>
         </div>
       </div>
 
-      <div className="mt-16 text-center">
+      {/* Галерея */}
+      <section id="portfolio" className="mt-20">
+        <h2 className="text-center text-3xl font-semibold text-neutral-100 font-elegant">Портфолио</h2>
+        <p className="mt-2 text-center text-neutral-400">
+          Избранные работы
+        </p>
+        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+          {[
+            '1759474759.png',
+            '1759474837.png',
+            '1759474944.png',
+            'Create_a_hyper-realistic,.png',
+            'Create_hyper-realistic,_u (2).png',
+            'Create_hyper-realistic,_u (3).png',
+            'Create_hyper-realistic,_u (4).png',
+            'Create_hyper-realistic,_u (5).png',
+          ].map((filename) => (
+            <div key={filename} className="overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/50">
+              <img
+                src={`/images/${filename}`}
+                alt="Кухня Золотой Дуб"
+                className="h-48 w-full object-cover transition hover:scale-105"
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
+        <div className="mt-8 text-center">
+          <a href="/gallery" className="text-brand-400 hover:text-brand-300 transition">
+            Смотреть все работы →
+          </a>
+        </div>
+      </section>
+
+      {/* Услуги */}
+      <section id="services" className="mt-20">
+        <h2 className="text-3xl font-semibold text-neutral-100 font-elegant">Услуги</h2>
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="panel p-6">
+            <h3 className="font-elegant text-xl text-neutral-100">Дизайн кухни</h3>
+            <p className="mt-2 text-neutral-400">Индивидуальный проект под ваше пространство</p>
+          </div>
+          <div className="panel p-6">
+            <h3 className="font-elegant text-xl text-neutral-100">Производство</h3>
+            <p className="mt-2 text-neutral-400">Изготовление из массива дуба</p>
+          </div>
+          <div className="panel p-6">
+            <h3 className="font-elegant text-xl text-neutral-100">Установка</h3>
+            <p className="mt-2 text-neutral-400">Профессиональный монтаж</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Прайс */}
+      <section id="pricing" className="mt-20">
+        <h2 className="text-3xl font-semibold text-neutral-100 font-elegant">Прайс</h2>
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="panel p-6">
+            <h3 className="font-elegant text-xl text-neutral-100">Эконом</h3>
+            <p className="mt-2 text-neutral-400">Стандартные решения</p>
+            <p className="mt-4 text-brand-400 text-lg">от 150 000 ₽</p>
+          </div>
+          <div className="panel p-6">
+            <h3 className="font-elegant text-xl text-neutral-100">Комфорт</h3>
+            <p className="mt-2 text-neutral-400">Индивидуальный дизайн</p>
+            <p className="mt-4 text-brand-400 text-lg">от 300 000 ₽</p>
+          </div>
+          <div className="panel p-6">
+            <h3 className="font-elegant text-xl text-neutral-100">Премиум</h3>
+            <p className="mt-2 text-neutral-400">Эксклюзивные материалы</p>
+            <p className="mt-4 text-brand-400 text-lg">от 600 000 ₽</p>
+          </div>
+        </div>
+      </section>
+
+      {/* О нас */}
+      <section id="about" className="mt-20">
+        <h2 className="text-3xl font-semibold text-neutral-100 font-elegant">О нас</h2>
+        <div className="panel mt-8 p-6">
+          <p className="text-neutral-300">
+            Фабрика «Золотой Дуб» — это команда мастеров, которые создают кухни премиум-класса из натурального дуба. 
+            Мы проектируем, производим и устанавливаем мебель, которая служит десятилетиями и становится центром вашего дома.
+          </p>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <div className="mt-20 text-center">
         <a
           href="/contacts"
-          className="inline-flex items-center gap-2 rounded-md bg-brand-500 px-6 py-3 text-lg font-medium text-white shadow-lg hover:bg-brand-600 transition"
+          className="inline-flex items-center gap-2 rounded-md bg-brand-500 px-8 py-4 text-lg font-medium text-white shadow-lg transition hover:bg-brand-600"
         >
           Оставить заявку
         </a>
       </div>
     </div>
-  )
+  );
 }
-
-
-
-
