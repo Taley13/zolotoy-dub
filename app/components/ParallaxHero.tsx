@@ -76,13 +76,20 @@ export default function ParallaxHero() {
       {/* Контент */}
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 text-center">
         <div className="glass-neon max-w-4xl p-12">
-          <h1 className="font-display text-6xl font-bold md:text-7xl lg:text-8xl">
+          {/* Символ желудя */}
+          <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-yellow-500/20 to-amber-600/20 backdrop-blur-sm border border-yellow-500/30">
+            <span className="text-5xl filter drop-shadow-[0_0_8px_rgba(255,215,0,0.6)]">🍂</span>
+          </div>
+          
+          <h1 className="font-display text-5xl font-bold md:text-6xl lg:text-7xl">
             <span className="bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent">
-              Изготовление кухонь
+              Золотой Дуб
             </span>
-            <br />
-            <span className="text-white">и шкафов на заказ</span>
           </h1>
+          
+          <h2 className="mt-6 font-display text-3xl font-semibold text-white md:text-4xl lg:text-5xl">
+            Изготовление кухонь и шкафов на заказ
+          </h2>
           
           <p className="mt-6 text-xl text-neutral-300 font-light leading-relaxed">
             <span className="font-semibold text-yellow-400">ДСП, МДФ, Эмаль.</span> Индивидуальный дизайн и установка под ключ из современных качественных надежных материалов
