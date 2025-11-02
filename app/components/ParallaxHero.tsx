@@ -78,10 +78,10 @@ export default function ParallaxHero() {
         <div className="glass-neon max-w-4xl p-12">
           {/* Символ желудя */}
           <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-yellow-500/20 to-amber-600/20 backdrop-blur-sm border border-yellow-500/30">
-            <span className="text-5xl filter drop-shadow-[0_0_8px_rgba(255,215,0,0.6)]">🍂</span>
+            <span className="text-5xl filter drop-shadow-[0_0_8px_rgba(255,215,0,0.6)]">🌰</span>
           </div>
           
-          <h1 className="font-display text-5xl font-bold md:text-6xl lg:text-7xl">
+          <h1 className="text-5xl font-bold md:text-6xl lg:text-7xl" style={{fontFamily: "'Cormorant Garamond', 'Playfair Display', serif"}}>
             <span className="bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent">
               Золотой Дуб
             </span>
