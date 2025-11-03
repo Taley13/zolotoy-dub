@@ -44,25 +44,12 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
     setSubmitStatus('idle');
 
     try {
-      // Текущая дата и время
-      const now = new Date();
-      const dateStr = now.toLocaleString('ru-RU', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        timeZone: 'Europe/Moscow'
-      });
-
-      // Формируем сообщение с ПОЛНЫМИ параметрами калькулятора
+      // Формируем сообщение ТОЧНО по указанному формату
       const message = `
-🎯 РАСЧЕТ КУХНИ «Золотой Дуб»
-
 👤 КОНТАКТЫ:
 • Имя: ${formData.name}
 • Телефон: ${formData.phone}
-${formData.email ? `• Email: ${formData.email}` : ''}
+• Email: ${formData.email || 'не указан'}
 
 ⚙️ ВЫБРАННЫЕ ПАРАМЕТРЫ:
 • Фасады: ${params.facade}
@@ -71,8 +58,6 @@ ${formData.email ? `• Email: ${formData.email}` : ''}
 • Длина кухни: ${params.length} м
 
 💰 РАСЧЕТНАЯ СТОИМОСТЬ: ${params.calculatedPrice.toLocaleString('ru-RU')} ₽
-
-⏰ ${dateStr}
       `.trim();
 
       // Создаём FormData для отправки

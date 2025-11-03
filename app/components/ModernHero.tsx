@@ -104,33 +104,43 @@ export default function ModernHero() {
       <div className="container mx-auto px-4 text-center relative z-10 flex flex-col justify-center min-h-screen py-20">
         {/* Верхняя часть - основной заголовок и подзаголовок */}
         <div className="flex-1 flex flex-col items-center justify-center">
+          {/* Изображение желудя */}
+          <div className="mb-8 animate-float">
+            <div className="relative">
+              <div className="absolute -inset-4 bg-amber-500/20 blur-xl rounded-full"></div>
+              <div className="relative text-7xl md:text-8xl drop-shadow-2xl">
+                🌰
+              </div>
+            </div>
+          </div>
+          
           {/* 1. Основной заголовок */}
-          <h1 className="font-brand text-7xl md:text-9xl font-bold text-white mb-6 tracking-tight drop-shadow-lg">
+          <h1 className="font-brand text-7xl md:text-9xl font-bold text-amber-200 mb-6 tracking-tight drop-shadow-lg">
             Золотой дуб
           </h1>
           
           {/* 2. Подзаголовок - поэтичный курсив */}
-          <p className="font-script text-3xl md:text-5xl text-yellow-400 italic tracking-wide drop-shadow-md">
+          <p className="font-script text-3xl md:text-5xl text-amber-300 italic tracking-wide drop-shadow-md">
             Уют и комфорт
           </p>
         </div>
 
         {/* Визуальное разделение */}
         <div className="my-12 flex items-center justify-center gap-4">
-          <div className="h-px w-16 bg-gradient-to-r from-transparent to-yellow-500/60"></div>
-          <div className="h-2 w-2 rotate-45 bg-yellow-500/80"></div>
-          <div className="h-px w-16 bg-gradient-to-l from-transparent to-yellow-500/60"></div>
+          <div className="h-px w-16 bg-gradient-to-r from-transparent to-amber-500/60"></div>
+          <div className="h-2 w-2 rotate-45 bg-amber-500/80"></div>
+          <div className="h-px w-16 bg-gradient-to-l from-transparent to-amber-500/60"></div>
         </div>
 
         {/* 3. Нижняя часть - дополнительная информация */}
         <div className="space-y-4">
           {/* Материалы - акцентно */}
-          <p className="font-display text-xl md:text-2xl font-semibold text-yellow-400 drop-shadow-md">
+          <p className="font-display text-xl md:text-2xl font-semibold text-amber-400 drop-shadow-md">
             ДСП • МДФ • Эмаль
           </p>
           
           {/* Описание услуг - обычный текст */}
-          <p className="font-body text-base md:text-lg text-white/90 max-w-2xl mx-auto drop-shadow-sm">
+          <p className="font-body text-base md:text-lg text-amber-100 max-w-2xl mx-auto drop-shadow-sm">
             Индивидуальный дизайн и установка под ключ
           </p>
 
@@ -138,15 +148,29 @@ export default function ModernHero() {
           <div className="mt-8 pt-4">
             <a
               href="#calculator"
-              className="inline-block bg-transparent border-2 border-yellow-400 text-yellow-400 px-10 py-4 rounded-full 
-                       hover:bg-yellow-400 hover:text-black transition-all duration-500 
-                       font-display text-lg tracking-wide shadow-lg hover:shadow-yellow-400/50"
+              className="inline-block bg-transparent border-2 border-amber-400 text-amber-400 px-10 py-4 rounded-full 
+                       hover:bg-amber-400 hover:text-black transition-all duration-500 
+                       font-display text-lg tracking-wide shadow-lg hover:shadow-amber-400/50"
             >
               Рассчитать стоимость
             </a>
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+        }
+        .animate-float {
+          animation: float 3s ease-in-out infinite;
+        }
+      `}</style>
     </section>
   );
 }
