@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef } from 'react';
+import AnimatedOakTree from './AnimatedOakTree';
 
 export default function ModernHero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -104,39 +105,22 @@ export default function ModernHero() {
       <div className="container mx-auto px-4 text-center relative z-10 flex flex-col justify-center min-h-screen py-20">
         {/* Верхняя часть - основной заголовок и подзаголовок */}
         <div className="flex-1 flex flex-col items-center justify-center">
-          {/* Изображение желудя - кликабельный для активации скидки */}
-          <button
-            onClick={() => {
-              // Активируем скидку
-              const activationTime = Date.now();
-              localStorage.setItem('discount_activation', activationTime.toString());
-              
-              // Прокручиваем к калькулятору
-              const calculator = document.getElementById('calculator');
-              if (calculator) {
-                calculator.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }
-            }}
-            className="mb-8 animate-float cursor-pointer group/acorn"
-          >
-            <div className="relative">
-              {/* Пульсирующее свечение */}
-              <div className="absolute -inset-6 bg-amber-500/30 blur-2xl rounded-full group-hover/acorn:bg-amber-400/50 transition-all duration-500"></div>
-              
-              {/* Желудь */}
-              <div className="relative text-7xl md:text-8xl drop-shadow-2xl transform group-hover/acorn:scale-110 transition-transform duration-300">
-                🌰
-              </div>
-              
-              {/* Tooltip при hover */}
-              <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 opacity-0 group-hover/acorn:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
-                <div className="bg-gradient-to-r from-green-500/90 to-emerald-600/90 backdrop-blur-xl border border-green-400/50 rounded-xl px-4 py-2 shadow-2xl">
-                  <p className="text-green-100 font-bold text-sm">🎁 Кликни и получи скидку 15%!</p>
-                  <p className="text-green-200 text-xs mt-1">Действует 24 часа</p>
-                </div>
-              </div>
-            </div>
-          </button>
+          {/* Анимированный дуб с падающими листьями */}
+          <div className="mb-8">
+            <AnimatedOakTree 
+              onClick={() => {
+                // Активируем скидку
+                const activationTime = Date.now();
+                localStorage.setItem('discount_activation', activationTime.toString());
+                
+                // Прокручиваем к калькулятору
+                const calculator = document.getElementById('calculator');
+                if (calculator) {
+                  calculator.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+            />
+          </div>
           
           {/* 1. Основной заголовок */}
           <h1 className="font-brand text-7xl md:text-9xl font-bold text-amber-200 mb-6 tracking-tight drop-shadow-lg">
@@ -191,8 +175,28 @@ export default function ModernHero() {
             transform: translateY(-10px);
           }
         }
+        @keyframes glow-pulse {
+          0%, 100% {
+            box-shadow: 
+              0 0 20px rgba(255, 215, 0, 0.4),
+              0 0 40px rgba(255, 215, 0, 0.2),
+              0 0 60px rgba(255, 215, 0, 0.1);
+          }
+          50% {
+            box-shadow: 
+              0 0 30px rgba(255, 215, 0, 0.6),
+              0 0 60px rgba(255, 215, 0, 0.3),
+              0 0 90px rgba(255, 215, 0, 0.15);
+          }
+        }
         .animate-float {
           animation: float 3s ease-in-out infinite;
+        }
+        .animate-glow-pulse {
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          animation: glow-pulse 2s ease-in-out infinite;
         }
       `}</style>
     </section>
