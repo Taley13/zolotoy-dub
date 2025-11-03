@@ -1,26 +1,40 @@
-import ParallaxHero from '@/app/components/ParallaxHero';
+import ModernHero from '@/app/components/ModernHero';
 import FilterGallery from '@/app/components/FilterGallery';
+import InteractiveShowcase from '@/app/components/InteractiveShowcase';
 import ScrollReveal from '@/app/components/ScrollReveal';
 import KitchenCalculator from '@/app/components/KitchenCalculator';
 
 export default function Home() {
   return (
     <>
-      <ParallaxHero />
+      <ModernHero />
 
       <div className="relative z-10 -mt-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           
-          {/* Галерея с фильтрами */}
+          {/* Интерактивная витрина */}
+          <ScrollReveal>
+            <section id="showcase" className="py-16">
+              <h2 className="text-center font-display text-4xl font-bold mb-4">
+                <span className="bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent">
+                  Популярные решения
+                </span>
+              </h2>
+              <p className="text-center text-neutral-400 mb-10">Наведите курсор для 3D-эффекта</p>
+              <InteractiveShowcase />
+            </section>
+          </ScrollReveal>
+
+          {/* Полная галерея с фильтрами */}
           <ScrollReveal>
             <section id="portfolio" className="py-16">
               <div className="glass-neon p-10">
                 <h2 className="text-center font-display text-4xl font-bold">
                   <span className="bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent">
-                    Портфолио
+                    Все работы
                   </span>
                 </h2>
-                <p className="mt-3 text-center text-neutral-400">Избранные работы наших мастеров</p>
+                <p className="mt-3 text-center text-neutral-400">Фильтруйте по категориям</p>
                 <div className="mt-10">
                   <FilterGallery />
                 </div>
