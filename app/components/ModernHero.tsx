@@ -104,15 +104,39 @@ export default function ModernHero() {
       <div className="container mx-auto px-4 text-center relative z-10 flex flex-col justify-center min-h-screen py-20">
         {/* Верхняя часть - основной заголовок и подзаголовок */}
         <div className="flex-1 flex flex-col items-center justify-center">
-          {/* Изображение желудя */}
-          <div className="mb-8 animate-float">
+          {/* Изображение желудя - кликабельный для активации скидки */}
+          <button
+            onClick={() => {
+              // Активируем скидку
+              const activationTime = Date.now();
+              localStorage.setItem('discount_activation', activationTime.toString());
+              
+              // Прокручиваем к калькулятору
+              const calculator = document.getElementById('calculator');
+              if (calculator) {
+                calculator.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }}
+            className="mb-8 animate-float cursor-pointer group/acorn"
+          >
             <div className="relative">
-              <div className="absolute -inset-4 bg-amber-500/20 blur-xl rounded-full"></div>
-              <div className="relative text-7xl md:text-8xl drop-shadow-2xl">
+              {/* Пульсирующее свечение */}
+              <div className="absolute -inset-6 bg-amber-500/30 blur-2xl rounded-full group-hover/acorn:bg-amber-400/50 transition-all duration-500"></div>
+              
+              {/* Желудь */}
+              <div className="relative text-7xl md:text-8xl drop-shadow-2xl transform group-hover/acorn:scale-110 transition-transform duration-300">
                 🌰
               </div>
+              
+              {/* Tooltip при hover */}
+              <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 opacity-0 group-hover/acorn:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
+                <div className="bg-gradient-to-r from-green-500/90 to-emerald-600/90 backdrop-blur-xl border border-green-400/50 rounded-xl px-4 py-2 shadow-2xl">
+                  <p className="text-green-100 font-bold text-sm">🎁 Кликни и получи скидку 15%!</p>
+                  <p className="text-green-200 text-xs mt-1">Действует 24 часа</p>
+                </div>
+              </div>
             </div>
-          </div>
+          </button>
           
           {/* 1. Основной заголовок */}
           <h1 className="font-brand text-7xl md:text-9xl font-bold text-amber-200 mb-6 tracking-tight drop-shadow-lg">
