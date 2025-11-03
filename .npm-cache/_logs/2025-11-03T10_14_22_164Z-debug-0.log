@@ -1,0 +1,123 @@
+0 verbose cli /usr/local/bin/node /usr/local/bin/npm
+1 info using npm@11.6.1
+2 info using node@v24.11.0
+3 silly config load:file:/usr/local/lib/node_modules/npm/npmrc
+4 silly config load:file:/Users/taley13/Desktop/zdub/zolotoy-dub/.npmrc
+5 silly config load:file:/Users/taley13/.npmrc
+6 silly config load:file:/usr/local/etc/npmrc
+7 verbose title npm install
+8 verbose argv "install" "--cache" "./.npm-cache"
+9 verbose logfile logs-max:10 dir:/Users/taley13/Desktop/zdub/zolotoy-dub/.npm-cache/_logs/2025-11-03T10_14_22_164Z-
+10 verbose logfile /Users/taley13/Desktop/zdub/zolotoy-dub/.npm-cache/_logs/2025-11-03T10_14_22_164Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:2348810240 maxSize:587202560 maxEntrySize:293601280
+13 silly idealTree buildDeps
+14 silly fetch manifest react@^18
+15 silly packumentCache full:https://registry.npmjs.org/react cache-miss
+16 http fetch GET 200 https://registry.npmjs.org/react 744ms (cache revalidated)
+17 silly packumentCache full:https://registry.npmjs.org/react set size:6220657 disposed:false
+18 silly fetch manifest react-dom@^18
+19 silly packumentCache full:https://registry.npmjs.org/react-dom cache-miss
+20 http fetch GET 200 https://registry.npmjs.org/react-dom 136ms (cache revalidated)
+21 silly packumentCache full:https://registry.npmjs.org/react-dom set size:8131756 disposed:false
+22 silly fetch manifest next@14.0.0
+23 silly packumentCache full:https://registry.npmjs.org/next cache-miss
+24 http fetch GET 200 https://registry.npmjs.org/next 1928ms (cache updated)
+25 silly packumentCache full:https://registry.npmjs.org/next set size:undefined disposed:false
+26 silly fetch manifest @opentelemetry/api@^1.1.0
+27 silly packumentCache full:https://registry.npmjs.org/@opentelemetry%2fapi cache-miss
+28 http fetch GET 200 https://registry.npmjs.org/@opentelemetry%2fapi 133ms (cache revalidated)
+29 silly packumentCache full:https://registry.npmjs.org/@opentelemetry%2fapi set size:455567 disposed:false
+30 silly fetch manifest sass@^1.3.0
+31 silly packumentCache full:https://registry.npmjs.org/sass cache-miss
+32 http fetch GET 200 https://registry.npmjs.org/sass 243ms (cache updated)
+33 silly packumentCache full:https://registry.npmjs.org/sass set size:undefined disposed:false
+34 silly fetch manifest framer-motion@^10.18.0
+35 silly packumentCache full:https://registry.npmjs.org/framer-motion cache-miss
+36 http fetch GET 200 https://registry.npmjs.org/framer-motion 126ms (cache revalidated)
+37 silly packumentCache full:https://registry.npmjs.org/framer-motion set size:9491849 disposed:false
+38 silly fetch manifest typescript@^5
+39 silly packumentCache full:https://registry.npmjs.org/typescript cache-miss
+40 http fetch GET 200 https://registry.npmjs.org/typescript 2053ms (cache updated)
+41 silly packumentCache full:https://registry.npmjs.org/typescript set size:undefined disposed:false
+42 silly fetch manifest @types/node@^20
+43 silly packumentCache full:https://registry.npmjs.org/@types%2fnode cache-miss
+44 http fetch GET 200 https://registry.npmjs.org/@types%2fnode 1732ms (cache updated)
+45 silly packumentCache full:https://registry.npmjs.org/@types%2fnode set size:undefined disposed:false
+46 silly fetch manifest @types/react@^18
+47 silly packumentCache full:https://registry.npmjs.org/@types%2freact cache-miss
+48 http fetch GET 200 https://registry.npmjs.org/@types%2freact 432ms (cache updated)
+49 silly packumentCache full:https://registry.npmjs.org/@types%2freact set size:undefined disposed:false
+50 silly fetch manifest @types/react-dom@^18
+51 silly packumentCache full:https://registry.npmjs.org/@types%2freact-dom cache-miss
+52 http fetch GET 200 https://registry.npmjs.org/@types%2freact-dom 104ms (cache revalidated)
+53 silly packumentCache full:https://registry.npmjs.org/@types%2freact-dom set size:426214 disposed:false
+54 silly fetch manifest autoprefixer@^10.0.1
+55 silly packumentCache full:https://registry.npmjs.org/autoprefixer cache-miss
+56 http fetch GET 200 https://registry.npmjs.org/autoprefixer 320ms (cache revalidated)
+57 silly packumentCache full:https://registry.npmjs.org/autoprefixer set size:1238679 disposed:false
+58 silly fetch manifest postcss@^8
+59 silly packumentCache full:https://registry.npmjs.org/postcss cache-miss
+60 http fetch GET 200 https://registry.npmjs.org/postcss 96ms (cache revalidated)
+61 silly packumentCache full:https://registry.npmjs.org/postcss set size:696248 disposed:false
+62 silly fetch manifest tailwindcss@^3.4.0
+63 silly packumentCache full:https://registry.npmjs.org/tailwindcss cache-miss
+64 http fetch GET 200 https://registry.npmjs.org/tailwindcss 1789ms (cache updated)
+65 silly packumentCache full:https://registry.npmjs.org/tailwindcss set size:undefined disposed:false
+66 silly fetch manifest eslint@^9.0.0
+67 silly packumentCache full:https://registry.npmjs.org/eslint cache-miss
+68 http fetch GET 200 https://registry.npmjs.org/eslint 502ms (cache updated)
+69 silly packumentCache full:https://registry.npmjs.org/eslint set size:undefined disposed:false
+70 silly fetch manifest jiti@*
+71 silly packumentCache full:https://registry.npmjs.org/jiti cache-miss
+72 http fetch GET 200 https://registry.npmjs.org/jiti 110ms (cache revalidated)
+73 silly packumentCache full:https://registry.npmjs.org/jiti set size:382310 disposed:false
+74 silly fetch manifest eslint-config-next@14.0.0
+75 silly packumentCache full:https://registry.npmjs.org/eslint-config-next cache-miss
+76 http fetch GET 200 https://registry.npmjs.org/eslint-config-next 1831ms (cache updated)
+77 silly packumentCache full:https://registry.npmjs.org/eslint-config-next set size:undefined disposed:false
+78 silly fetch manifest eslint@^7.23.0 || ^8.0.0
+79 silly packumentCache full:https://registry.npmjs.org/eslint cache-miss
+80 http cache https://registry.npmjs.org/eslint 7ms (cache hit)
+81 silly packumentCache full:https://registry.npmjs.org/eslint set size:1866589 disposed:false
+82 verbose stack Error: unable to resolve dependency tree
+82 verbose stack     at #failPeerConflict (/usr/local/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/build-ideal-tree.js:1407:25)
+82 verbose stack     at #loadPeerSet (/usr/local/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/build-ideal-tree.js:1373:33)
+82 verbose stack     at async #buildDepStep (/usr/local/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/build-ideal-tree.js:916:11)
+82 verbose stack     at async Arborist.buildIdealTree (/usr/local/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/build-ideal-tree.js:182:7)
+82 verbose stack     at async Promise.all (index 1)
+82 verbose stack     at async Arborist.reify (/usr/local/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/reify.js:117:5)
+82 verbose stack     at async Install.exec (/usr/local/lib/node_modules/npm/lib/commands/install.js:150:5)
+82 verbose stack     at async Npm.exec (/usr/local/lib/node_modules/npm/lib/npm.js:208:9)
+82 verbose stack     at async module.exports (/usr/local/lib/node_modules/npm/lib/cli/entry.js:67:5)
+83 error code ERESOLVE
+84 error ERESOLVE unable to resolve dependency tree
+85 error
+86 error While resolving: zolotoy-dub@0.1.0
+86 error Found: eslint@9.39.0
+86 error node_modules/eslint
+86 error   dev eslint@"^9.0.0" from the root project
+86 error
+86 error Could not resolve dependency:
+86 error peer eslint@"^7.23.0 || ^8.0.0" from eslint-config-next@14.0.0
+86 error node_modules/eslint-config-next
+86 error   dev eslint-config-next@"14.0.0" from the root project
+86 error
+86 error Fix the upstream dependency conflict, or retry
+86 error this command with --force or --legacy-peer-deps
+86 error to accept an incorrect (and potentially broken) dependency resolution.
+87 error
+87 error
+87 error For a full report see:
+87 error /Users/taley13/Desktop/zdub/zolotoy-dub/.npm-cache/_logs/2025-11-03T10_14_22_164Z-eresolve-report.txt
+88 silly unfinished npm timer reify 1762164862439
+89 silly unfinished npm timer reify:loadTrees 1762164862441
+90 silly unfinished npm timer idealTree:buildDeps 1762164862447
+91 silly unfinished npm timer idealTree:#root 1762164862447
+92 verbose cwd /Users/taley13/Desktop/zdub/zolotoy-dub
+93 verbose os Darwin 24.6.0
+94 verbose node v24.11.0
+95 verbose npm  v11.6.1
+96 verbose exit 1
+97 verbose code 1
+98 error A complete log of this run can be found in: /Users/taley13/Desktop/zdub/zolotoy-dub/.npm-cache/_logs/2025-11-03T10_14_22_164Z-debug-0.log

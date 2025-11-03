@@ -1,6 +1,7 @@
 import ParallaxHero from '@/app/components/ParallaxHero';
 import FilterGallery from '@/app/components/FilterGallery';
 import ScrollReveal from '@/app/components/ScrollReveal';
+import KitchenCalculator from '@/app/components/KitchenCalculator';
 
 export default function Home() {
   return (
@@ -24,6 +25,13 @@ export default function Home() {
                   <FilterGallery />
                 </div>
               </div>
+            </section>
+          </ScrollReveal>
+
+          {/* Калькулятор стоимости */}
+          <ScrollReveal>
+            <section id="calculator" className="py-16">
+              <KitchenCalculator />
             </section>
           </ScrollReveal>
 
