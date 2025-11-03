@@ -3,11 +3,13 @@
 import { useState, useEffect } from 'react';
 import CalculationModal from './CalculationModal';
 
+type ConfigurationType = 'Прямая' | 'Угловая' | 'Индивидуальная';
 type FacadeType = 'ДСП' | 'МДФ' | 'Эмаль';
 type FittingsType = 'Стандарт' | 'Премиум Blum';
 type CountertopType = 'HPL' | 'Искусственный камень' | 'Кварцевый агломерат';
 
 interface CalculatorState {
+  configuration: string;
   facade: string;
   hardware: string;
   countertop: string;
@@ -16,16 +18,19 @@ interface CalculatorState {
 }
 
 export default function KitchenCalculator() {
-  // 1. ФАСАДЫ (первый параметр)
+  // 1. КОНФИГУРАЦИЯ КУХНИ (первый параметр)
+  const [configuration, setConfiguration] = useState<ConfigurationType>('Прямая');
+  
+  // 2. ФАСАДЫ (второй параметр)
   const [facade, setFacade] = useState<FacadeType>('МДФ');
   
-  // 2. ФУРНИТУРА (второй параметр)
+  // 3. ФУРНИТУРА (третий параметр)
   const [fittings, setFittings] = useState<FittingsType>('Стандарт');
   
-  // 3. СТОЛЕШНИЦА (третий параметр)
+  // 4. СТОЛЕШНИЦА (четвёртый параметр)
   const [countertop, setCountertop] = useState<CountertopType>('HPL');
   
-  // 4. РАЗМЕРЫ (четвертый параметр)
+  // 5. РАЗМЕРЫ (пятый параметр)
   const [length, setLength] = useState(3);
 
   // Состояние модального окна
@@ -36,6 +41,11 @@ export default function KitchenCalculator() {
 
   // Наценки в процентах
   const MARKUP = {
+    configuration: {
+      'Прямая': 0,
+      'Угловая': 0.25,
+      'Индивидуальная': 0.40
+    },
     facade: {
       'ДСП': 0,
       'МДФ': 0.30,
@@ -54,11 +64,12 @@ export default function KitchenCalculator() {
 
   // Логика расчета стоимости
   const calculatePrice = (): number => {
+    const configurationMarkup = 1 + MARKUP.configuration[configuration];
     const facadeMarkup = 1 + MARKUP.facade[facade];
     const fittingsMarkup = 1 + MARKUP.fittings[fittings];
     const countertopMarkup = 1 + MARKUP.countertop[countertop];
 
-    const totalPrice = length * BASE_PRICE * facadeMarkup * fittingsMarkup * countertopMarkup;
+    const totalPrice = length * BASE_PRICE * configurationMarkup * facadeMarkup * fittingsMarkup * countertopMarkup;
     
     return Math.round(totalPrice);
   };
@@ -66,12 +77,14 @@ export default function KitchenCalculator() {
   // Расчёт наценок для прозрачности
   const getBreakdown = () => {
     const baseCost = length * BASE_PRICE;
+    const configurationMarkup = MARKUP.configuration[configuration];
     const facadeMarkup = MARKUP.facade[facade];
     const fittingsMarkup = MARKUP.fittings[fittings];
     const countertopMarkup = MARKUP.countertop[countertop];
 
     return {
       base: baseCost,
+      configurationPercent: Math.round(configurationMarkup * 100),
       facadePercent: Math.round(facadeMarkup * 100),
       fittingsPercent: Math.round(fittingsMarkup * 100),
       countertopPercent: Math.round(countertopMarkup * 100)
@@ -83,6 +96,7 @@ export default function KitchenCalculator() {
 
   // Состояние для хранения всех параметров
   const [calculatorState, setCalculatorState] = useState<CalculatorState>({
+    configuration: 'Прямая',
     facade: 'МДФ',
     hardware: 'Стандарт',
     countertop: 'HPL',
@@ -94,13 +108,14 @@ export default function KitchenCalculator() {
   useEffect(() => {
     const newPrice = calculatePrice();
     setCalculatorState({
+      configuration: configuration,
       facade: facade,
       hardware: fittings,
       countertop: countertop,
       length: length,
       calculatedPrice: newPrice
     });
-  }, [facade, fittings, countertop, length]);
+  }, [configuration, facade, fittings, countertop, length]);
 
   const handleGetQuote = () => {
     setIsModalOpen(true);
@@ -119,10 +134,44 @@ export default function KitchenCalculator() {
         </p>
 
         <div className="max-w-4xl mx-auto space-y-8">
-          {/* 1. ФАСАДЫ (первый блок) */}
+          {/* 1. КОНФИГУРАЦИЯ КУХНИ (первый блок) */}
           <div className="space-y-4">
             <h3 className="font-display text-xl font-semibold text-yellow-400 flex items-center gap-2">
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20 text-sm">1</span>
+              Конфигурация кухни
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {([
+                { type: 'Прямая', desc: 'Классическая планировка', icon: '━' },
+                { type: 'Угловая', desc: 'Оптимальное использование пространства', icon: '⌞' },
+                { type: 'Индивидуальная', desc: 'Любая сложная планировка', icon: '⚙' }
+              ] as Array<{ type: ConfigurationType; desc: string; icon: string }>).map(({ type, desc, icon }) => (
+                <button
+                  key={type}
+                  onClick={() => setConfiguration(type)}
+                  className={`
+                    p-5 rounded-xl border-2 transition-all duration-300
+                    ${configuration === type
+                      ? 'border-yellow-500 bg-yellow-500/20 text-yellow-400 shadow-lg shadow-yellow-500/20 scale-105'
+                      : 'border-white/10 bg-white/5 text-neutral-300 hover:border-yellow-500/50 hover:bg-white/10'
+                    }
+                  `}
+                >
+                  <div className="text-3xl mb-2">{icon}</div>
+                  <div className="font-semibold mb-1">{type}</div>
+                  {configuration === type && MARKUP.configuration[type] > 0 && (
+                    <div className="text-xs text-yellow-300 mb-1">+{Math.round(MARKUP.configuration[type] * 100)}%</div>
+                  )}
+                  <div className="text-xs text-neutral-400 mt-1">{desc}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 2. ФАСАДЫ (второй блок) */}
+          <div className="space-y-4">
+            <h3 className="font-display text-xl font-semibold text-yellow-400 flex items-center gap-2">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20 text-sm">2</span>
               Фасады
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -152,10 +201,10 @@ export default function KitchenCalculator() {
             </div>
           </div>
 
-          {/* 2. ФУРНИТУРА (второй блок) */}
+          {/* 3. ФУРНИТУРА (третий блок) */}
           <div className="space-y-4">
             <h3 className="font-display text-xl font-semibold text-yellow-400 flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20 text-sm">2</span>
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20 text-sm">3</span>
               Фурнитура
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -184,10 +233,10 @@ export default function KitchenCalculator() {
             </div>
           </div>
 
-          {/* 3. СТОЛЕШНИЦА (третий блок) */}
+          {/* 4. СТОЛЕШНИЦА (четвёртый блок) */}
           <div className="space-y-4">
             <h3 className="font-display text-xl font-semibold text-yellow-400 flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20 text-sm">3</span>
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20 text-sm">4</span>
               Столешница
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -217,10 +266,10 @@ export default function KitchenCalculator() {
             </div>
           </div>
 
-          {/* 4. РАЗМЕРЫ (четвертый блок) */}
+          {/* 5. РАЗМЕРЫ (пятый блок) */}
           <div className="space-y-4">
             <h3 className="font-display text-xl font-semibold text-yellow-400 flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20 text-sm">4</span>
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20 text-sm">5</span>
               Размеры
             </h3>
             <div className="space-y-4">
@@ -259,23 +308,30 @@ export default function KitchenCalculator() {
                 <span className="text-neutral-200 font-medium">{breakdown.base.toLocaleString('ru-RU')} ₽</span>
               </div>
               
+              {breakdown.configurationPercent > 0 && (
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-400">• Наценка за конфигурацию ({configuration}):</span>
+                  <span className="text-yellow-400">+{breakdown.configurationPercent}%</span>
+                </div>
+              )}
+              
               {breakdown.facadePercent > 0 && (
                 <div className="flex justify-between items-center">
-                  <span className="text-neutral-400">• Наценка за {facade}:</span>
+                  <span className="text-neutral-400">• Наценка за фасады ({facade}):</span>
                   <span className="text-yellow-400">+{breakdown.facadePercent}%</span>
                 </div>
               )}
               
               {breakdown.fittingsPercent > 0 && (
                 <div className="flex justify-between items-center">
-                  <span className="text-neutral-400">• Наценка за {fittings}:</span>
+                  <span className="text-neutral-400">• Наценка за фурнитуру ({fittings}):</span>
                   <span className="text-yellow-400">+{breakdown.fittingsPercent}%</span>
                 </div>
               )}
               
               {breakdown.countertopPercent > 0 && (
                 <div className="flex justify-between items-center">
-                  <span className="text-neutral-400">• Наценка за {countertop}:</span>
+                  <span className="text-neutral-400">• Наценка за столешницу ({countertop}):</span>
                   <span className="text-yellow-400">+{breakdown.countertopPercent}%</span>
                 </div>
               )}

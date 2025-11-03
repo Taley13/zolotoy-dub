@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { submitContactForm } from '@/app/contacts/actions';
 
 interface CalculationParams {
+  configuration: string;
   facade: string;
   hardware: string;
   countertop: string;
@@ -52,6 +53,7 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
 • Email: ${formData.email || 'не указан'}
 
 ⚙️ ВЫБРАННЫЕ ПАРАМЕТРЫ:
+• Конфигурация: ${params.configuration}
 • Фасады: ${params.facade}
 • Фурнитура: ${params.hardware}
 • Столешница: ${params.countertop}
@@ -123,6 +125,10 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
         <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-6">
           <h4 className="text-neutral-300 font-semibold mb-3 text-sm">Ваш выбор:</h4>
           <div className="space-y-2 text-sm">
+            <div className="flex justify-between items-center">
+              <span className="text-neutral-400">Конфигурация:</span>
+              <span className="text-yellow-400 font-medium">{params.configuration}</span>
+            </div>
             <div className="flex justify-between items-center">
               <span className="text-neutral-400">Фасады:</span>
               <span className="text-yellow-400 font-medium">{params.facade}</span>
