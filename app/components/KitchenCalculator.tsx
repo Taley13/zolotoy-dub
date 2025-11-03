@@ -36,6 +36,10 @@ export default function KitchenCalculator() {
   // Состояние модального окна
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Состояние скидки
+  const [discountActive, setDiscountActive] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState<string>('');
+
   // Базовая цена за погонный метр
   const BASE_PRICE = 45000;
 
@@ -69,7 +73,12 @@ export default function KitchenCalculator() {
     const fittingsMarkup = 1 + MARKUP.fittings[fittings];
     const countertopMarkup = 1 + MARKUP.countertop[countertop];
 
-    const totalPrice = length * BASE_PRICE * configurationMarkup * facadeMarkup * fittingsMarkup * countertopMarkup;
+    let totalPrice = length * BASE_PRICE * configurationMarkup * facadeMarkup * fittingsMarkup * countertopMarkup;
+    
+    // Применяем скидку 15% если активирована
+    if (discountActive) {
+      totalPrice = totalPrice * 0.85; // 15% скидка
+    }
     
     return Math.round(totalPrice);
   };
@@ -104,6 +113,42 @@ export default function KitchenCalculator() {
     calculatedPrice: 0
   });
 
+  // Проверка активности скидки
+  useEffect(() => {
+    const checkDiscount = () => {
+      const activationTime = localStorage.getItem('discount_activation');
+      if (!activationTime) {
+        setDiscountActive(false);
+        return;
+      }
+
+      const activation = parseInt(activationTime);
+      const now = Date.now();
+      const elapsed = now - activation;
+      const duration24h = 24 * 60 * 60 * 1000; // 24 часа
+
+      if (elapsed < duration24h) {
+        setDiscountActive(true);
+        
+        // Обновляем таймер каждую секунду
+        const remaining = duration24h - elapsed;
+        const hours = Math.floor(remaining / (60 * 60 * 1000));
+        const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
+        const seconds = Math.floor((remaining % (60 * 1000)) / 1000);
+        
+        setTimeRemaining(`${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
+      } else {
+        setDiscountActive(false);
+        localStorage.removeItem('discount_activation');
+      }
+    };
+
+    checkDiscount();
+    const interval = setInterval(checkDiscount, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   // Обновление состояния при изменении параметров
   useEffect(() => {
     const newPrice = calculatePrice();
@@ -115,7 +160,7 @@ export default function KitchenCalculator() {
       length: length,
       calculatedPrice: newPrice
     });
-  }, [configuration, facade, fittings, countertop, length]);
+  }, [configuration, facade, fittings, countertop, length, discountActive]);
 
   const handleGetQuote = () => {
     setIsModalOpen(true);
@@ -129,6 +174,26 @@ export default function KitchenCalculator() {
             Калькулятор стоимости
           </span>
         </h2>
+        
+        {/* Баннер скидки */}
+        {discountActive && (
+          <div className="mb-6 mx-auto max-w-2xl bg-gradient-to-r from-green-500/20 to-emerald-600/20 border-2 border-green-500/50 rounded-xl p-4 shadow-lg shadow-green-500/20 animate-pulse">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <span className="text-3xl">🎉</span>
+                <div>
+                  <p className="text-green-400 font-bold text-lg">Скидка 15% активирована!</p>
+                  <p className="text-green-300 text-sm">Специальное предложение для вас</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-xs text-green-300 mb-1">Действует:</p>
+                <p className="text-green-400 font-mono font-bold text-xl">{timeRemaining}</p>
+              </div>
+            </div>
+          </div>
+        )}
+        
         <p className="text-center text-neutral-400 mb-10">
           Рассчитайте стоимость вашей кухни • Прозрачное ценообразование
         </p>
@@ -338,9 +403,19 @@ export default function KitchenCalculator() {
 
               <div className="border-t border-white/10 pt-3 mt-3"></div>
               
+              {/* Скидка если активна */}
+              {discountActive && (
+                <div className="flex justify-between items-center text-base bg-green-500/10 rounded-lg p-2 -mx-2">
+                  <span className="text-green-400 font-semibold">🎉 Скидка 15%:</span>
+                  <span className="text-green-400 font-bold">-{Math.round((length * BASE_PRICE * (1 + MARKUP.configuration[configuration]) * (1 + MARKUP.facade[facade]) * (1 + MARKUP.fittings[fittings]) * (1 + MARKUP.countertop[countertop])) * 0.15).toLocaleString('ru-RU')} ₽</span>
+                </div>
+              )}
+              
               <div className="flex justify-between items-center text-lg">
                 <span className="text-neutral-200 font-semibold">Итоговая стоимость:</span>
-                <span className="text-yellow-400 font-bold text-2xl">{price.toLocaleString('ru-RU')} ₽</span>
+                <span className={`font-bold text-2xl ${discountActive ? 'text-green-400' : 'text-yellow-400'}`}>
+                  {price.toLocaleString('ru-RU')} ₽
+                </span>
               </div>
             </div>
           </div>

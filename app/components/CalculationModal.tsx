@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { submitContactForm } from '@/app/contacts/actions';
 
 interface CalculationParams {
@@ -26,6 +26,38 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [hasDiscount, setHasDiscount] = useState(false);
+  const [discountEndDate, setDiscountEndDate] = useState<string>('');
+
+  // Проверяем наличие скидки при открытии модалки
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const activationTime = localStorage.getItem('discount_activation');
+    if (activationTime) {
+      const activation = parseInt(activationTime);
+      const now = Date.now();
+      const duration24h = 24 * 60 * 60 * 1000;
+      
+      if (now - activation < duration24h) {
+        setHasDiscount(true);
+        
+        // Форматируем дату окончания
+        const endDate = new Date(activation + duration24h);
+        const formatted = endDate.toLocaleString('ru-RU', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          timeZone: 'Europe/Moscow'
+        });
+        setDiscountEndDate(formatted);
+      } else {
+        setHasDiscount(false);
+      }
+    }
+  }, [isOpen]);
 
   const handleClose = () => {
     setFormData({ name: '', phone: '', email: '' });
@@ -45,8 +77,56 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
     setSubmitStatus('idle');
 
     try {
-      // Формируем сообщение ТОЧНО по указанному формату
-      const message = `
+      // Текущая дата и время
+      const now = new Date();
+      const dateStr = now.toLocaleString('ru-RU', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        timeZone: 'Europe/Moscow'
+      });
+      const timeStr = now.toLocaleString('ru-RU', {
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: 'Europe/Moscow'
+      });
+
+      // Расчёт стоимости без скидки (для сравнения)
+      const priceWithoutDiscount = hasDiscount ? Math.round(params.calculatedPrice / 0.85) : params.calculatedPrice;
+      const savings = hasDiscount ? priceWithoutDiscount - params.calculatedPrice : 0;
+
+      // Формируем сообщение с учётом скидки
+      let message = '';
+
+      if (hasDiscount) {
+        message = `
+🏠 НОВАЯ ЗАЯВКА С СКИДКОЙ 15%
+
+👤 КОНТАКТЫ:
+• Имя: ${formData.name}
+• Телефон: ${formData.phone}
+• Email: ${formData.email || 'не указан'}
+
+🎁 КЛИЕНТ АКТИВИРОВАЛ СКИДКУ ЧЕРЕЗ ЖЕЛУДЬ!
+⏰ Скидка действительна до: ${discountEndDate}
+
+📐 ПАРАМЕТРЫ ЗАКАЗА:
+• Конфигурация: ${params.configuration}
+• Фасады: ${params.facade}
+• Фурнитура: ${params.hardware}
+• Столешница: ${params.countertop}
+• Длина: ${params.length} м
+
+💰 СТОИМОСТЬ:
+• Расчетная: ${priceWithoutDiscount.toLocaleString('ru-RU')} ₽
+• Со скидкой 15%: ${params.calculatedPrice.toLocaleString('ru-RU')} ₽
+• Экономия: ${savings.toLocaleString('ru-RU')} ₽
+
+📅 ${dateStr}
+⏰ ${timeStr}
+        `.trim();
+      } else {
+        message = `
 👤 КОНТАКТЫ:
 • Имя: ${formData.name}
 • Телефон: ${formData.phone}
@@ -60,7 +140,8 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
 • Длина кухни: ${params.length} м
 
 💰 РАСЧЕТНАЯ СТОИМОСТЬ: ${params.calculatedPrice.toLocaleString('ru-RU')} ₽
-      `.trim();
+        `.trim();
+      }
 
       // Создаём FormData для отправки
       const formDataToSend = new FormData();
@@ -116,6 +197,18 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
           <h3 className="font-display text-2xl font-bold text-yellow-400 mb-2">
             Получить точный расчёт
           </h3>
+          
+          {/* Баннер скидки если активна */}
+          {hasDiscount && (
+            <div className="mt-3 bg-gradient-to-r from-green-500/20 to-emerald-600/20 border border-green-500/50 rounded-lg p-3 mb-3">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-xl">🎁</span>
+                <p className="text-green-400 font-bold text-sm">Скидка 15% активна!</p>
+              </div>
+              <p className="text-green-300 text-xs">Действует до: {discountEndDate}</p>
+            </div>
+          )}
+          
           <p className="text-neutral-400 text-sm">
             Заполните контактные данные и мы свяжемся с вами в течение 15 минут
           </p>
@@ -145,11 +238,33 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
               <span className="text-neutral-400">Длина:</span>
               <span className="text-yellow-400 font-medium">{params.length} м</span>
             </div>
-            <div className="border-t border-white/10 pt-3 mt-3 flex justify-between items-center">
-              <span className="text-neutral-300 font-semibold">Примерная стоимость:</span>
-              <span className="text-yellow-400 font-bold text-lg">
-                {params.calculatedPrice.toLocaleString('ru-RU')} ₽
-              </span>
+            <div className="border-t border-white/10 pt-3 mt-3 space-y-2">
+              {/* Если скидка активна - показываем обе цены */}
+              {hasDiscount ? (
+                <>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-neutral-400">Расчетная стоимость:</span>
+                    <span className="text-neutral-400 line-through">{Math.round(params.calculatedPrice / 0.85).toLocaleString('ru-RU')} ₽</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-green-400 font-semibold">🎉 Со скидкой 15%:</span>
+                    <span className="text-green-400 font-bold text-lg">
+                      {params.calculatedPrice.toLocaleString('ru-RU')} ₽
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-green-300">Ваша экономия:</span>
+                    <span className="text-green-300 font-semibold">{Math.round(params.calculatedPrice / 0.85 * 0.15).toLocaleString('ru-RU')} ₽</span>
+                  </div>
+                </>
+              ) : (
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-300 font-semibold">Примерная стоимость:</span>
+                  <span className="text-yellow-400 font-bold text-lg">
+                    {params.calculatedPrice.toLocaleString('ru-RU')} ₽
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>
