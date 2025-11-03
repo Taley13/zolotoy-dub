@@ -68,6 +68,7 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
         formDataToSend.append('email', formData.email);
       }
       formDataToSend.append('message', message);
+      formDataToSend.append('source', 'calculator'); // Указываем источник
 
       const result = await submitContactForm(formDataToSend);
 

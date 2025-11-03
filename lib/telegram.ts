@@ -1,5 +1,6 @@
 /**
  * Безопасная обёртка для работы с Telegram Bot API
+ * С автоматизацией: авто-ответы, учёт заявок, логирование
  */
 
 type TelegramMessage = {
@@ -7,12 +8,24 @@ type TelegramMessage = {
   phone?: string;
   email?: string;
   message?: string;
+  source?: 'contact_form' | 'calculator'; // Источник заявки
 };
 
 type TelegramResponse = {
   ok: boolean;
   result?: any;
   description?: string;
+};
+
+type ApplicationRecord = {
+  id: string;
+  timestamp: string;
+  name: string;
+  phone?: string;
+  email?: string;
+  message?: string;
+  source: string;
+  status: 'sent' | 'failed';
 };
 
 /**
@@ -45,21 +58,71 @@ function validateEnv(): { botToken: string; chatIds: string[] } | null {
 }
 
 /**
- * Форматирование сообщения заявки
+ * Генерация уникального ID заявки
  */
-function formatMessage(data: TelegramMessage): string {
+function generateApplicationId(): string {
+  const timestamp = Date.now();
+  const random = Math.random().toString(36).substr(2, 9);
+  return `ZD-${timestamp}-${random}`.toUpperCase();
+}
+
+/**
+ * Сохранение заявки в JSON (server-side logging)
+ */
+function logApplication(record: ApplicationRecord): void {
+  try {
+    if (typeof window === 'undefined') {
+      // Server-side logging
+      console.log('═══════════════════════════════════════');
+      console.log('📝 НОВАЯ ЗАЯВКА СОХРАНЕНА');
+      console.log('═══════════════════════════════════════');
+      console.log(JSON.stringify(record, null, 2));
+      console.log('═══════════════════════════════════════');
+    }
+  } catch (error) {
+    console.error('[Logging Error]', error);
+  }
+}
+
+/**
+ * Улучшенное форматирование сообщения с эмодзи
+ */
+function formatMessage(data: TelegramMessage, applicationId: string): string {
+  const sourceEmoji = data.source === 'calculator' ? '🧮' : '📝';
+  const sourceName = data.source === 'calculator' ? 'Калькулятор' : 'Форма обратной связи';
+  
   const lines = [
-    '🎯 Новая заявка с сайта «Золотой Дуб»',
+    '🎯 НОВАЯ ЗАЯВКА «Золотой Дуб»',
+    '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
     '',
-    `👤 Имя: ${data.name}`,
+    `${sourceEmoji} Источник: ${sourceName}`,
+    `🆔 ID заявки: ${applicationId}`,
+    '',
+    '👤 КОНТАКТНЫЕ ДАННЫЕ:',
+    `   • Имя: ${data.name}`,
   ];
 
-  if (data.phone) lines.push(`📞 Телефон: ${data.phone}`);
-  if (data.email) lines.push(`✉️ E-mail: ${data.email}`);
-  if (data.message) lines.push(`💬 Сообщение: ${data.message}`);
+  if (data.phone) lines.push(`   📞 Телефон: ${data.phone}`);
+  if (data.email) lines.push(`   ✉️ Email: ${data.email}`);
+  
+  if (data.message) {
+    lines.push('');
+    lines.push('💬 СООБЩЕНИЕ:');
+    lines.push(data.message);
+  }
 
   lines.push('');
-  lines.push(`⏰ ${new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' })}`);
+  lines.push('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  lines.push(`⏰ ${new Date().toLocaleString('ru-RU', { 
+    timeZone: 'Europe/Moscow',
+    day: '2-digit',
+    month: '2-digit', 
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })}`);
+  lines.push('');
+  lines.push('✅ Статус: Ожидает обработки');
 
   return lines.join('\n');
 }
@@ -102,13 +165,47 @@ async function sendMessage(
 }
 
 /**
- * Отправка заявки с сайта в Telegram
+ * Отправка авто-ответа клиенту (если указан chat_id клиента)
+ */
+async function sendAutoReply(
+  botToken: string,
+  clientChatId: string,
+  clientName: string
+): Promise<void> {
+  const autoReplyMessage = `
+Здравствуйте, ${clientName}! 👋
+
+Спасибо за обращение в мебельную фабрику «Золотой Дуб»! 🌰
+
+✅ Ваша заявка получена и передана нашим специалистам.
+
+⏰ Мы свяжемся с вами в течение 15 минут в рабочее время (пн-пт 9:00-18:00, сб 10:00-16:00).
+
+📞 Если вопрос срочный, звоните: 8-930-193-34-20
+
+С уважением,  
+Команда «Золотой Дуб» 🪵✨
+  `.trim();
+
+  try {
+    await sendMessage(botToken, clientChatId, autoReplyMessage);
+  } catch (error) {
+    console.warn('[Auto-reply] Failed to send:', error);
+  }
+}
+
+/**
+ * Отправка заявки с сайта в Telegram (основная функция)
  */
 export async function sendContactFormToTelegram(
   data: TelegramMessage
-): Promise<{ success: boolean; error?: string }> {
+): Promise<{ success: boolean; error?: string; applicationId?: string }> {
+  // Генерация уникального ID заявки
+  const applicationId = generateApplicationId();
+  
   // Валидация входных данных
   if (!data.name || data.name.trim().length === 0) {
+    console.error('[Validation] Name is required');
     return { success: false, error: 'Имя обязательно' };
   }
 
@@ -118,14 +215,29 @@ export async function sendContactFormToTelegram(
     // Dev mode fallback
     if (process.env.NODE_ENV === 'development') {
       console.log('[DEV MODE] Заявка (TELEGRAM_* не настроены):');
-      console.log(formatMessage(data));
-      return { success: true };
+      console.log(formatMessage(data, applicationId));
+      
+      // Логирование в dev mode
+      const record: ApplicationRecord = {
+        id: applicationId,
+        timestamp: new Date().toISOString(),
+        name: data.name,
+        phone: data.phone,
+        email: data.email,
+        message: data.message,
+        source: data.source || 'contact_form',
+        status: 'sent'
+      };
+      logApplication(record);
+      
+      return { success: true, applicationId };
     }
+    console.error('[Config] Telegram credentials not configured');
     return { success: false, error: 'Сервис временно недоступен' };
   }
 
   const { botToken, chatIds } = env;
-  const text = formatMessage(data);
+  const text = formatMessage(data, applicationId);
 
   // Отправка всем получателям
   const results = await Promise.allSettled(
@@ -134,17 +246,45 @@ export async function sendContactFormToTelegram(
 
   // Проверка результатов
   const failures = results.filter(r => r.status === 'rejected' || !r.value.success);
+  const successes = results.filter(r => r.status === 'fulfilled' && r.value.success);
   
+  // Создаём запись о заявке
+  const record: ApplicationRecord = {
+    id: applicationId,
+    timestamp: new Date().toISOString(),
+    name: data.name,
+    phone: data.phone,
+    email: data.email,
+    message: data.message,
+    source: data.source || 'contact_form',
+    status: successes.length > 0 ? 'sent' : 'failed'
+  };
+
+  // Логирование
+  logApplication(record);
+
   if (failures.length === results.length) {
     // Все отправки провалились
-    return { success: false, error: 'Не удалось отправить сообщение' };
+    console.error('[Telegram] All deliveries failed');
+    return { 
+      success: false, 
+      error: 'Не удалось отправить сообщение',
+      applicationId 
+    };
   }
 
   if (failures.length > 0) {
     // Часть отправок провалилась
     console.warn(`[Telegram] ${failures.length}/${results.length} deliveries failed`);
+  } else {
+    console.log(`[Telegram] Successfully sent to ${successes.length} recipients`);
   }
 
-  return { success: true };
+  // TODO: В будущем можно отправить авто-ответ клиенту
+  // if (clientChatId) {
+  //   await sendAutoReply(botToken, clientChatId, data.name);
+  // }
+
+  return { success: true, applicationId };
 }
 

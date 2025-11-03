@@ -7,6 +7,7 @@ export async function submitContactForm(formData: FormData) {
   const phone = (formData.get('phone') as string || '').trim();
   const email = (formData.get('email') as string || '').trim();
   const message = (formData.get('message') as string || '').trim();
+  const source = (formData.get('source') as 'contact_form' | 'calculator') || 'contact_form';
 
   if (!name) {
     return { success: false, error: 'Укажите имя' } as const;
@@ -16,7 +17,8 @@ export async function submitContactForm(formData: FormData) {
     name,
     phone: phone || undefined,
     email: email || undefined,
-    message: message || undefined
+    message: message || undefined,
+    source
   });
 
   if (result.success) {
