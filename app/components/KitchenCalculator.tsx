@@ -2,158 +2,243 @@
 
 import { useState } from 'react';
 
-type Material = 'dsp' | 'mdf' | 'massiv';
-type Facade = 'plastic' | 'painted' | 'enamel';
-type Hardware = 'standard' | 'premium';
-
-const prices = {
-  material: { dsp: 15000, mdf: 25000, massiv: 45000 },
-  facade: { plastic: 8000, painted: 15000, enamel: 25000 },
-  hardware: { standard: 5000, premium: 15000 }
-};
+type FacadeType = 'ДСП' | 'МДФ' | 'Эмаль';
+type FittingsType = 'Стандарт' | 'Премиум';
+type CountertopType = 'HPL' | 'Искусственный камень' | 'Кварцевый агломерат';
 
 export default function KitchenCalculator() {
+  // 1. ФАСАДЫ (первый параметр)
+  const [facade, setFacade] = useState<FacadeType>('МДФ');
+  
+  // 2. ФУРНИТУРА (второй параметр)
+  const [fittings, setFittings] = useState<FittingsType>('Стандарт');
+  
+  // 3. СТОЛЕШНИЦА (третий параметр)
+  const [countertop, setCountertop] = useState<CountertopType>('HPL');
+  
+  // 4. РАЗМЕРЫ (четвертый параметр)
   const [length, setLength] = useState(3);
-  const [material, setMaterial] = useState<Material>('mdf');
-  const [facade, setFacade] = useState<Facade>('painted');
-  const [hardware, setHardware] = useState<Hardware>('standard');
 
-  const basePrice = prices.material[material] + prices.facade[facade] + prices.hardware[hardware];
-  const totalPrice = basePrice * length;
+  // Логика расчета стоимости
+  const calculatePrice = (): number => {
+    let basePrice = 0;
+
+    // 1. Цена за фасады (за погонный метр)
+    const facadePrices = {
+      'ДСП': 25000,
+      'МДФ': 35000,
+      'Эмаль': 55000
+    };
+    basePrice += facadePrices[facade] * length;
+
+    // 2. Надбавка за фурнитуру
+    const fittingsPrices = {
+      'Стандарт': 0,
+      'Премиум': 15000 * length
+    };
+    basePrice += fittingsPrices[fittings];
+
+    // 3. Цена за столешницу (за погонный метр)
+    const countertopPrices = {
+      'HPL': 3000,
+      'Искусственный камень': 8000,
+      'Кварцевый агломерат': 12000
+    };
+    basePrice += countertopPrices[countertop] * length;
+
+    return Math.round(basePrice);
+  };
+
+  const price = calculatePrice();
+
+  const handleGetQuote = () => {
+    const params = new URLSearchParams({
+      facade,
+      fittings,
+      countertop,
+      length: length.toString(),
+      estimatedPrice: price.toString()
+    });
+    window.location.href = `/contacts?${params.toString()}`;
+  };
 
   return (
-    <div className="glass-neon p-8">
-      <h3 className="font-display text-2xl font-bold text-center">
-        <span className="bg-gradient-to-r from-yellow-400 to-amber-600 bg-clip-text text-transparent">
-          Калькулятор стоимости кухни
+    <div className="glass-neon p-8 md:p-12">
+      <h2 className="text-center font-display text-4xl font-bold mb-3">
+        <span className="bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent">
+          Калькулятор стоимости
         </span>
-      </h3>
-      <p className="mt-2 text-center text-neutral-400 text-sm">Примерный расчёт. Точная цена — после замера</p>
+      </h2>
+      <p className="text-center text-neutral-400 mb-10">
+        Рассчитайте примерную стоимость вашей кухни
+      </p>
 
-      <div className="mt-8 space-y-6">
-        {/* Длина кухни */}
-        <div>
-          <label className="block text-sm font-medium text-neutral-200 mb-2">
-            Длина кухни: <span className="text-yellow-400 font-bold">{length} м</span>
-          </label>
-          <input
-            type="range"
-            min="1"
-            max="10"
-            step="0.5"
-            value={length}
-            onChange={(e) => setLength(parseFloat(e.target.value))}
-            className="w-full h-2 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-yellow-500"
-          />
-          <div className="flex justify-between text-xs text-neutral-500 mt-1">
-            <span>1м</span>
-            <span>10м</span>
-          </div>
-        </div>
-
-        {/* Материал */}
-        <div>
-          <label className="block text-sm font-medium text-neutral-200 mb-3">Материал корпуса</label>
-          <div className="grid grid-cols-3 gap-3">
-            {[
-              { id: 'dsp' as Material, label: 'ДСП', desc: 'ЛДСП 16мм' },
-              { id: 'mdf' as Material, label: 'МДФ', desc: 'МДФ 18мм' },
-              { id: 'massiv' as Material, label: 'Массив', desc: 'Дуб/Ясень' },
-            ].map(m => (
+      <div className="max-w-4xl mx-auto space-y-8">
+        {/* 1. ФАСАДЫ (первый блок) */}
+        <div className="space-y-4">
+          <h3 className="font-display text-xl font-semibold text-yellow-400 flex items-center gap-2">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20 text-sm">1</span>
+            Фасады
+          </h3>
+          <div className="grid grid-cols-3 gap-4">
+            {(['ДСП', 'МДФ', 'Эмаль'] as FacadeType[]).map((type) => (
               <button
-                key={m.id}
-                onClick={() => setMaterial(m.id)}
-                className={`p-3 rounded-lg text-sm transition-all ${
-                  material === m.id
-                    ? 'bg-yellow-500/20 border-2 border-yellow-500 text-yellow-400'
-                    : 'glass-panel text-neutral-300 hover:border-yellow-500/50'
-                }`}
+                key={type}
+                onClick={() => setFacade(type)}
+                className={`
+                  p-4 rounded-xl border-2 transition-all duration-300 font-medium
+                  ${facade === type
+                    ? 'border-yellow-500 bg-yellow-500/20 text-yellow-400 shadow-lg shadow-yellow-500/20'
+                    : 'border-white/10 bg-white/5 text-neutral-300 hover:border-yellow-500/50 hover:bg-white/10'
+                  }
+                `}
               >
-                <div className="font-semibold">{m.label}</div>
-                <div className="text-xs text-neutral-500 mt-1">{m.desc}</div>
+                {type}
               </button>
             ))}
           </div>
+          <p className="text-sm text-neutral-500 pl-10">
+            {facade === 'ДСП' && 'Бюджетный вариант, практичное решение'}
+            {facade === 'МДФ' && 'Оптимальное соотношение цены и качества'}
+            {facade === 'Эмаль' && 'Премиум класс, глянцевая поверхность'}
+          </p>
         </div>
 
-        {/* Тип фасадов */}
-        <div>
-          <label className="block text-sm font-medium text-neutral-200 mb-3">Тип фасадов</label>
-          <div className="grid grid-cols-3 gap-3">
-            {[
-              { id: 'plastic' as Facade, label: 'Пластик', desc: 'ДСП+пластик' },
-              { id: 'painted' as Facade, label: 'Крашенный', desc: 'МДФ крашен.' },
-              { id: 'enamel' as Facade, label: 'Эмаль', desc: 'МДФ эмаль' },
-            ].map(f => (
+        {/* 2. ФУРНИТУРА (второй блок) */}
+        <div className="space-y-4">
+          <h3 className="font-display text-xl font-semibold text-yellow-400 flex items-center gap-2">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20 text-sm">2</span>
+            Фурнитура
+          </h3>
+          <div className="grid grid-cols-2 gap-4">
+            {(['Стандарт', 'Премиум'] as FittingsType[]).map((type) => (
               <button
-                key={f.id}
-                onClick={() => setFacade(f.id)}
-                className={`p-3 rounded-lg text-sm transition-all ${
-                  facade === f.id
-                    ? 'bg-yellow-500/20 border-2 border-yellow-500 text-yellow-400'
-                    : 'glass-panel text-neutral-300 hover:border-yellow-500/50'
-                }`}
+                key={type}
+                onClick={() => setFittings(type)}
+                className={`
+                  p-4 rounded-xl border-2 transition-all duration-300 font-medium
+                  ${fittings === type
+                    ? 'border-yellow-500 bg-yellow-500/20 text-yellow-400 shadow-lg shadow-yellow-500/20'
+                    : 'border-white/10 bg-white/5 text-neutral-300 hover:border-yellow-500/50 hover:bg-white/10'
+                  }
+                `}
               >
-                <div className="font-semibold">{f.label}</div>
-                <div className="text-xs text-neutral-500 mt-1">{f.desc}</div>
+                {type}
               </button>
             ))}
           </div>
+          <p className="text-sm text-neutral-500 pl-10">
+            {fittings === 'Стандарт' && 'Надежная фурнитура для повседневного использования'}
+            {fittings === 'Премиум' && 'Фурнитура Blum - плавное закрывание, долговечность'}
+          </p>
         </div>
 
-        {/* Фурнитура */}
-        <div>
-          <label className="block text-sm font-medium text-neutral-200 mb-3">Фурнитура</label>
-          <div className="grid grid-cols-2 gap-3">
-            {[
-              { id: 'standard' as Hardware, label: 'Стандарт', desc: 'Базовая фурн.' },
-              { id: 'premium' as Hardware, label: 'Премиум', desc: 'Blum, Hettich' },
-            ].map(h => (
+        {/* 3. СТОЛЕШНИЦА (третий блок) */}
+        <div className="space-y-4">
+          <h3 className="font-display text-xl font-semibold text-yellow-400 flex items-center gap-2">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20 text-sm">3</span>
+            Столешница
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {(['HPL', 'Искусственный камень', 'Кварцевый агломерат'] as CountertopType[]).map((type) => (
               <button
-                key={h.id}
-                onClick={() => setHardware(h.id)}
-                className={`p-3 rounded-lg text-sm transition-all ${
-                  hardware === h.id
-                    ? 'bg-yellow-500/20 border-2 border-yellow-500 text-yellow-400'
-                    : 'glass-panel text-neutral-300 hover:border-yellow-500/50'
-                }`}
+                key={type}
+                onClick={() => setCountertop(type)}
+                className={`
+                  p-4 rounded-xl border-2 transition-all duration-300 font-medium
+                  ${countertop === type
+                    ? 'border-yellow-500 bg-yellow-500/20 text-yellow-400 shadow-lg shadow-yellow-500/20'
+                    : 'border-white/10 bg-white/5 text-neutral-300 hover:border-yellow-500/50 hover:bg-white/10'
+                  }
+                `}
               >
-                <div className="font-semibold">{h.label}</div>
-                <div className="text-xs text-neutral-500 mt-1">{h.desc}</div>
+                {type}
               </button>
             ))}
           </div>
+          <p className="text-sm text-neutral-500 pl-10">
+            {countertop === 'HPL' && 'Практичный ламинат, устойчивый к влаге'}
+            {countertop === 'Искусственный камень' && 'Акриловый камень, бесшовная поверхность'}
+            {countertop === 'Кварцевый агломерат' && 'Премиум материал, максимальная прочность'}
+          </p>
         </div>
 
-        {/* Результат */}
-        <div className="glass-panel p-6 border-yellow-500/30">
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="text-sm text-neutral-400">Примерная стоимость</div>
-              <div className="mt-1 font-display text-3xl font-bold text-yellow-400">
-                {totalPrice.toLocaleString('ru-RU')} ₽
-              </div>
+        {/* 4. РАЗМЕРЫ (четвертый блок) */}
+        <div className="space-y-4">
+          <h3 className="font-display text-xl font-semibold text-yellow-400 flex items-center gap-2">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20 text-sm">4</span>
+            Размеры
+          </h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-neutral-300">Длина кухни:</span>
+              <span className="text-2xl font-bold text-yellow-400">{length} м</span>
             </div>
-            <div className="text-right text-xs text-neutral-500">
-              <div>за {length}м</div>
-              <div className="mt-1">≈ {Math.round(totalPrice / length).toLocaleString()} ₽/м</div>
+            <input
+              type="range"
+              min="1"
+              max="10"
+              step="0.5"
+              value={length}
+              onChange={(e) => setLength(parseFloat(e.target.value))}
+              className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer slider-thumb"
+              style={{
+                background: `linear-gradient(to right, rgb(234 179 8) 0%, rgb(234 179 8) ${((length - 1) / 9) * 100}%, rgba(255,255,255,0.1) ${((length - 1) / 9) * 100}%, rgba(255,255,255,0.1) 100%)`
+              }}
+            />
+            <div className="flex justify-between text-xs text-neutral-500">
+              <span>1 м</span>
+              <span>5 м</span>
+              <span>10 м</span>
             </div>
           </div>
         </div>
 
-        {/* CTA */}
-        <a
-          href={`/contacts?calc=length:${length},material:${material},facade:${facade},hardware:${hardware}`}
-          className="block w-full btn-neon px-6 py-4 text-center text-lg"
-        >
-          Получить точный расчёт
-        </a>
-        <p className="text-center text-xs text-neutral-500">
-          Оставьте заявку — дизайнер приедет на бесплатный замер и рассчитает точную стоимость
-        </p>
+        {/* Разделитель */}
+        <div className="border-t border-white/10 my-8"></div>
+
+        {/* Итоговая стоимость и кнопка */}
+        <div className="space-y-6">
+          <div className="text-center">
+            <p className="text-neutral-400 text-sm mb-2">Примерная стоимость</p>
+            <div className="text-5xl font-bold text-yellow-400 mb-1">
+              {price.toLocaleString('ru-RU')} ₽
+            </div>
+            <p className="text-neutral-500 text-sm">
+              Финальная цена может отличаться после замера
+            </p>
+          </div>
+
+          <button
+            onClick={handleGetQuote}
+            className="w-full group relative overflow-hidden rounded-xl bg-gradient-to-r from-yellow-500 to-amber-600 px-8 py-5 text-xl font-semibold text-black shadow-2xl transition-all duration-300 hover:from-yellow-400 hover:to-amber-500 hover:shadow-yellow-500/50 hover:scale-[1.02] active:scale-95"
+          >
+            <span className="relative z-10">Получить точный расчёт</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+          </button>
+        </div>
       </div>
+
+      <style jsx>{`
+        .slider-thumb::-webkit-slider-thumb {
+          appearance: none;
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background: rgb(234 179 8);
+          cursor: pointer;
+          box-shadow: 0 0 10px rgba(234, 179, 8, 0.5);
+        }
+        .slider-thumb::-moz-range-thumb {
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background: rgb(234 179 8);
+          cursor: pointer;
+          border: none;
+          box-shadow: 0 0 10px rgba(234, 179, 8, 0.5);
+        }
+      `}</style>
     </div>
   );
 }
-
-

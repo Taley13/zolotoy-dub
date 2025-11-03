@@ -20,6 +20,14 @@ module.exports = {
           800: '#7E5C28',
           900: '#654520'
         }
+      },
+      fontFamily: {
+        brand: ['var(--font-brand)', 'Georgia', 'serif'], // Cormorant для "Золотой Дуб"
+        script: ['var(--font-script)', 'cursive'], // Dancing Script для акцентов
+        body: ['var(--font-body)', 'Georgia', 'serif'], // Lora для основного текста
+        display: ['var(--font-brand)', 'Georgia', 'serif'], // Cormorant для заголовков
+        sans: ['var(--font-body)', 'system-ui', 'sans-serif'],
+        serif: ['var(--font-body)', 'Georgia', 'serif']
       }
     }
   },

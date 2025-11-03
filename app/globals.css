@@ -2,11 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800&display=swap');
-
 :root {
-  --font-modern: 'Inter', system-ui, sans-serif;
-  --font-display: 'Space Grotesk', sans-serif;
+  /* Шрифты управляются через Next.js font optimization */
   --neon-gold: #FFD700;
   --neon-cyan: #00FFFF;
 }
@@ -159,6 +156,5 @@ html, body {
 /* Старые классы для совместимости */
 .panel { @apply glass-panel; }
 .btn-gold { @apply btn-neon; }
-.font-elegant { font-family: 'Space Grotesk', sans-serif; }
-.font-brand { font-family: 'Space Grotesk', sans-serif; }
+.font-elegant { @apply font-display; }
 .bg-velvet { @apply bg-ultra; }
