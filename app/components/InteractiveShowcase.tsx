@@ -68,6 +68,25 @@ export default function InteractiveShowcase() {
   const [isClient, setIsClient] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [visibleCards, setVisibleCards] = useState<Set<string>>(new Set());
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  // Обработка клавиатуры для lightbox
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (lightboxIndex === null) return;
+      
+      if (e.key === 'Escape') {
+        setLightboxIndex(null);
+      } else if (e.key === 'ArrowLeft') {
+        setLightboxIndex((prev) => (prev! > 0 ? prev! - 1 : showcaseItems.length - 1));
+      } else if (e.key === 'ArrowRight') {
+        setLightboxIndex((prev) => (prev! < showcaseItems.length - 1 ? prev! + 1 : 0));
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxIndex]);
 
   useEffect(() => {
     setIsClient(true);
@@ -133,7 +152,10 @@ export default function InteractiveShowcase() {
             }}
           >
             {/* Изображение */}
-            <div className="relative h-64 overflow-hidden bg-neutral-900">
+            <div 
+              className="relative h-64 overflow-hidden bg-neutral-900 cursor-pointer"
+              onClick={() => setLightboxIndex(index)}
+            >
               <Image
                 src={`/images/${item.image}`}
                 alt={item.title}
@@ -236,6 +258,98 @@ export default function InteractiveShowcase() {
           </div>
         </div>
       ))}
+
+      {/* Lightbox модальное окно */}
+      {lightboxIndex !== null && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md animate-fadeIn"
+          onClick={() => setLightboxIndex(null)}
+        >
+          <div 
+            className="relative w-full h-full max-w-7xl max-h-screen p-4 md:p-8 flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Кнопка закрытия */}
+            <button
+              onClick={() => setLightboxIndex(null)}
+              className="absolute top-4 right-4 z-10 p-3 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-white hover:bg-white/20 transition-all duration-300"
+              aria-label="Закрыть"
+            >
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Навигация влево */}
+            {showcaseItems.length > 1 && (
+              <button
+                onClick={() => setLightboxIndex((prev) => (prev! > 0 ? prev! - 1 : showcaseItems.length - 1))}
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-4 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-white hover:bg-white/20 transition-all duration-300"
+                aria-label="Предыдущее изображение"
+              >
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+            )}
+
+            {/* Навигация вправо */}
+            {showcaseItems.length > 1 && (
+              <button
+                onClick={() => setLightboxIndex((prev) => (prev! < showcaseItems.length - 1 ? prev! + 1 : 0))}
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-4 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-white hover:bg-white/20 transition-all duration-300"
+                aria-label="Следующее изображение"
+              >
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            )}
+
+            {/* Контент */}
+            <div className="flex-1 flex flex-col items-center justify-center gap-6">
+              {/* Изображение */}
+              <div className="relative w-full max-h-[70vh] rounded-2xl overflow-hidden shadow-2xl">
+                <Image
+                  src={`/images/${showcaseItems[lightboxIndex].image}`}
+                  alt={showcaseItems[lightboxIndex].title}
+                  width={1600}
+                  height={1200}
+                  className="w-full h-full object-contain"
+                  priority
+                />
+              </div>
+
+              {/* Информация - Glass morphism */}
+              <div className="w-full max-w-2xl bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 shadow-2xl">
+                <div className="flex items-start justify-between gap-4 mb-4">
+                  <div>
+                    <h3 className="text-2xl font-bold text-yellow-400 mb-2">
+                      {showcaseItems[lightboxIndex].title}
+                    </h3>
+                    <span className="inline-block px-3 py-1 text-sm rounded-full bg-yellow-500/20 border border-yellow-500/30 text-yellow-300">
+                      {showcaseItems[lightboxIndex].category}
+                    </span>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-2xl font-bold text-yellow-400">
+                      {showcaseItems[lightboxIndex].price}
+                    </div>
+                  </div>
+                </div>
+                <p className="text-neutral-300 leading-relaxed">
+                  {showcaseItems[lightboxIndex].description}
+                </p>
+              </div>
+
+              {/* Индикатор позиции */}
+              <div className="text-neutral-400 text-sm">
+                {lightboxIndex + 1} / {showcaseItems.length}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
