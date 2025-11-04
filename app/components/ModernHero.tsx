@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 
 export default function ModernHero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -136,14 +137,21 @@ export default function ModernHero() {
                           animate-glow-pulse-inner"></div>
             
             {/* Сам желудь с фильтрами - адаптивный размер */}
-            <div className="relative text-6xl sm:text-7xl md:text-8xl lg:text-9xl drop-shadow-2xl 
+            <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 drop-shadow-2xl 
                           transform group-hover/acorn:scale-110 transition-all duration-300 
                           filter brightness-110 contrast-110
                           group-hover/acorn:brightness-125 group-hover/acorn:contrast-125"
                  style={{
-                   filter: 'drop-shadow(0 0 15px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 30px rgba(255, 193, 37, 0.4))',
+                   filter: 'drop-shadow(0 0 15px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 30px rgba(255, 193, 37, 0.4)) drop-shadow(0 0 45px rgba(255, 140, 0, 0.3))',
                  }}>
-              🌰
+              <Image 
+                src="/images/acorn.png"
+                alt="Золотой желудь - символ скидки 15%"
+                fill
+                className="object-contain"
+                priority
+                quality={100}
+              />
             </div>
             
             {/* Tooltip с информацией о скидке - адаптивный */}
