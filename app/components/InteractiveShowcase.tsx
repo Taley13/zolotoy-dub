@@ -2,6 +2,12 @@
 
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import { 
+  calculateKitchenPrice, 
+  formatPrice, 
+  KITCHEN_PRESETS,
+  type KitchenParams 
+} from '@/lib/priceCalculator';
 
 type ShowcaseItem = {
   id: string;
@@ -9,57 +15,178 @@ type ShowcaseItem = {
   category: string;
   image: string;
   description: string;
-  price?: string;
+  kitchenParams?: KitchenParams; // Параметры для расчёта цены
+  customPrice?: string; // Для нестандартных позиций (шкафы, гардеробные)
 };
 
 const showcaseItems: ShowcaseItem[] = [
   {
     id: '1',
-    title: 'Кухня премиум',
-    category: 'МДФ Эмаль',
+    title: 'Кухня премиум угловая',
+    category: 'Эмаль + Камень',
     image: '1759474759.png',
-    description: 'Современный дизайн с глянцевыми фасадами',
-    price: 'от 250 000 ₽'
+    description: 'Глянцевые фасады из эмали, встроенная техника, искусственный камень',
+    kitchenParams: {
+      configuration: 'Угловая',
+      facade: 'Эмаль',
+      hardware: 'Премиум Blum',
+      countertop: 'Искусственный камень',
+      length: 6
+    }
   },
   {
     id: '2',
-    title: 'Кухня классика',
-    category: 'МДФ',
+    title: 'Кухня классика МДФ',
+    category: 'МДФ + HPL',
     image: '1759474837.png',
-    description: 'Классический стиль с фрезеровкой',
-    price: 'от 180 000 ₽'
+    description: 'Классический стиль с фрезеровкой, тёплые оттенки, HPL столешница',
+    kitchenParams: {
+      configuration: 'Угловая',
+      facade: 'МДФ',
+      hardware: 'Стандарт',
+      countertop: 'HPL',
+      length: 4.5
+    }
   },
   {
     id: '3',
-    title: 'Кухня модерн',
-    category: 'ДСП',
+    title: 'Кухня эконом прямая',
+    category: 'ДСП + HPL',
     image: '1759474944.png',
-    description: 'Минималистичный дизайн для небольших пространств',
-    price: 'от 95 000 ₽'
+    description: 'Минималистичный дизайн, надёжная стандартная фурнитура',
+    kitchenParams: {
+      configuration: 'Прямая',
+      facade: 'ДСП',
+      hardware: 'Стандарт',
+      countertop: 'HPL',
+      length: 3
+    }
   },
   {
     id: '4',
-    title: 'Шкаф-купе',
-    category: 'Встроенный',
+    title: 'Кухня студия премиум',
+    category: 'МДФ + Камень',
     image: 'Create_a_hyper-realistic,.png',
-    description: 'Индивидуальная система хранения',
-    price: 'от 45 000 ₽'
+    description: 'МДФ с интегрированными ручками, искусственный камень, премиум фурнитура',
+    kitchenParams: {
+      configuration: 'Прямая',
+      facade: 'МДФ',
+      hardware: 'Премиум Blum',
+      countertop: 'Искусственный камень',
+      length: 5
+    }
   },
   {
     id: '5',
-    title: 'Гардеробная',
-    category: 'Комплект',
+    title: 'Кухня угловая большая',
+    category: 'МДФ + Кварц',
     image: 'Create_hyper-realistic,_u (2).png',
-    description: 'Полноценная гардеробная система',
-    price: 'от 75 000 ₽'
+    description: 'Просторная угловая кухня с кварцевой столешницей и премиум фурнитурой',
+    kitchenParams: {
+      configuration: 'Угловая',
+      facade: 'МДФ',
+      hardware: 'Премиум Blum',
+      countertop: 'Кварцевый агломерат',
+      length: 7
+    }
   },
   {
     id: '6',
-    title: 'Кухня островная',
-    category: 'МДФ+Камень',
+    title: 'Кухня островная люкс',
+    category: 'Эмаль + Кварц',
     image: 'Create_hyper-realistic,_u (3).png',
-    description: 'Островная планировка с каменной столешницей',
-    price: 'от 320 000 ₽'
+    description: 'Островная планировка, эмаль, кварцевый агломерат, полная интеграция техники',
+    kitchenParams: {
+      configuration: 'Индивидуальная',
+      facade: 'Эмаль',
+      hardware: 'Премиум Blum',
+      countertop: 'Кварцевый агломерат',
+      length: 8
+    }
+  },
+  {
+    id: '7',
+    title: 'Кухня неоклассика',
+    category: 'Эмаль + Камень',
+    image: 'Create_hyper-realistic,_u (4).png',
+    description: 'Элегантная кухня с эмалевыми фасадами и искусственным камнем',
+    kitchenParams: {
+      configuration: 'Прямая',
+      facade: 'Эмаль',
+      hardware: 'Премиум Blum',
+      countertop: 'Искусственный камень',
+      length: 4
+    }
+  },
+  {
+    id: '8',
+    title: 'Кухня минимализм',
+    category: 'ДСП + Камень',
+    image: 'Create_hyper-realistic,_u (5).png',
+    description: 'Современный минимализм, ДСП с push-to-open, искусственный камень',
+    kitchenParams: {
+      configuration: 'Угловая',
+      facade: 'ДСП',
+      hardware: 'Премиум Blum',
+      countertop: 'Искусственный камень',
+      length: 5.5
+    }
+  },
+  {
+    id: '9',
+    title: 'Кухня индивидуальная',
+    category: 'МДФ + Кварц',
+    image: 'Create_hyper-realistic,_u (6).png',
+    description: 'Индивидуальный проект с нестандартной планировкой и барной стойкой',
+    kitchenParams: {
+      configuration: 'Индивидуальная',
+      facade: 'МДФ',
+      hardware: 'Премиум Blum',
+      countertop: 'Кварцевый агломерат',
+      length: 6.5
+    }
+  },
+  {
+    id: '10',
+    title: 'Кухня скандинавия',
+    category: 'МДФ + HPL',
+    image: 'Create_hyper-realistic,_u (18).png',
+    description: 'Светлая скандинавская кухня, МДФ белый матовый, стандартная фурнитура',
+    kitchenParams: {
+      configuration: 'Прямая',
+      facade: 'МДФ',
+      hardware: 'Стандарт',
+      countertop: 'HPL',
+      length: 3.5
+    }
+  },
+  {
+    id: '11',
+    title: 'Кухня лофт индустриальная',
+    category: 'МДФ + Камень',
+    image: 'Create_hyper-realistic,_u (19).png',
+    description: 'Стиль лофт с тёмными фасадами МДФ и искусственным камнем',
+    kitchenParams: {
+      configuration: 'Угловая',
+      facade: 'МДФ',
+      hardware: 'Премиум Blum',
+      countertop: 'Искусственный камень',
+      length: 5
+    }
+  },
+  {
+    id: '12',
+    title: 'Кухня премиум большая',
+    category: 'Эмаль + Кварц',
+    image: 'Create_hyper-realistic,_u (20).png',
+    description: 'Большая премиум кухня с индивидуальной планировкой, эмаль + кварц',
+    kitchenParams: {
+      configuration: 'Индивидуальная',
+      facade: 'Эмаль',
+      hardware: 'Премиум Blum',
+      countertop: 'Кварцевый агломерат',
+      length: 9
+    }
   },
 ];
 
@@ -225,28 +352,96 @@ export default function InteractiveShowcase() {
                 {item.description}
               </p>
 
-              {/* Цена и кнопка */}
-              <div className={`
-                mt-4 flex items-center justify-between
-                transition-all duration-300
-                ${hoveredId === item.id ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-80'}
-              `}>
-                <span className="text-lg font-semibold text-yellow-400">
-                  {item.price}
-                </span>
-                <button className={`
-                  group/btn relative overflow-hidden rounded-lg px-4 py-2 text-sm font-medium
+              {/* Блок с параметрами и ценой */}
+              {item.kitchenParams ? (
+                <div className="mt-4 space-y-3">
+                  {/* Параметры кухни */}
+                  <div className="p-3 rounded-lg bg-white/5 border border-white/10">
+                    <p className="text-xs text-neutral-500 font-semibold mb-2 uppercase tracking-wider">
+                      Комплектация данной кухни:
+                    </p>
+                    <div className="space-y-1 text-xs text-neutral-300">
+                      <div className="flex justify-between">
+                        <span className="text-neutral-400">Тип:</span>
+                        <span className="font-medium">{item.kitchenParams.configuration}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-neutral-400">Фасады:</span>
+                        <span className="font-medium">{item.kitchenParams.facade}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-neutral-400">Фурнитура:</span>
+                        <span className="font-medium">{item.kitchenParams.hardware}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-neutral-400">Столешница:</span>
+                        <span className="font-medium">{item.kitchenParams.countertop}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-neutral-400">Длина:</span>
+                        <span className="font-medium">{item.kitchenParams.length} м</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Цена */}
+                  <div className={`
+                    flex items-center justify-between p-3 rounded-lg
+                    transition-all duration-300
+                    ${hoveredId === item.id 
+                      ? 'bg-yellow-500/20 border border-yellow-500/50' 
+                      : 'bg-white/5 border border-white/10'
+                    }
+                  `}>
+                    <div>
+                      <p className="text-xs text-neutral-400">Расчётная стоимость:</p>
+                      <p className={`
+                        text-2xl font-bold transition-colors duration-300
+                        ${hoveredId === item.id ? 'text-yellow-400' : 'text-yellow-500'}
+                      `}>
+                        ≈ {formatPrice(calculateKitchenPrice(item.kitchenParams))} ₽
+                      </p>
+                    </div>
+                    <button 
+                      onClick={() => setLightboxIndex(index)}
+                      className={`
+                        group/btn relative overflow-hidden rounded-lg px-4 py-2 text-sm font-medium
+                        transition-all duration-300
+                        ${hoveredId === item.id
+                          ? 'bg-yellow-500 text-black shadow-lg shadow-yellow-500/50 scale-105'
+                          : 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 hover:bg-yellow-500/20 hover:border-yellow-400 active:scale-95'
+                        }
+                      `}>
+                      <span className="relative z-10">Фото</span>
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700" />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                /* Для нестандартных позиций (шкафы, гардеробные) */
+                <div className={`
+                  mt-4 flex items-center justify-between
                   transition-all duration-300
-                  ${hoveredId === item.id
-                    ? 'bg-yellow-500 text-black shadow-lg shadow-yellow-500/50 scale-105'
-                    : 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 hover:bg-yellow-500/20 hover:border-yellow-400 active:scale-95'
-                  }
+                  ${hoveredId === item.id ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-80'}
                 `}>
-                  <span className="relative z-10">Подробнее</span>
-                  {/* Shimmer эффект */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700" />
-                </button>
-              </div>
+                  <span className="text-lg font-semibold text-yellow-400">
+                    {item.customPrice}
+                  </span>
+                  <button 
+                    onClick={() => setLightboxIndex(index)}
+                    className={`
+                      group/btn relative overflow-hidden rounded-lg px-4 py-2 text-sm font-medium
+                      transition-all duration-300
+                      ${hoveredId === item.id
+                        ? 'bg-yellow-500 text-black shadow-lg shadow-yellow-500/50 scale-105'
+                        : 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 hover:bg-yellow-500/20 hover:border-yellow-400 active:scale-95'
+                      }
+                    `}>
+                    <span className="relative z-10">Подробнее</span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700" />
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* 3D depth effect - дополнительные слои */}
@@ -331,15 +526,56 @@ export default function InteractiveShowcase() {
                       {showcaseItems[lightboxIndex].category}
                     </span>
                   </div>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-yellow-400">
-                      {showcaseItems[lightboxIndex].price}
+                  {showcaseItems[lightboxIndex].kitchenParams && (
+                    <div className="text-right">
+                      <div className="text-xs text-neutral-400 mb-1">Расчётная стоимость:</div>
+                      <div className="text-2xl font-bold text-yellow-400">
+                        ≈ {formatPrice(calculateKitchenPrice(showcaseItems[lightboxIndex].kitchenParams!))} ₽
+                      </div>
                     </div>
-                  </div>
+                  )}
+                  {showcaseItems[lightboxIndex].customPrice && (
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-yellow-400">
+                        {showcaseItems[lightboxIndex].customPrice}
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <p className="text-neutral-300 leading-relaxed">
+                <p className="text-neutral-300 leading-relaxed mb-4">
                   {showcaseItems[lightboxIndex].description}
                 </p>
+                
+                {/* Детальная комплектация в lightbox */}
+                {showcaseItems[lightboxIndex].kitchenParams && (
+                  <div className="mt-4 p-4 rounded-lg bg-white/5 border border-white/10">
+                    <p className="text-xs text-neutral-400 font-semibold mb-3 uppercase tracking-wider">
+                      Комплектация данной кухни:
+                    </p>
+                    <div className="grid grid-cols-2 gap-3 text-sm">
+                      <div className="flex flex-col">
+                        <span className="text-neutral-500 text-xs">Тип конфигурации:</span>
+                        <span className="text-neutral-200 font-medium">{showcaseItems[lightboxIndex].kitchenParams!.configuration}</span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-neutral-500 text-xs">Длина кухни:</span>
+                        <span className="text-neutral-200 font-medium">{showcaseItems[lightboxIndex].kitchenParams!.length} метров</span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-neutral-500 text-xs">Материал фасадов:</span>
+                        <span className="text-neutral-200 font-medium">{showcaseItems[lightboxIndex].kitchenParams!.facade}</span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-neutral-500 text-xs">Фурнитура:</span>
+                        <span className="text-neutral-200 font-medium">{showcaseItems[lightboxIndex].kitchenParams!.hardware}</span>
+                      </div>
+                      <div className="flex flex-col col-span-2">
+                        <span className="text-neutral-500 text-xs">Столешница:</span>
+                        <span className="text-neutral-200 font-medium">{showcaseItems[lightboxIndex].kitchenParams!.countertop}</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Индикатор позиции */}
