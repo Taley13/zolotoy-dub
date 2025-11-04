@@ -9,42 +9,45 @@ export default function Home() {
     <>
       <ModernHero />
 
-      <div className="relative z-10 -mt-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 -mt-12 sm:-mt-16 md:-mt-20">
+        <div className="mx-auto max-w-7xl px-3 sm:px-4 md:px-6 lg:px-8">
           
-          {/* Интерактивная витрина */}
+          {/* Интерактивная витрина - адаптивная */}
           <ScrollReveal>
-            <section id="showcase" className="py-16">
-              <h2 className="text-center font-display text-4xl font-bold mb-4">
+            <section id="showcase" className="py-10 sm:py-12 md:py-16">
+              <h2 className="text-center font-display text-3xl sm:text-4xl font-bold mb-3 sm:mb-4 px-2">
                 <span className="bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent">
                   Популярные решения
                 </span>
               </h2>
-              <p className="text-center text-neutral-400 mb-10">Наведите курсор для 3D-эффекта</p>
+              <p className="text-center text-neutral-400 text-sm sm:text-base mb-6 sm:mb-8 md:mb-10 px-4">
+                <span className="hidden sm:inline">Наведите курсор для 3D-эффекта</span>
+                <span className="sm:hidden">Нажмите для просмотра</span>
+              </p>
               <InteractiveShowcase />
             </section>
           </ScrollReveal>
 
-          {/* Полная галерея с фильтрами */}
+          {/* Полная галерея с фильтрами - адаптивная */}
           <ScrollReveal>
-            <section id="portfolio" className="py-16">
-              <div className="glass-neon p-10">
-                <h2 className="text-center font-display text-4xl font-bold">
+            <section id="portfolio" className="py-10 sm:py-12 md:py-16">
+              <div className="glass-neon p-5 sm:p-8 md:p-10">
+                <h2 className="text-center font-display text-3xl sm:text-4xl font-bold px-2">
                   <span className="bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent">
                     Все работы
                   </span>
                 </h2>
-                <p className="mt-3 text-center text-neutral-400">Фильтруйте по категориям</p>
-                <div className="mt-10">
+                <p className="mt-2 sm:mt-3 text-center text-neutral-400 text-sm sm:text-base px-4">Фильтруйте по категориям</p>
+                <div className="mt-6 sm:mt-8 md:mt-10">
                   <FilterGallery />
                 </div>
               </div>
             </section>
           </ScrollReveal>
 
-          {/* Калькулятор стоимости */}
+          {/* Калькулятор стоимости - адаптивный */}
           <ScrollReveal>
-            <section id="calculator" className="py-16">
+            <section id="calculator" className="py-10 sm:py-12 md:py-16">
               <KitchenCalculator />
             </section>
           </ScrollReveal>

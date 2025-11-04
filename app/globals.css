@@ -13,6 +13,55 @@ html, body {
   scroll-behavior: smooth;
 }
 
+/* Мобильная оптимизация */
+@media (max-width: 640px) {
+  html {
+    /* Улучшение читаемости текста на мобильных */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  
+  body {
+    /* Убираем bounce эффект на iOS */
+    overscroll-behavior-y: none;
+  }
+  
+  /* Уменьшаем эффекты на мобильных для производительности */
+  .glass-panel,
+  .glass-neon {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  
+  /* Оптимизация размера шрифта - минимум 16px для избежания zoom */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+  
+  /* Упрощаем анимации на мобильных */
+  .card-hover:hover {
+    transform: none;
+  }
+  
+  /* Убираем сложные эффекты на маленьких экранах */
+  .perspective-1000 {
+    perspective: none;
+  }
+}
+
+/* Мобильная оптимизация для очень маленьких экранов */
+@media (max-width: 375px) {
+  /* Еще больше уменьшаем отступы */
+  .container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
 /* Ultra-modern dark background with neon grid */
 .bg-ultra {
   background-color: #0a0a0f;

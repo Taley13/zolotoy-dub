@@ -101,7 +101,7 @@ export default function ModernHero() {
         style={{ mixBlendMode: 'screen' }}
       />
 
-      <div className="container mx-auto px-4 text-center relative z-10 flex flex-col justify-center min-h-screen py-20">
+      <div className="container mx-auto px-3 sm:px-4 text-center relative z-10 flex flex-col justify-center min-h-screen py-12 sm:py-16 md:py-20">
         {/* Верхняя часть - основной заголовок и подзаголовок */}
         <div className="flex-1 flex flex-col items-center justify-center">
           {/* ЗОЛОТОЙ ЖЕЛУДЬ С ЭПИЧНОЙ ПОДСВЕТКОЙ */}
@@ -117,26 +117,26 @@ export default function ModernHero() {
                 calculator.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }
             }}
-            className="mb-8 animate-float cursor-pointer group/acorn relative"
+            className="mb-6 sm:mb-8 animate-float cursor-pointer group/acorn relative"
             aria-label="Активировать скидку 15%"
           >
-            {/* Внешнее мягкое золотое свечение (большое) */}
-            <div className="absolute -inset-12 bg-amber-500/20 blur-3xl rounded-full 
+            {/* Внешнее мягкое золотое свечение (большое) - уменьшено для мобилки */}
+            <div className="absolute -inset-8 sm:-inset-12 bg-amber-500/20 blur-2xl sm:blur-3xl rounded-full 
                           group-hover/acorn:bg-amber-400/40 transition-all duration-700 
                           animate-glow-pulse-outer opacity-60"></div>
             
             {/* Среднее золотое свечение */}
-            <div className="absolute -inset-8 bg-amber-500/30 blur-2xl rounded-full 
+            <div className="absolute -inset-6 sm:-inset-8 bg-amber-500/30 blur-xl sm:blur-2xl rounded-full 
                           group-hover/acorn:bg-amber-400/50 transition-all duration-500 
                           animate-glow-pulse-middle"></div>
             
             {/* Близкое яркое свечение */}
-            <div className="absolute -inset-4 bg-amber-400/40 blur-xl rounded-full 
+            <div className="absolute -inset-3 sm:-inset-4 bg-amber-400/40 blur-lg sm:blur-xl rounded-full 
                           group-hover/acorn:bg-amber-300/70 transition-all duration-300 
                           animate-glow-pulse-inner"></div>
             
-            {/* Сам желудь с фильтрами */}
-            <div className="relative text-8xl md:text-9xl drop-shadow-2xl 
+            {/* Сам желудь с фильтрами - адаптивный размер */}
+            <div className="relative text-6xl sm:text-7xl md:text-8xl lg:text-9xl drop-shadow-2xl 
                           transform group-hover/acorn:scale-110 transition-all duration-300 
                           filter brightness-110 contrast-110
                           group-hover/acorn:brightness-125 group-hover/acorn:contrast-125"
@@ -146,59 +146,61 @@ export default function ModernHero() {
               🌰
             </div>
             
-            {/* Tooltip с информацией о скидке */}
-            <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 opacity-0 group-hover/acorn:opacity-100 
-                          transition-all duration-300 pointer-events-none whitespace-nowrap z-20">
+            {/* Tooltip с информацией о скидке - адаптивный */}
+            <div className="absolute -bottom-16 sm:-bottom-20 left-1/2 -translate-x-1/2 opacity-0 group-hover/acorn:opacity-100 
+                          transition-all duration-300 pointer-events-none z-20 px-2">
               <div className="bg-gradient-to-r from-green-500/95 to-emerald-600/95 backdrop-blur-xl 
-                            border-2 border-green-400/60 rounded-xl px-5 py-3 shadow-2xl
+                            border-2 border-green-400/60 rounded-lg sm:rounded-xl px-3 sm:px-5 py-2 sm:py-3 shadow-2xl
                             animate-bounce-subtle">
-                <p className="text-green-50 font-bold text-base flex items-center gap-2">
+                <p className="text-green-50 font-bold text-xs sm:text-sm md:text-base flex items-center gap-1 sm:gap-2 whitespace-nowrap">
                   🎁 Кликни и получи скидку 15%!
                 </p>
-                <p className="text-green-100 text-sm mt-1">
+                <p className="text-green-100 text-xs sm:text-sm mt-0.5 sm:mt-1">
                   ⏰ Действует 24 часа
                 </p>
               </div>
             </div>
           </button>
           
-          {/* 1. Основной заголовок */}
-          <h1 className="font-brand text-7xl md:text-9xl font-bold text-amber-200 mb-6 tracking-tight drop-shadow-lg">
+          {/* 1. Основной заголовок - адаптивные размеры */}
+          <h1 className="font-brand text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-amber-200 mb-4 sm:mb-6 tracking-tight drop-shadow-lg px-2">
             Золотой дуб
           </h1>
           
-          {/* 2. Подзаголовок - поэтичный курсив */}
-          <p className="font-script text-3xl md:text-5xl text-amber-300 italic tracking-wide drop-shadow-md">
+          {/* 2. Подзаголовок - поэтичный курсив - адаптивный */}
+          <p className="font-script text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-amber-300 italic tracking-wide drop-shadow-md px-2">
             Уют и комфорт
           </p>
         </div>
 
-        {/* Визуальное разделение */}
-        <div className="my-12 flex items-center justify-center gap-4">
-          <div className="h-px w-16 bg-gradient-to-r from-transparent to-amber-500/60"></div>
-          <div className="h-2 w-2 rotate-45 bg-amber-500/80"></div>
-          <div className="h-px w-16 bg-gradient-to-l from-transparent to-amber-500/60"></div>
+        {/* Визуальное разделение - адаптивное */}
+        <div className="my-8 sm:my-10 md:my-12 flex items-center justify-center gap-3 sm:gap-4">
+          <div className="h-px w-12 sm:w-16 bg-gradient-to-r from-transparent to-amber-500/60"></div>
+          <div className="h-1.5 w-1.5 sm:h-2 sm:w-2 rotate-45 bg-amber-500/80"></div>
+          <div className="h-px w-12 sm:w-16 bg-gradient-to-l from-transparent to-amber-500/60"></div>
         </div>
 
         {/* 3. Нижняя часть - дополнительная информация */}
-        <div className="space-y-4">
-          {/* Материалы - акцентно */}
-          <p className="font-display text-xl md:text-2xl font-semibold text-amber-400 drop-shadow-md">
+        <div className="space-y-3 sm:space-y-4 px-2">
+          {/* Материалы - акцентно - адаптивный */}
+          <p className="font-display text-lg sm:text-xl md:text-2xl font-semibold text-amber-400 drop-shadow-md">
             ДСП • МДФ • Эмаль
           </p>
           
-          {/* Описание услуг - обычный текст */}
-          <p className="font-body text-base md:text-lg text-amber-100 max-w-2xl mx-auto drop-shadow-sm">
+          {/* Описание услуг - обычный текст - адаптивный */}
+          <p className="font-body text-sm sm:text-base md:text-lg text-amber-100 max-w-2xl mx-auto drop-shadow-sm px-4">
             Индивидуальный дизайн и установка под ключ
           </p>
 
-          {/* Кнопка CTA */}
-          <div className="mt-8 pt-4">
+          {/* Кнопка CTA - адаптивная */}
+          <div className="mt-6 sm:mt-8 pt-3 sm:pt-4">
             <a
               href="#calculator"
-              className="inline-block bg-transparent border-2 border-amber-400 text-amber-400 px-10 py-4 rounded-full 
+              className="inline-block bg-transparent border-2 border-amber-400 text-amber-400 
+                       px-6 py-3 sm:px-8 sm:py-3.5 md:px-10 md:py-4 rounded-full 
                        hover:bg-amber-400 hover:text-black transition-all duration-500 
-                       font-display text-lg tracking-wide shadow-lg hover:shadow-amber-400/50"
+                       font-display text-base sm:text-lg tracking-wide shadow-lg hover:shadow-amber-400/50
+                       active:scale-95"
             >
               Рассчитать стоимость
             </a>
