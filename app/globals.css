@@ -8,6 +8,45 @@
   --neon-cyan: #00FFFF;
 }
 
+/* Базовые стили для заголовков с Playfair Display */
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-playfair), Georgia, serif;
+  }
+  
+  h1 {
+    @apply text-h1 lg:text-h1-lg font-bold;
+    background: linear-gradient(135deg, #FFD700 0%, #FDB931 25%, #FFED4E 50%, #F59E0B 75%, #D97706 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  h2 {
+    @apply text-h2 lg:text-h2-lg font-bold;
+    background: linear-gradient(135deg, #FFD700 0%, #FDB931 25%, #FFED4E 50%, #F59E0B 75%, #D97706 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  h3 {
+    @apply text-2xl font-semibold;
+  }
+  
+  /* Основной текст - Inter 400 */
+  body, p {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    @apply font-normal;
+  }
+  
+  /* Кнопки - Inter 600 */
+  button, .btn, a[class*="btn"] {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    @apply font-semibold;
+  }
+}
+
 html, body { 
   height: 100%; 
   scroll-behavior: smooth;
@@ -207,3 +246,17 @@ html, body {
 .btn-gold { @apply btn-neon; }
 .font-elegant { @apply font-display; }
 .bg-velvet { @apply bg-ultra; }
+
+/* Utility класс для золотого градиента текста */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #FFD700 0%, #FDB931 25%, #FFED4E 50%, #F59E0B 75%, #D97706 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Playfair Display подзаголовки (500) */
+.subheading {
+  font-family: var(--font-playfair), Georgia, serif;
+  @apply font-medium;
+}

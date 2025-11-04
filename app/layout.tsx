@@ -3,32 +3,23 @@ import './globals.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import StructuredData from './components/StructuredData';
-import { Cormorant_Garamond, Dancing_Script, Lora } from 'next/font/google';
+import { Playfair_Display, Inter } from 'next/font/google';
 
-// Поэтический каллиграфический шрифт для "Золотой Дуб"
-const cormorant = Cormorant_Garamond({
+// Элегантный serif для заголовков с золотым градиентом
+const playfair = Playfair_Display({
   subsets: ['cyrillic', 'latin'],
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700', '800', '900'],
   display: 'swap',
-  variable: '--font-brand',
+  variable: '--font-playfair',
   style: ['normal', 'italic']
 });
 
-// Элегантный курсив для акцентов и особых фраз
-const dancing = Dancing_Script({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-  variable: '--font-script'
-});
-
-// Художественный serif с характером для основного текста
-const lora = Lora({
+// Современный sans-serif для основного текста и кнопок
+const inter = Inter({
   subsets: ['cyrillic', 'latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['300', '400', '500', '600', '700', '800'],
   display: 'swap',
-  variable: '--font-body',
-  style: ['normal', 'italic']
+  variable: '--font-inter'
 });
 
 export const metadata: Metadata = {
@@ -91,14 +82,8 @@ export const viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru" className={`${cormorant.variable} ${dancing.variable} ${lora.variable}`}>
-      <head>
-        <link 
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Dancing+Script:wght@400;500;600;700&display=swap" 
-          rel="stylesheet"
-        />
-      </head>
-      <body className="min-h-screen bg-ultra text-neutral-100 antialiased font-body">
+    <html lang="ru" className={`${playfair.variable} ${inter.variable}`}>
+      <body className="min-h-screen bg-ultra text-neutral-100 antialiased font-sans">
         <StructuredData />
         <div className="flex min-h-screen flex-col">
           <Header />

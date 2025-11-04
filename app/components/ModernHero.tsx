@@ -170,13 +170,13 @@ export default function ModernHero() {
             </div>
           </button>
           
-          {/* 1. Основной заголовок - адаптивные размеры */}
-          <h1 className="font-brand text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-amber-200 mb-4 sm:mb-6 tracking-tight drop-shadow-lg px-2">
+          {/* 1. Основной заголовок - Playfair Display 700 с золотым градиентом */}
+          <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-4 sm:mb-6 tracking-tight drop-shadow-lg px-2">
             Золотой дуб
           </h1>
           
-          {/* 2. Подзаголовок - поэтичный курсив - адаптивный */}
-          <p className="font-script text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-amber-300 italic tracking-wide drop-shadow-md px-2">
+          {/* 2. Подзаголовок - Playfair Display 500 */}
+          <p className="subheading text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-amber-300 italic tracking-wide drop-shadow-md px-2">
             Уют и комфорт
           </p>
         </div>
@@ -190,24 +190,24 @@ export default function ModernHero() {
 
         {/* 3. Нижняя часть - дополнительная информация */}
         <div className="space-y-3 sm:space-y-4 px-2">
-          {/* Материалы - акцентно - адаптивный */}
-          <p className="font-display text-lg sm:text-xl md:text-2xl font-semibold text-amber-400 drop-shadow-md">
+          {/* Материалы - Playfair Display 500 */}
+          <p className="subheading text-lg sm:text-xl md:text-2xl text-amber-400 drop-shadow-md">
             ДСП • МДФ • Эмаль
           </p>
           
-          {/* Описание услуг - обычный текст - адаптивный */}
-          <p className="font-body text-sm sm:text-base md:text-lg text-amber-100 max-w-2xl mx-auto drop-shadow-sm px-4">
+          {/* Описание услуг - Inter 400 */}
+          <p className="font-sans text-sm sm:text-base md:text-lg text-amber-100 max-w-2xl mx-auto drop-shadow-sm px-4">
             Индивидуальный дизайн и установка под ключ
           </p>
 
-          {/* Кнопка CTA - адаптивная */}
+          {/* Кнопка CTA - Inter 600 */}
           <div className="mt-6 sm:mt-8 pt-3 sm:pt-4">
             <a
               href="#calculator"
               className="inline-block bg-transparent border-2 border-amber-400 text-amber-400 
                        px-6 py-3 sm:px-8 sm:py-3.5 md:px-10 md:py-4 rounded-full 
                        hover:bg-amber-400 hover:text-black transition-all duration-500 
-                       font-display text-base sm:text-lg tracking-wide shadow-lg hover:shadow-amber-400/50
+                       font-button text-base sm:text-lg tracking-wide shadow-lg hover:shadow-amber-400/50
                        active:scale-95"
             >
               Рассчитать стоимость

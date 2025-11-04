@@ -22,12 +22,17 @@ module.exports = {
         }
       },
       fontFamily: {
-        brand: ['var(--font-brand)', 'Georgia', 'serif'], // Cormorant для "Золотой Дуб"
-        script: ['var(--font-script)', 'cursive'], // Dancing Script для акцентов
-        body: ['var(--font-body)', 'Georgia', 'serif'], // Lora для основного текста
-        display: ['var(--font-brand)', 'Georgia', 'serif'], // Cormorant для заголовков
-        sans: ['var(--font-body)', 'system-ui', 'sans-serif'],
-        serif: ['var(--font-body)', 'Georgia', 'serif']
+        display: ['var(--font-playfair)', 'Georgia', 'serif'], // Playfair Display для заголовков
+        heading: ['var(--font-playfair)', 'Georgia', 'serif'], // Playfair Display для h1, h2
+        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'], // Inter для основного текста
+        body: ['var(--font-inter)', 'system-ui', 'sans-serif'], // Inter для body
+        button: ['var(--font-inter)', 'system-ui', 'sans-serif'] // Inter для кнопок
+      },
+      fontSize: {
+        'h1': ['3.5rem', { lineHeight: '1.1', fontWeight: '700' }], // 56px
+        'h1-lg': ['4rem', { lineHeight: '1.1', fontWeight: '700' }], // 64px для больших экранов
+        'h2': ['2.5rem', { lineHeight: '1.2', fontWeight: '700' }], // 40px
+        'h2-lg': ['3rem', { lineHeight: '1.2', fontWeight: '700' }] // 48px для больших экранов
       }
     }
   },
