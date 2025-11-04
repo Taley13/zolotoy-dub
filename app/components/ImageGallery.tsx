@@ -25,17 +25,20 @@ type ImageGalleryProps = {
 export default function ImageGallery({ images, works, className }: ImageGalleryProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  // Объединяем данные изображений с описаниями работ
-  const enrichedImages = images.map((img, idx) => {
-    const work = works?.find(w => img.src.includes(w.filename));
-    return {
-      ...img,
-      title: work?.title || img.title,
-      description: work?.description || img.description,
-      style: work?.style || img.style,
-      price: work?.price || img.price
-    };
-  });
+  // Если переданы works, обогащаем данные (для обратной совместимости)
+  // Иначе используем данные напрямую из images (предпочтительный способ)
+  const enrichedImages = works && works.length > 0 
+    ? images.map((img) => {
+        const work = works.find(w => img.src.includes(w.filename));
+        return {
+          ...img,
+          title: work?.title || img.title,
+          description: work?.description || img.description,
+          style: work?.style || img.style,
+          price: work?.price || img.price
+        };
+      })
+    : images; // Используем images как есть, если works не передан
 
   return (
     <div className={className}>

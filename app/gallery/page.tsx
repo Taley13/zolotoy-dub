@@ -22,20 +22,24 @@ function getGalleryImages(): GalleryImage[] {
     .filter((f) => /\.(jpe?g|png|webp|avif)$/i.test(f))
     .sort(); // Сортируем файлы для стабильного порядка
   
+  // Сопоставляем файлы с данными из galleryData
   return files.map((file) => {
-    // Находим соответствующую работу из данных
     const work = kitchenWorks.find(w => w.filename === file);
+    
+    if (!work) {
+      console.warn(`⚠️ No data found for ${file}`);
+    }
     
     return {
       src: `/images/${file}`,
-      alt: work?.title || 'Кухня Золотой Дуб',
+      alt: work?.title || `Кухня Золотой Дуб - ${file}`,
       width: 1600,
       height: 1200,
       sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw',
-      title: work?.title,
-      description: work?.description,
-      style: work?.style,
-      price: work?.price
+      title: work?.title || `Кухня ${file}`,
+      description: work?.description || 'Индивидуальный проект кухни на заказ',
+      style: work?.style || 'Авторский',
+      price: work?.price || 'По запросу'
     };
   });
 }
@@ -70,7 +74,7 @@ export default function GalleryPage() {
 
         {/* Галерея */}
         {images.length > 0 ? (
-          <ImageGallery images={images} works={kitchenWorks} className="mt-8" />
+          <ImageGallery images={images} className="mt-8" />
         ) : (
           <div className="mt-12 rounded-xl border border-neutral-800 bg-neutral-900/50 p-8 text-center text-neutral-300">
             <p>Пока нет фотографий. Загрузите файлы в папку <code className="rounded bg-neutral-800 px-2 py-1 text-neutral-200">public/images</code> (форматы: JPG, PNG, WEBP, AVIF).</p>
