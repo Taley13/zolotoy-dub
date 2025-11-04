@@ -128,14 +128,32 @@ function formatMessage(data: TelegramMessage, applicationId: string): string {
 }
 
 /**
- * Отправка сообщения в Telegram
+ * Отправка сообщения в Telegram с интерактивными кнопками
  */
 async function sendMessage(
   botToken: string,
   chatId: string,
-  text: string
+  text: string,
+  applicationId?: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
+    // Формируем кнопки для заявки
+    const reply_markup = applicationId ? {
+      inline_keyboard: [
+        [
+          { text: '✅ Обработано', callback_data: `app_done_${applicationId}` },
+          { text: '⏳ В работе', callback_data: `app_work_${applicationId}` }
+        ],
+        [
+          { text: '📞 Позвонил', callback_data: `app_called_${applicationId}` },
+          { text: '💬 Написал', callback_data: `app_messaged_${applicationId}` }
+        ],
+        [
+          { text: '🗑 Удалить', callback_data: `app_delete_${applicationId}` }
+        ]
+      ]
+    } : undefined;
+
     const response = await fetch(
       `https://api.telegram.org/bot${botToken}/sendMessage`,
       {
@@ -144,7 +162,8 @@ async function sendMessage(
         body: JSON.stringify({
           chat_id: chatId,
           text,
-          parse_mode: 'HTML'
+          parse_mode: 'HTML',
+          reply_markup
         }),
         cache: 'no-store'
       }
@@ -239,9 +258,9 @@ export async function sendContactFormToTelegram(
   const { botToken, chatIds } = env;
   const text = formatMessage(data, applicationId);
 
-  // Отправка всем получателям
+  // Отправка всем получателям С КНОПКАМИ
   const results = await Promise.allSettled(
-    chatIds.map(chatId => sendMessage(botToken, chatId, text))
+    chatIds.map(chatId => sendMessage(botToken, chatId, text, applicationId))
   );
 
   // Проверка результатов

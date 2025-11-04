@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useRef } from 'react';
-import AnimatedOakTree from './AnimatedOakTree';
 
 export default function ModernHero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -105,22 +104,63 @@ export default function ModernHero() {
       <div className="container mx-auto px-4 text-center relative z-10 flex flex-col justify-center min-h-screen py-20">
         {/* Верхняя часть - основной заголовок и подзаголовок */}
         <div className="flex-1 flex flex-col items-center justify-center">
-          {/* Анимированный дуб с падающими листьями */}
-          <div className="mb-8">
-            <AnimatedOakTree 
-              onClick={() => {
-                // Активируем скидку
-                const activationTime = Date.now();
-                localStorage.setItem('discount_activation', activationTime.toString());
-                
-                // Прокручиваем к калькулятору
-                const calculator = document.getElementById('calculator');
-                if (calculator) {
-                  calculator.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-              }}
-            />
-          </div>
+          {/* ЗОЛОТОЙ ЖЕЛУДЬ С ЭПИЧНОЙ ПОДСВЕТКОЙ */}
+          <button
+            onClick={() => {
+              // Активируем скидку
+              const activationTime = Date.now();
+              localStorage.setItem('discount_activation', activationTime.toString());
+              
+              // Прокручиваем к калькулятору
+              const calculator = document.getElementById('calculator');
+              if (calculator) {
+                calculator.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }}
+            className="mb-8 animate-float cursor-pointer group/acorn relative"
+            aria-label="Активировать скидку 15%"
+          >
+            {/* Внешнее мягкое золотое свечение (большое) */}
+            <div className="absolute -inset-12 bg-amber-500/20 blur-3xl rounded-full 
+                          group-hover/acorn:bg-amber-400/40 transition-all duration-700 
+                          animate-glow-pulse-outer opacity-60"></div>
+            
+            {/* Среднее золотое свечение */}
+            <div className="absolute -inset-8 bg-amber-500/30 blur-2xl rounded-full 
+                          group-hover/acorn:bg-amber-400/50 transition-all duration-500 
+                          animate-glow-pulse-middle"></div>
+            
+            {/* Близкое яркое свечение */}
+            <div className="absolute -inset-4 bg-amber-400/40 blur-xl rounded-full 
+                          group-hover/acorn:bg-amber-300/70 transition-all duration-300 
+                          animate-glow-pulse-inner"></div>
+            
+            {/* Сам желудь с фильтрами */}
+            <div className="relative text-8xl md:text-9xl drop-shadow-2xl 
+                          transform group-hover/acorn:scale-110 transition-all duration-300 
+                          filter brightness-110 contrast-110
+                          group-hover/acorn:brightness-125 group-hover/acorn:contrast-125"
+                 style={{
+                   filter: 'drop-shadow(0 0 15px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 30px rgba(255, 193, 37, 0.4))',
+                 }}>
+              🌰
+            </div>
+            
+            {/* Tooltip с информацией о скидке */}
+            <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 opacity-0 group-hover/acorn:opacity-100 
+                          transition-all duration-300 pointer-events-none whitespace-nowrap z-20">
+              <div className="bg-gradient-to-r from-green-500/95 to-emerald-600/95 backdrop-blur-xl 
+                            border-2 border-green-400/60 rounded-xl px-5 py-3 shadow-2xl
+                            animate-bounce-subtle">
+                <p className="text-green-50 font-bold text-base flex items-center gap-2">
+                  🎁 Кликни и получи скидку 15%!
+                </p>
+                <p className="text-green-100 text-sm mt-1">
+                  ⏰ Действует 24 часа
+                </p>
+              </div>
+            </div>
+          </button>
           
           {/* 1. Основной заголовок */}
           <h1 className="font-brand text-7xl md:text-9xl font-bold text-amber-200 mb-6 tracking-tight drop-shadow-lg">
@@ -167,6 +207,7 @@ export default function ModernHero() {
       </div>
 
       <style jsx>{`
+        /* Плавное плавание желудя */
         @keyframes float {
           0%, 100% {
             transform: translateY(0px);
@@ -175,28 +216,71 @@ export default function ModernHero() {
             transform: translateY(-10px);
           }
         }
-        @keyframes glow-pulse {
+        
+        /* Пульсация внешнего свечения (медленная) */
+        @keyframes glow-pulse-outer {
           0%, 100% {
-            box-shadow: 
-              0 0 20px rgba(255, 215, 0, 0.4),
-              0 0 40px rgba(255, 215, 0, 0.2),
-              0 0 60px rgba(255, 215, 0, 0.1);
+            opacity: 0.3;
+            transform: scale(1);
           }
           50% {
-            box-shadow: 
-              0 0 30px rgba(255, 215, 0, 0.6),
-              0 0 60px rgba(255, 215, 0, 0.3),
-              0 0 90px rgba(255, 215, 0, 0.15);
+            opacity: 0.6;
+            transform: scale(1.1);
           }
         }
+        
+        /* Пульсация среднего свечения */
+        @keyframes glow-pulse-middle {
+          0%, 100% {
+            opacity: 0.5;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 0.8;
+            transform: scale(1.08);
+          }
+        }
+        
+        /* Пульсация внутреннего свечения (быстрая) */
+        @keyframes glow-pulse-inner {
+          0%, 100% {
+            opacity: 0.6;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1.05);
+          }
+        }
+        
+        /* Легкое подпрыгивание для tooltip */
+        @keyframes bounce-subtle {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-5px);
+          }
+        }
+        
         .animate-float {
           animation: float 3s ease-in-out infinite;
         }
-        .animate-glow-pulse {
-          width: 120px;
-          height: 120px;
-          border-radius: 50%;
-          animation: glow-pulse 2s ease-in-out infinite;
+        
+        .animate-glow-pulse-outer {
+          animation: glow-pulse-outer 3s ease-in-out infinite;
+        }
+        
+        .animate-glow-pulse-middle {
+          animation: glow-pulse-middle 2.5s ease-in-out infinite 0.2s;
+        }
+        
+        .animate-glow-pulse-inner {
+          animation: glow-pulse-inner 2s ease-in-out infinite 0.4s;
+        }
+        
+        .animate-bounce-subtle {
+          animation: bounce-subtle 1s ease-in-out infinite;
         }
       `}</style>
     </section>

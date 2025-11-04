@@ -1,0 +1,31 @@
+{
+  "name": "zolotoy-dub-telegram-bot",
+  "version": "1.0.0",
+  "description": "Интерактивный Telegram бот для обработки заявок с сайта «Золотой Дуб»",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "dev": "nodemon bot.js",
+    "pm2:start": "pm2 start bot.js --name zoldub-bot",
+    "pm2:stop": "pm2 stop zoldub-bot",
+    "pm2:restart": "pm2 restart zoldub-bot",
+    "pm2:logs": "pm2 logs zoldub-bot"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "furniture",
+    "crm"
+  ],
+  "author": "Золотой Дуб",
+  "license": "MIT",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.66.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
+
+
