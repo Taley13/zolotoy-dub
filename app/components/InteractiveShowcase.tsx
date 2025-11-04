@@ -24,7 +24,7 @@ const showcaseItems: ShowcaseItem[] = [
     id: '1',
     title: 'Кухня премиум угловая',
     category: 'Эмаль + Камень',
-    image: '1759474759.png',
+    image: 'kitchen-01.jpg',
     description: 'Глянцевые фасады из эмали, встроенная техника, искусственный камень',
     kitchenParams: {
       configuration: 'Угловая',
@@ -38,7 +38,7 @@ const showcaseItems: ShowcaseItem[] = [
     id: '2',
     title: 'Кухня классика МДФ',
     category: 'МДФ + HPL',
-    image: '1759474837.png',
+    image: 'kitchen-02.jpg',
     description: 'Классический стиль с фрезеровкой, тёплые оттенки, HPL столешница',
     kitchenParams: {
       configuration: 'Угловая',
@@ -52,7 +52,7 @@ const showcaseItems: ShowcaseItem[] = [
     id: '3',
     title: 'Кухня эконом прямая',
     category: 'ДСП + HPL',
-    image: '1759474944.png',
+    image: 'kitchen-03.jpg',
     description: 'Минималистичный дизайн, надёжная стандартная фурнитура',
     kitchenParams: {
       configuration: 'Прямая',
@@ -66,7 +66,7 @@ const showcaseItems: ShowcaseItem[] = [
     id: '4',
     title: 'Кухня студия премиум',
     category: 'МДФ + Камень',
-    image: 'Create_a_hyper-realistic,.png',
+    image: 'kitchen-04.jpg',
     description: 'МДФ с интегрированными ручками, искусственный камень, премиум фурнитура',
     kitchenParams: {
       configuration: 'Прямая',
@@ -80,7 +80,7 @@ const showcaseItems: ShowcaseItem[] = [
     id: '5',
     title: 'Кухня угловая большая',
     category: 'МДФ + Кварц',
-    image: 'Create_hyper-realistic,_u (2).png',
+    image: 'kitchen-05.jpg',
     description: 'Просторная угловая кухня с кварцевой столешницей и премиум фурнитурой',
     kitchenParams: {
       configuration: 'Угловая',
@@ -94,7 +94,7 @@ const showcaseItems: ShowcaseItem[] = [
     id: '6',
     title: 'Кухня островная люкс',
     category: 'Эмаль + Кварц',
-    image: 'Create_hyper-realistic,_u (3).png',
+    image: 'kitchen-06.jpg',
     description: 'Островная планировка, эмаль, кварцевый агломерат, полная интеграция техники',
     kitchenParams: {
       configuration: 'Индивидуальная',
@@ -108,7 +108,7 @@ const showcaseItems: ShowcaseItem[] = [
     id: '7',
     title: 'Кухня неоклассика',
     category: 'Эмаль + Камень',
-    image: 'Create_hyper-realistic,_u (4).png',
+    image: 'kitchen-07.jpg',
     description: 'Элегантная кухня с эмалевыми фасадами и искусственным камнем',
     kitchenParams: {
       configuration: 'Прямая',
@@ -122,7 +122,7 @@ const showcaseItems: ShowcaseItem[] = [
     id: '8',
     title: 'Кухня минимализм',
     category: 'ДСП + Камень',
-    image: 'Create_hyper-realistic,_u (5).png',
+    image: 'kitchen-08.jpg',
     description: 'Современный минимализм, ДСП с push-to-open, искусственный камень',
     kitchenParams: {
       configuration: 'Угловая',
@@ -136,7 +136,7 @@ const showcaseItems: ShowcaseItem[] = [
     id: '9',
     title: 'Кухня индивидуальная',
     category: 'МДФ + Кварц',
-    image: 'Create_hyper-realistic,_u (6).png',
+    image: 'kitchen-09.jpg',
     description: 'Индивидуальный проект с нестандартной планировкой и барной стойкой',
     kitchenParams: {
       configuration: 'Индивидуальная',
@@ -150,7 +150,7 @@ const showcaseItems: ShowcaseItem[] = [
     id: '10',
     title: 'Кухня скандинавия',
     category: 'МДФ + HPL',
-    image: 'Create_hyper-realistic,_u (18).png',
+    image: 'kitchen-10.jpg',
     description: 'Светлая скандинавская кухня, МДФ белый матовый, стандартная фурнитура',
     kitchenParams: {
       configuration: 'Прямая',
@@ -164,7 +164,7 @@ const showcaseItems: ShowcaseItem[] = [
     id: '11',
     title: 'Кухня лофт индустриальная',
     category: 'МДФ + Камень',
-    image: 'Create_hyper-realistic,_u (19).png',
+    image: 'kitchen-11.jpg',
     description: 'Стиль лофт с тёмными фасадами МДФ и искусственным камнем',
     kitchenParams: {
       configuration: 'Угловая',
@@ -178,7 +178,7 @@ const showcaseItems: ShowcaseItem[] = [
     id: '12',
     title: 'Кухня премиум большая',
     category: 'Эмаль + Кварц',
-    image: 'Create_hyper-realistic,_u (20).png',
+    image: 'kitchen-12.jpg',
     description: 'Большая премиум кухня с индивидуальной планировкой, эмаль + кварц',
     kitchenParams: {
       configuration: 'Индивидуальная',
