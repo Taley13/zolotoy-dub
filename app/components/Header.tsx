@@ -10,8 +10,8 @@ export default function Header() {
         {/* Навигация - адаптивная */}
         <nav className="flex items-center gap-3 sm:gap-4 md:gap-6 text-xs sm:text-sm font-medium text-neutral-300">
           <Link href="/" className="hover:text-yellow-400 transition-colors">Главная</Link>
-          <Link href="/catalog" className="hover:text-yellow-400 transition-colors hidden sm:inline">Каталог</Link>
-          <Link href="/gallery" className="hover:text-yellow-400 transition-colors hidden md:inline">Галерея</Link>
+          <Link href="/catalog" className="hover:text-yellow-400 transition-colors">Каталог</Link>
+          <Link href="/#calculator" className="hover:text-yellow-400 transition-colors hidden sm:inline">Калькулятор</Link>
           <Link href="/contacts" className="hover:text-yellow-400 transition-colors">Контакты</Link>
         </nav>
       </div>

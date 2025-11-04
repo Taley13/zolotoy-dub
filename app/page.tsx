@@ -1,6 +1,4 @@
 import ModernHero from '@/app/components/ModernHero';
-import FilterGallery from '@/app/components/FilterGallery';
-import InteractiveShowcase from '@/app/components/InteractiveShowcase';
 import ScrollReveal from '@/app/components/ScrollReveal';
 import KitchenCalculator from '@/app/components/KitchenCalculator';
 
@@ -12,49 +10,16 @@ export default function Home() {
       <div className="relative z-10 -mt-12 sm:-mt-16 md:-mt-20">
         <div className="mx-auto max-w-7xl px-3 sm:px-4 md:px-6 lg:px-8">
           
-          {/* Интерактивная витрина - адаптивная */}
-          <ScrollReveal>
-            <section id="showcase" className="py-10 sm:py-12 md:py-16">
-              <h2 className="text-center font-display text-3xl sm:text-4xl font-bold mb-3 sm:mb-4 px-2">
-                <span className="bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent">
-                  Популярные решения
-                </span>
-              </h2>
-              <p className="text-center text-neutral-400 text-sm sm:text-base mb-6 sm:mb-8 md:mb-10 px-4">
-                <span className="hidden sm:inline">Наведите курсор для 3D-эффекта</span>
-                <span className="sm:hidden">Нажмите для просмотра</span>
-              </p>
-              <InteractiveShowcase />
-            </section>
-          </ScrollReveal>
-
-          {/* Полная галерея с фильтрами - адаптивная */}
-          <ScrollReveal>
-            <section id="portfolio" className="py-10 sm:py-12 md:py-16">
-              <div className="glass-neon p-5 sm:p-8 md:p-10">
-                <h2 className="text-center font-display text-3xl sm:text-4xl font-bold px-2">
-                  <span className="bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent">
-                    Все работы
-                  </span>
-                </h2>
-                <p className="mt-2 sm:mt-3 text-center text-neutral-400 text-sm sm:text-base px-4">Фильтруйте по категориям</p>
-                <div className="mt-6 sm:mt-8 md:mt-10">
-                  <FilterGallery />
-                </div>
-              </div>
-            </section>
-          </ScrollReveal>
-
           {/* Калькулятор стоимости - адаптивный */}
           <ScrollReveal>
-            <section id="calculator" className="py-10 sm:py-12 md:py-16">
+            <section id="calculator" className="py-10 sm:py-12 md:py-16 scroll-mt-20 transition-all duration-500">
               <KitchenCalculator />
             </section>
           </ScrollReveal>
 
           {/* Услуги - плотная компоновка */}
           <ScrollReveal>
-            <section id="services" className="py-16">
+            <section id="services" className="py-16 scroll-mt-20 transition-all duration-500">
               <h2 className="text-center font-display text-4xl font-bold">
                 <span className="bg-gradient-to-r from-yellow-400 to-amber-600 bg-clip-text text-transparent">
                   Услуги
@@ -81,7 +46,7 @@ export default function Home() {
 
           {/* Прайс с акцентами */}
           <ScrollReveal>
-            <section id="pricing" className="py-16">
+            <section id="pricing" className="py-16 scroll-mt-20 transition-all duration-500">
               <h2 className="text-center font-display text-4xl font-bold">
                 <span className="bg-gradient-to-r from-yellow-400 to-amber-600 bg-clip-text text-transparent">
                   Прайс-лист
@@ -113,7 +78,7 @@ export default function Home() {
 
           {/* О фабрике */}
           <ScrollReveal>
-            <section id="about" className="py-16">
+            <section id="about" className="py-16 scroll-mt-20 transition-all duration-500">
               <div className="glass-panel p-10">
                 <h2 className="font-display text-3xl font-bold">
                   <span className="bg-gradient-to-r from-yellow-400 to-amber-600 bg-clip-text text-transparent">
@@ -151,7 +116,7 @@ export default function Home() {
 
           {/* Финальный CTA */}
           <ScrollReveal>
-            <section className="py-16">
+            <section className="py-16 transition-all duration-500">
               <div className="glass-neon p-12 text-center">
                 <h3 className="font-display text-3xl font-bold text-white">Начнём ваш проект?</h3>
                 <p className="mt-3 text-neutral-300">Оставьте заявку — мы свяжемся в течение 15 минут</p>
