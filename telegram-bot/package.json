@@ -20,12 +20,10 @@
   "author": "Золотой Дуб",
   "license": "MIT",
   "dependencies": {
-    "node-telegram-bot-api": "^0.66.0",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.6.1",
+    "node-telegram-bot-api": "^0.66.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
   }
 }
-
-

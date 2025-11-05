@@ -83,25 +83,7 @@ export default function KitchenCalculator() {
     return Math.round(totalPrice);
   };
 
-  // Расчёт наценок для прозрачности
-  const getBreakdown = () => {
-    const baseCost = length * BASE_PRICE;
-    const configurationMarkup = MARKUP.configuration[configuration];
-    const facadeMarkup = MARKUP.facade[facade];
-    const fittingsMarkup = MARKUP.fittings[fittings];
-    const countertopMarkup = MARKUP.countertop[countertop];
-
-    return {
-      base: baseCost,
-      configurationPercent: Math.round(configurationMarkup * 100),
-      facadePercent: Math.round(facadeMarkup * 100),
-      fittingsPercent: Math.round(fittingsMarkup * 100),
-      countertopPercent: Math.round(countertopMarkup * 100)
-    };
-  };
-
   const price = calculatePrice();
-  const breakdown = getBreakdown();
 
   // Состояние для хранения всех параметров
   const [calculatorState, setCalculatorState] = useState<CalculatorState>({
@@ -224,9 +206,6 @@ export default function KitchenCalculator() {
                 >
                   <div className="text-3xl mb-2">{icon}</div>
                   <div className="font-semibold mb-1">{type}</div>
-                  {configuration === type && MARKUP.configuration[type] > 0 && (
-                    <div className="text-xs text-yellow-300 mb-1">+{Math.round(MARKUP.configuration[type] * 100)}%</div>
-                  )}
                   <div className="text-xs text-neutral-400 mt-1">{desc}</div>
                 </button>
               ))}
@@ -257,9 +236,6 @@ export default function KitchenCalculator() {
                   `}
                 >
                   <div className="font-semibold mb-1">{type}</div>
-                  {facade === type && MARKUP.facade[type] > 0 && (
-                    <div className="text-xs text-yellow-300">+{Math.round(MARKUP.facade[type] * 100)}%</div>
-                  )}
                   <div className="text-xs text-neutral-400 mt-1">{desc}</div>
                 </button>
               ))}
@@ -289,9 +265,6 @@ export default function KitchenCalculator() {
                   `}
                 >
                   <div className="font-semibold mb-1">{type}</div>
-                  {fittings === type && MARKUP.fittings[type] > 0 && (
-                    <div className="text-xs text-yellow-300">+{Math.round(MARKUP.fittings[type] * 100)}%</div>
-                  )}
                   <div className="text-xs text-neutral-400 mt-1">{desc}</div>
                 </button>
               ))}
@@ -322,9 +295,6 @@ export default function KitchenCalculator() {
                   `}
                 >
                   <div className="font-semibold mb-1 text-sm">{type}</div>
-                  {countertop === type && MARKUP.countertop[type] > 0 && (
-                    <div className="text-xs text-yellow-300">+{Math.round(MARKUP.countertop[type] * 100)}%</div>
-                  )}
                   <div className="text-xs text-neutral-400 mt-1">{desc}</div>
                 </button>
               ))}
@@ -365,41 +335,33 @@ export default function KitchenCalculator() {
           {/* ПРОЗРАЧНЫЙ РАСЧЁТ */}
           <div className="bg-white/5 border border-yellow-500/30 rounded-2xl p-6">
             <h4 className="font-display text-lg font-semibold text-yellow-400 mb-4">
-              💡 Формирование цены:
+              💡 Ваша конфигурация:
             </h4>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between items-center">
-                <span className="text-neutral-400">Базовая цена ({length} м × 45 000 ₽):</span>
-                <span className="text-neutral-200 font-medium">{breakdown.base.toLocaleString('ru-RU')} ₽</span>
+                <span className="text-neutral-400">Конфигурация:</span>
+                <span className="text-neutral-200 font-medium">{configuration}</span>
               </div>
               
-              {breakdown.configurationPercent > 0 && (
-                <div className="flex justify-between items-center">
-                  <span className="text-neutral-400">• Наценка за конфигурацию ({configuration}):</span>
-                  <span className="text-yellow-400">+{breakdown.configurationPercent}%</span>
-                </div>
-              )}
+              <div className="flex justify-between items-center">
+                <span className="text-neutral-400">Фасады:</span>
+                <span className="text-neutral-200 font-medium">{facade}</span>
+              </div>
               
-              {breakdown.facadePercent > 0 && (
-                <div className="flex justify-between items-center">
-                  <span className="text-neutral-400">• Наценка за фасады ({facade}):</span>
-                  <span className="text-yellow-400">+{breakdown.facadePercent}%</span>
-                </div>
-              )}
+              <div className="flex justify-between items-center">
+                <span className="text-neutral-400">Фурнитура:</span>
+                <span className="text-neutral-200 font-medium">{fittings}</span>
+              </div>
               
-              {breakdown.fittingsPercent > 0 && (
-                <div className="flex justify-between items-center">
-                  <span className="text-neutral-400">• Наценка за фурнитуру ({fittings}):</span>
-                  <span className="text-yellow-400">+{breakdown.fittingsPercent}%</span>
-                </div>
-              )}
+              <div className="flex justify-between items-center">
+                <span className="text-neutral-400">Столешница:</span>
+                <span className="text-neutral-200 font-medium">{countertop}</span>
+              </div>
               
-              {breakdown.countertopPercent > 0 && (
-                <div className="flex justify-between items-center">
-                  <span className="text-neutral-400">• Наценка за столешницу ({countertop}):</span>
-                  <span className="text-yellow-400">+{breakdown.countertopPercent}%</span>
-                </div>
-              )}
+              <div className="flex justify-between items-center">
+                <span className="text-neutral-400">Длина:</span>
+                <span className="text-neutral-200 font-medium">{length} м</span>
+              </div>
 
               <div className="border-t border-white/10 pt-3 mt-3"></div>
               
