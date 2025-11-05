@@ -34,11 +34,51 @@ export default function ContactForm() {
       console.log('[ContactForm] 🚀 Calling submitContactForm server action...');
       const startTime = Date.now();
       
-      const res = await submitContactForm(formData);
+      let res: { success: boolean; error?: string };
+      
+      try {
+        // Пытаемся использовать server action
+        res = await submitContactForm(formData);
+      } catch (serverActionError) {
+        console.warn('[ContactForm] ⚠️ Server action failed, trying fallback API...');
+        console.warn('[ContactForm]    Server action error:', serverActionError);
+        
+        // Fallback: прямой HTTP fetch к API route
+        try {
+          const formObject = {
+            name: formData.get('name'),
+            phone: formData.get('phone'),
+            email: formData.get('email'),
+            message: formData.get('message')
+          };
+          
+          console.log('[ContactForm] 📡 Sending direct POST to /api/contact...');
+          const apiResponse = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formObject)
+          });
+          
+          console.log(`[ContactForm] 📊 API Response: ${apiResponse.status} ${apiResponse.statusText}`);
+          
+          if (apiResponse.ok) {
+            const apiData = await apiResponse.json();
+            res = { success: true };
+            console.log('[ContactForm] ✅ Fallback API succeeded:', apiData);
+          } else {
+            const errorData = await apiResponse.json().catch(() => ({ error: 'Unknown error' }));
+            res = { success: false, error: errorData.error || `HTTP ${apiResponse.status}` };
+            console.error('[ContactForm] ❌ Fallback API failed:', errorData);
+          }
+        } catch (fetchError) {
+          console.error('[ContactForm] ❌ Fallback API also failed:', fetchError);
+          throw serverActionError; // Пробрасываем оригинальную ошибку
+        }
+      }
       
       const duration = Date.now() - startTime;
-      console.log(`[ContactForm] ✅ Server action completed in ${duration}ms`);
-      console.log('[ContactForm] 📊 Response:', res);
+      console.log(`[ContactForm] ✅ Request completed in ${duration}ms`);
+      console.log('[ContactForm] 📊 Final response:', res);
       
       if (res.success) {
         console.log('[ContactForm] ✅ SUCCESS: Form submitted successfully');

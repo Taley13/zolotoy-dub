@@ -7,6 +7,20 @@ type ContactPayload = {
   message?: string;
 };
 
+/**
+ * GET handler для диагностики
+ * Показывает что endpoint работает
+ */
+export async function GET() {
+  return NextResponse.json({
+    status: 'ok',
+    message: 'Contact API endpoint is working',
+    methods: ['POST'],
+    usage: 'Send POST request with { name, phone?, email?, message? }',
+    timestamp: new Date().toISOString()
+  });
+}
+
 export async function POST(request: Request) {
   console.log('');
   console.log('═══════════════════════════════════════════════════════════');
