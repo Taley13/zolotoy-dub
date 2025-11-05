@@ -20,12 +20,115 @@ type ShowcaseItem = {
 };
 
 const showcaseItems: ShowcaseItem[] = [
+  // ========== ЭКОНОМ СЕГМЕНТ (150-250к ₽) ==========
+  {
+    id: '3',
+    title: 'Кухня эконом прямая',
+    category: 'Эконом',
+    image: 'kitchen-03.jpg',
+    description: 'Прямая кухня, ДСП фасады, надёжная стандартная фурнитура, HPL столешница',
+    kitchenParams: {
+      configuration: 'Прямая',
+      facade: 'ДСП',
+      hardware: 'Стандарт',
+      countertop: 'HPL',
+      length: 4
+    }
+  },
+  {
+    id: '7',
+    title: 'Кухня компактная эконом',
+    category: 'Эконом',
+    image: 'kitchen-07.jpg',
+    description: 'Компактная прямая кухня для студии, ДСП фасады, базовая комплектация',
+    kitchenParams: {
+      configuration: 'Прямая',
+      facade: 'ДСП',
+      hardware: 'Стандарт',
+      countertop: 'HPL',
+      length: 5
+    }
+  },
+  
+  // ========== СРЕДНИЙ СЕГМЕНТ (300-500к ₽) ==========
+  {
+    id: '2',
+    title: 'Кухня угловая МДФ',
+    category: 'Средний',
+    image: 'kitchen-02.jpg',
+    description: 'Угловая кухня, МДФ фасады с фрезеровкой, стандартная фурнитура, HPL',
+    kitchenParams: {
+      configuration: 'Угловая',
+      facade: 'МДФ',
+      hardware: 'Стандарт',
+      countertop: 'HPL',
+      length: 6
+    }
+  },
+  {
+    id: '10',
+    title: 'Кухня прямая скандинавия',
+    category: 'Средний',
+    image: 'kitchen-10.jpg',
+    description: 'Светлая прямая кухня, МДФ белый матовый, стандартная фурнитура',
+    kitchenParams: {
+      configuration: 'Прямая',
+      facade: 'МДФ',
+      hardware: 'Стандарт',
+      countertop: 'HPL',
+      length: 7
+    }
+  },
+  {
+    id: '4',
+    title: 'Кухня прямая с камнем',
+    category: 'Средний',
+    image: 'kitchen-04.jpg',
+    description: 'Прямая кухня, МДФ с интегрированными ручками, искусственный камень',
+    kitchenParams: {
+      configuration: 'Прямая',
+      facade: 'МДФ',
+      hardware: 'Премиум Blum',
+      countertop: 'Искусственный камень',
+      length: 4
+    }
+  },
+  {
+    id: '8',
+    title: 'Кухня угловая минимализм',
+    category: 'Средний',
+    image: 'kitchen-08.jpg',
+    description: 'Угловая кухня в стиле минимализм, МДФ, искусственный камень',
+    kitchenParams: {
+      configuration: 'Угловая',
+      facade: 'МДФ',
+      hardware: 'Премиум Blum',
+      countertop: 'Искусственный камень',
+      length: 4
+    }
+  },
+  {
+    id: '11',
+    title: 'Кухня угловая лофт',
+    category: 'Средний',
+    image: 'kitchen-11.jpg',
+    description: 'Угловая кухня в стиле лофт, тёмный МДФ, искусственный камень',
+    kitchenParams: {
+      configuration: 'Угловая',
+      facade: 'МДФ',
+      hardware: 'Премиум Blum',
+      countertop: 'Искусственный камень',
+      length: 4
+    }
+  },
+  
+  // ========== ПРЕМИУМ СЕГМЕНТ (500к+ ₽) ==========
   {
     id: '1',
-    title: 'Кухня премиум угловая',
-    category: 'Эмаль + Камень',
+    title: 'Кухня угловая премиум',
+    category: 'Премиум',
     image: 'kitchen-01.jpg',
-    description: 'Глянцевые фасады из эмали, встроенная техника, искусственный камень',
+    description: 'Угловая кухня премиум-класса, эмалевые фасады, встроенная техника, камень',
     kitchenParams: {
       configuration: 'Угловая',
       facade: 'Эмаль',
@@ -35,55 +138,27 @@ const showcaseItems: ShowcaseItem[] = [
     }
   },
   {
-    id: '2',
-    title: 'Кухня классика МДФ',
-    category: 'МДФ + HPL',
-    image: 'kitchen-02.jpg',
-    description: 'Классический стиль с фрезеровкой, тёплые оттенки, HPL столешница',
+    id: '5',
+    title: 'Кухня угловая с кварцем',
+    category: 'Премиум',
+    image: 'kitchen-05.jpg',
+    description: 'Угловая кухня, МДФ с интеграцией техники, кварцевая столешница',
     kitchenParams: {
       configuration: 'Угловая',
-      facade: 'МДФ',
-      hardware: 'Стандарт',
-      countertop: 'HPL',
-      length: 4.5
-    }
-  },
-  {
-    id: '3',
-    title: 'Кухня эконом прямая',
-    category: 'ДСП + HPL',
-    image: 'kitchen-03.jpg',
-    description: 'Минималистичный дизайн, надёжная стандартная фурнитура',
-    kitchenParams: {
-      configuration: 'Прямая',
-      facade: 'ДСП',
-      hardware: 'Стандарт',
-      countertop: 'HPL',
-      length: 3
-    }
-  },
-  {
-    id: '4',
-    title: 'Кухня студия премиум',
-    category: 'МДФ + Камень',
-    image: 'kitchen-04.jpg',
-    description: 'МДФ с интегрированными ручками, искусственный камень, премиум фурнитура',
-    kitchenParams: {
-      configuration: 'Прямая',
       facade: 'МДФ',
       hardware: 'Премиум Blum',
-      countertop: 'Искусственный камень',
-      length: 5
+      countertop: 'Кварцевый агломерат',
+      length: 6.5
     }
   },
   {
-    id: '5',
-    title: 'Кухня угловая большая',
-    category: 'МДФ + Кварц',
-    image: 'kitchen-05.jpg',
-    description: 'Просторная угловая кухня с кварцевой столешницей и премиум фурнитурой',
+    id: '9',
+    title: 'Кухня с островом',
+    category: 'Премиум',
+    image: 'kitchen-09.jpg',
+    description: 'Индивидуальная планировка с островом, МДФ фасады, кварцевый агломерат',
     kitchenParams: {
-      configuration: 'Угловая',
+      configuration: 'Индивидуальная',
       facade: 'МДФ',
       hardware: 'Премиум Blum',
       countertop: 'Кварцевый агломерат',
@@ -93,9 +168,9 @@ const showcaseItems: ShowcaseItem[] = [
   {
     id: '6',
     title: 'Кухня островная люкс',
-    category: 'Эмаль + Кварц',
+    category: 'Премиум',
     image: 'kitchen-06.jpg',
-    description: 'Островная планировка, эмаль, кварцевый агломерат, полная интеграция техники',
+    description: 'Островная кухня класса люкс, эмалевые фасады, кварц, полная интеграция',
     kitchenParams: {
       configuration: 'Индивидуальная',
       facade: 'Эмаль',
@@ -105,79 +180,9 @@ const showcaseItems: ShowcaseItem[] = [
     }
   },
   {
-    id: '7',
-    title: 'Кухня неоклассика',
-    category: 'Эмаль + Камень',
-    image: 'kitchen-07.jpg',
-    description: 'Элегантная кухня с эмалевыми фасадами и искусственным камнем',
-    kitchenParams: {
-      configuration: 'Прямая',
-      facade: 'Эмаль',
-      hardware: 'Премиум Blum',
-      countertop: 'Искусственный камень',
-      length: 4
-    }
-  },
-  {
-    id: '8',
-    title: 'Кухня минимализм',
-    category: 'ДСП + Камень',
-    image: 'kitchen-08.jpg',
-    description: 'Современный минимализм, ДСП с push-to-open, искусственный камень',
-    kitchenParams: {
-      configuration: 'Угловая',
-      facade: 'ДСП',
-      hardware: 'Премиум Blum',
-      countertop: 'Искусственный камень',
-      length: 5.5
-    }
-  },
-  {
-    id: '9',
-    title: 'Кухня индивидуальная',
-    category: 'МДФ + Кварц',
-    image: 'kitchen-09.jpg',
-    description: 'Индивидуальный проект с нестандартной планировкой и барной стойкой',
-    kitchenParams: {
-      configuration: 'Индивидуальная',
-      facade: 'МДФ',
-      hardware: 'Премиум Blum',
-      countertop: 'Кварцевый агломерат',
-      length: 6.5
-    }
-  },
-  {
-    id: '10',
-    title: 'Кухня скандинавия',
-    category: 'МДФ + HPL',
-    image: 'kitchen-10.jpg',
-    description: 'Светлая скандинавская кухня, МДФ белый матовый, стандартная фурнитура',
-    kitchenParams: {
-      configuration: 'Прямая',
-      facade: 'МДФ',
-      hardware: 'Стандарт',
-      countertop: 'HPL',
-      length: 3.5
-    }
-  },
-  {
-    id: '11',
-    title: 'Кухня лофт индустриальная',
-    category: 'МДФ + Камень',
-    image: 'kitchen-11.jpg',
-    description: 'Стиль лофт с тёмными фасадами МДФ и искусственным камнем',
-    kitchenParams: {
-      configuration: 'Угловая',
-      facade: 'МДФ',
-      hardware: 'Премиум Blum',
-      countertop: 'Искусственный камень',
-      length: 5
-    }
-  },
-  {
     id: '12',
     title: 'Кухня премиум большая',
-    category: 'Эмаль + Кварц',
+    category: 'Премиум',
     image: 'kitchen-12.jpg',
     description: 'Большая премиум кухня с индивидуальной планировкой, эмаль + кварц',
     kitchenParams: {
