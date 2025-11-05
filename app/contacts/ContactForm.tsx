@@ -10,19 +10,65 @@ export default function ContactForm() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    
+    console.log('');
+    console.log('═════════════════════════════════════════════════════════');
+    console.log('📝 [ContactForm] FORM SUBMISSION STARTED');
+    console.log('═════════════════════════════════════════════════════════');
+    console.log('[ContactForm] Timestamp:', new Date().toISOString());
+    
     setStatus('loading');
     setError(null);
     
     const formData = new FormData(e.currentTarget);
-    const res = await submitContactForm(formData);
     
-    if (res.success) {
-      setStatus('success');
-      formRef.current?.reset();
-    } else {
+    // Логируем данные формы
+    console.log('[ContactForm] 📋 Form data extracted:');
+    console.log('  - Name:', formData.get('name'));
+    console.log('  - Phone:', formData.get('phone'));
+    console.log('  - Email:', formData.get('email'));
+    console.log('  - Message:', formData.get('message') ? `"${String(formData.get('message')).substring(0, 50)}..."` : 'empty');
+    console.log('  - Source:', formData.get('source') || 'contact_form');
+    
+    try {
+      console.log('[ContactForm] 🚀 Calling submitContactForm server action...');
+      const startTime = Date.now();
+      
+      const res = await submitContactForm(formData);
+      
+      const duration = Date.now() - startTime;
+      console.log(`[ContactForm] ✅ Server action completed in ${duration}ms`);
+      console.log('[ContactForm] 📊 Response:', res);
+      
+      if (res.success) {
+        console.log('[ContactForm] ✅ SUCCESS: Form submitted successfully');
+        setStatus('success');
+        formRef.current?.reset();
+      } else {
+        console.error('[ContactForm] ❌ FAILURE: Server returned error');
+        console.error('[ContactForm]    Error message:', res.error);
+        setStatus('error');
+        setError(res.error || 'Ошибка отправки');
+      }
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+      console.error('');
+      console.error('═════════════════════════════════════════════════════════');
+      console.error('[ContactForm] ❌ EXCEPTION CAUGHT');
+      console.error('═════════════════════════════════════════════════════════');
+      console.error('[ContactForm] Error type:', error?.constructor?.name);
+      console.error('[ContactForm] Error message:', errorMsg);
+      if (error instanceof Error && error.stack) {
+        console.error('[ContactForm] Stack trace:', error.stack);
+      }
+      console.error('═════════════════════════════════════════════════════════');
+      
       setStatus('error');
-      setError(res.error || 'Ошибка отправки');
+      setError('Произошла ошибка при отправке');
     }
+    
+    console.log('═════════════════════════════════════════════════════════');
+    console.log('');
   }
 
   return (

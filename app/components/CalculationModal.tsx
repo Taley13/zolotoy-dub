@@ -68,15 +68,36 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    console.log('');
+    console.log('═════════════════════════════════════════════════════════');
+    console.log('🧮 [CalculationModal] CALCULATOR FORM SUBMISSION STARTED');
+    console.log('═════════════════════════════════════════════════════════');
+    console.log('[CalculationModal] Timestamp:', new Date().toISOString());
+    console.log('[CalculationModal] 📋 Form data:');
+    console.log('  - Name:', formData.name);
+    console.log('  - Phone:', formData.phone);
+    console.log('  - Email:', formData.email || '(not provided)');
+    console.log('[CalculationModal] ⚙️ Kitchen params:');
+    console.log('  - Configuration:', params.configuration);
+    console.log('  - Facade:', params.facade);
+    console.log('  - Hardware:', params.hardware);
+    console.log('  - Countertop:', params.countertop);
+    console.log('  - Length:', params.length, 'm');
+    console.log('  - Price:', params.calculatedPrice, '₽');
+    console.log('[CalculationModal] 🎁 Discount status:', hasDiscount ? 'ACTIVE' : 'NO');
+    
     if (!formData.name || !formData.phone) {
+      console.warn('[CalculationModal] ⚠️ Validation failed: missing required fields');
       alert('Пожалуйста, заполните имя и телефон');
       return;
     }
 
+    console.log('[CalculationModal] ✅ Validation passed');
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
     try {
+      console.log('[CalculationModal] 🔄 Preparing message...');
       // Текущая дата и время
       const now = new Date();
       const dateStr = now.toLocaleString('ru-RU', {
@@ -143,7 +164,14 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
         `.trim();
       }
 
+      console.log('[CalculationModal] ✅ Message prepared');
+      console.log('[CalculationModal] 📄 Message preview (first 150 chars):');
+      console.log('─────────────────────────────────────────────────');
+      console.log(message.substring(0, 150) + '...');
+      console.log('─────────────────────────────────────────────────');
+      
       // Создаём FormData для отправки
+      console.log('[CalculationModal] 🔄 Creating FormData...');
       const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name);
       formDataToSend.append('phone', formData.phone);
@@ -152,22 +180,52 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
       }
       formDataToSend.append('message', message);
       formDataToSend.append('source', 'calculator'); // Указываем источник
+      console.log('[CalculationModal] ✅ FormData created');
+      console.log('[CalculationModal] 📋 FormData contents:');
+      console.log('  - name:', formDataToSend.get('name'));
+      console.log('  - phone:', formDataToSend.get('phone'));
+      console.log('  - email:', formDataToSend.get('email'));
+      console.log('  - source:', formDataToSend.get('source'));
+      console.log('  - message length:', message.length, 'chars');
 
+      console.log('[CalculationModal] 🚀 Calling submitContactForm server action...');
+      const startTime = Date.now();
+      
       const result = await submitContactForm(formDataToSend);
+      
+      const duration = Date.now() - startTime;
+      console.log(`[CalculationModal] ✅ Server action completed in ${duration}ms`);
+      console.log('[CalculationModal] 📊 Response:', result);
 
       if (result.success) {
+        console.log('[CalculationModal] ✅ SUCCESS: Calculator form submitted successfully');
         setSubmitStatus('success');
         setTimeout(() => {
           handleClose();
         }, 2000);
       } else {
+        console.error('[CalculationModal] ❌ FAILURE: Server returned error');
+        console.error('[CalculationModal]    Error:', result.error);
         setSubmitStatus('error');
       }
     } catch (error) {
-      console.error('Submit error:', error);
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+      console.error('');
+      console.error('═════════════════════════════════════════════════════════');
+      console.error('[CalculationModal] ❌ EXCEPTION CAUGHT');
+      console.error('═════════════════════════════════════════════════════════');
+      console.error('[CalculationModal] Error type:', error?.constructor?.name);
+      console.error('[CalculationModal] Error message:', errorMsg);
+      if (error instanceof Error && error.stack) {
+        console.error('[CalculationModal] Stack trace:', error.stack);
+      }
+      console.error('═════════════════════════════════════════════════════════');
+      
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
+      console.log('═════════════════════════════════════════════════════════');
+      console.log('');
     }
   };
 
