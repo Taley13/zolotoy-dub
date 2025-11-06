@@ -1,0 +1,19 @@
+# Хранилища данных (конфиденциальная информация)
+applications.json
+applications.backup.json
+export_*.json
+
+# Node modules
+node_modules/
+
+# Логи
+*.log
+npm-debug.log*
+
+# Environment variables
+.env
+.env.local
+
+# macOS
+.DS_Store
+
