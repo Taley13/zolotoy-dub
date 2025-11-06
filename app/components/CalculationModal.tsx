@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { submitContactForm } from '@/app/contacts/actions';
+import { safeLocalStorage } from '@/lib/safeStorage';
 
 interface CalculationParams {
   configuration: string;
@@ -29,11 +30,12 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
   const [hasDiscount, setHasDiscount] = useState(false);
   const [discountEndDate, setDiscountEndDate] = useState<string>('');
 
-  // Проверяем наличие скидки при открытии модалки
+  // Проверяем наличие скидки при открытии модалки (SSR-безопасная)
   useEffect(() => {
     if (!isOpen) return;
 
-    const activationTime = localStorage.getItem('discount_activation');
+    // Безопасное чтение из localStorage
+    const activationTime = safeLocalStorage.getItem('discount_activation');
     if (activationTime) {
       const activation = parseInt(activationTime);
       const now = Date.now();

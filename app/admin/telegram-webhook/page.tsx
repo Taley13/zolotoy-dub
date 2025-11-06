@@ -6,7 +6,7 @@
  * Админская страница для управления вебхуком Telegram бота
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export default function TelegramWebhookPage() {
   const [webhookUrl, setWebhookUrl] = useState('');
@@ -19,13 +19,8 @@ export default function TelegramWebhookPage() {
     ? `${window.location.origin}/api/telegram`
     : 'https://zol-dub.online/api/telegram';
 
-  useEffect(() => {
-    setWebhookUrl(defaultWebhookUrl);
-    loadWebhookInfo();
-  }, []);
-
-  // Загрузка текущей информации о вебхуке
-  const loadWebhookInfo = async () => {
+  // Загрузка текущей информации о вебхуке (обернуто в useCallback)
+  const loadWebhookInfo = useCallback(async () => {
     try {
       const response = await fetch('/api/telegram/webhook-info');
       const data = await response.json();
@@ -35,7 +30,12 @@ export default function TelegramWebhookPage() {
     } catch (error) {
       console.error('Ошибка загрузки info:', error);
     }
-  };
+  }, []); // Пустой массив зависимостей - функция не зависит от внешних переменных
+
+  useEffect(() => {
+    setWebhookUrl(defaultWebhookUrl);
+    loadWebhookInfo();
+  }, [defaultWebhookUrl, loadWebhookInfo]);
 
   // Установка вебхука
   const setWebhook = async () => {
@@ -262,10 +262,10 @@ export default function TelegramWebhookPage() {
               <strong>1.</strong> Убедитесь, что сайт доступен по HTTPS (обязательно для вебхуков)
             </li>
             <li>
-              <strong>2.</strong> Нажмите "Установить Webhook" для активации
+              <strong>2.</strong> Нажмите &quot;Установить Webhook&quot; для активации
             </li>
             <li>
-              <strong>3.</strong> Проверьте статус - должно быть "🟢 Активен"
+              <strong>3.</strong> Проверьте статус - должно быть &quot;🟢 Активен&quot;
             </li>
             <li>
               <strong>4.</strong> Отправьте тестовое сообщение боту для проверки

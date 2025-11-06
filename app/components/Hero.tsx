@@ -28,7 +28,7 @@ export default function Hero() {
 
       <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col items-center justify-center px-4 text-center sm:px-6 lg:px-8">
         <motion.h1
-          className="font-elegant text-5xl font-bold tracking-tight text-brand-400 sm:text-6xl md:text-7xl"
+          className="logo-text font-elegant text-5xl font-bold tracking-tight text-brand-400 sm:text-6xl md:text-7xl"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}

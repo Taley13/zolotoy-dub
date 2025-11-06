@@ -13,11 +13,17 @@ import { kv } from '@vercel/kv';
 // КОНФИГУРАЦИЯ
 // ════════════════════════════════════════════════════════════
 
-const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN!;
-const ADMIN_IDS = process.env.TELEGRAM_CHAT_ID!.split(',').map(id => parseInt(id.trim()));
+const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
+const ADMIN_IDS = process.env.TELEGRAM_CHAT_ID 
+  ? process.env.TELEGRAM_CHAT_ID.split(',').map(id => parseInt(id.trim()))
+  : [];
 
 if (!BOT_TOKEN) {
   console.error('❌ TELEGRAM_BOT_TOKEN не найден');
+}
+
+if (ADMIN_IDS.length === 0) {
+  console.error('❌ TELEGRAM_CHAT_ID не найден или пуст');
 }
 
 // Создаем бота БЕЗ polling (для вебхуков)

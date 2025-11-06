@@ -42,7 +42,7 @@ export default function Logo() {
           <circle cx="115" cy="110" r="6" fill="url(#goldGrad)" opacity="0.6" />
         </g>
       </svg>
-      <span className="ml-2 font-display text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-600">
+      <span className="ml-2 logo-text font-display text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-600">
         Золотой Дуб
       </span>
     </Link>

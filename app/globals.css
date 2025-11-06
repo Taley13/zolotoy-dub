@@ -260,3 +260,23 @@ html, body {
   font-family: var(--font-playfair), Georgia, serif;
   @apply font-medium;
 }
+
+/* Выравнивание текста логотипа */
+.logo-text {
+  line-height: 1;
+  vertical-align: baseline;
+  display: inline-block;
+  letter-spacing: -0.02em;
+  /* Исправляем выравнивание baseline для кириллицы */
+  position: relative;
+  top: -0.05em;
+}
+
+/* Дополнительная коррекция для font-display */
+.font-display {
+  /* Нормализуем метрики шрифта для лучшего выравнивания */
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}

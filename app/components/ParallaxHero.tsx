@@ -81,7 +81,7 @@ export default function ParallaxHero() {
             <span className="text-5xl filter drop-shadow-[0_0_8px_rgba(255,215,0,0.6)]">🌰</span>
           </div>
           
-          <h1 className="text-5xl font-bold md:text-6xl lg:text-7xl" style={{fontFamily: "'Cormorant Garamond', 'Playfair Display', serif"}}>
+          <h1 className="logo-text text-5xl font-bold md:text-6xl lg:text-7xl" style={{fontFamily: "'Cormorant Garamond', 'Playfair Display', serif"}}>
             <span className="bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent">
               Золотой Дуб
             </span>

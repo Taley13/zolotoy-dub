@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { safeLocalStorage } from '@/lib/safeStorage';
 
 export default function ModernHero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -108,14 +109,14 @@ export default function ModernHero() {
           {/* ЗОЛОТОЙ ЖЕЛУДЬ С ЭПИЧНОЙ ПОДСВЕТКОЙ */}
           <button
             onClick={() => {
-              // Активируем скидку
+              // Активируем скидку (SSR-безопасно)
               const activationTime = Date.now();
-              localStorage.setItem('discount_activation', activationTime.toString());
+              safeLocalStorage.setItem('discount_activation', activationTime.toString());
               
-              // Прокручиваем к калькулятору
-              const calculator = document.getElementById('calculator');
-              if (calculator) {
-                calculator.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              // Прокручиваем к калькулятору (с проверкой document)
+              if (typeof window !== 'undefined') {
+                const calculator = document.getElementById('calculator');
+                calculator?.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }
             }}
             className="mb-6 sm:mb-8 animate-float cursor-pointer group/acorn relative"
@@ -171,7 +172,7 @@ export default function ModernHero() {
           </button>
           
           {/* 1. Основной заголовок - Playfair Display 700 с золотым градиентом */}
-          <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-4 sm:mb-6 tracking-tight drop-shadow-lg px-2">
+          <h1 className="logo-text font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-6 tracking-tight drop-shadow-lg px-2">
             Золотой дуб
           </h1>
           

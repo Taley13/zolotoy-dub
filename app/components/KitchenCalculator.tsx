@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import CalculationModal from './CalculationModal';
+import { safeLocalStorage } from '@/lib/safeStorage';
 
 type ConfigurationType = 'Прямая' | 'Угловая' | 'Индивидуальная';
 type FacadeType = 'ДСП' | 'МДФ' | 'Эмаль';
@@ -67,7 +68,8 @@ export default function KitchenCalculator() {
   };
 
   // Логика расчета стоимости
-  const calculatePrice = (): number => {
+  // Обернуто в useCallback для предотвращения stale closures
+  const calculatePrice = useCallback((): number => {
     const configurationMarkup = 1 + MARKUP.configuration[configuration];
     const facadeMarkup = 1 + MARKUP.facade[facade];
     const fittingsMarkup = 1 + MARKUP.fittings[fittings];
@@ -81,7 +83,7 @@ export default function KitchenCalculator() {
     }
     
     return Math.round(totalPrice);
-  };
+  }, [configuration, facade, fittings, countertop, length, discountActive]);
 
   const price = calculatePrice();
 
@@ -95,10 +97,11 @@ export default function KitchenCalculator() {
     calculatedPrice: 0
   });
 
-  // Проверка активности скидки
+  // Проверка активности скидки (SSR-безопасная)
   useEffect(() => {
     const checkDiscount = () => {
-      const activationTime = localStorage.getItem('discount_activation');
+      // Безопасное чтение из localStorage
+      const activationTime = safeLocalStorage.getItem('discount_activation');
       if (!activationTime) {
         setDiscountActive(false);
         return;
@@ -121,7 +124,7 @@ export default function KitchenCalculator() {
         setTimeRemaining(`${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
       } else {
         setDiscountActive(false);
-        localStorage.removeItem('discount_activation');
+        safeLocalStorage.removeItem('discount_activation');
       }
     };
 
@@ -142,7 +145,7 @@ export default function KitchenCalculator() {
       length: length,
       calculatedPrice: newPrice
     });
-  }, [configuration, facade, fittings, countertop, length, discountActive]);
+  }, [configuration, facade, fittings, countertop, length, discountActive, calculatePrice]);
 
   const handleGetQuote = () => {
     setIsModalOpen(true);

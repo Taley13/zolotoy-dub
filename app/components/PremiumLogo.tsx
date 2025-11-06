@@ -36,7 +36,7 @@ export default function PremiumLogo() {
       
       {/* Текст */}
       <div className="flex flex-col">
-        <span className="font-display text-xl font-bold bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-600 bg-clip-text text-transparent">
+        <span className="logo-text font-display text-xl font-bold bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-600 bg-clip-text text-transparent">
           Золотой Дуб
         </span>
         <span className="text-[10px] text-neutral-500 uppercase tracking-wider">Premium Furniture</span>

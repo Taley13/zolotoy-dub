@@ -66,9 +66,19 @@ export default function ContactForm() {
             res = { success: true };
             console.log('[ContactForm] ✅ Fallback API succeeded:', apiData);
           } else {
-            const errorData = await apiResponse.json().catch(() => ({ error: 'Unknown error' }));
-            res = { success: false, error: errorData.error || `HTTP ${apiResponse.status}` };
+            const errorData = await apiResponse.json().catch(() => ({ error: 'Неизвестная ошибка сервера' }));
+            
+            // Получаем понятное сообщение об ошибке
+            let errorMessage = errorData.error || 'Произошла ошибка';
+            
+            // Добавляем детали в development режиме
+            if (errorData.details && process.env.NODE_ENV === 'development') {
+              errorMessage += ` (${errorData.details})`;
+            }
+            
+            res = { success: false, error: errorMessage };
             console.error('[ContactForm] ❌ Fallback API failed:', errorData);
+            console.error('[ContactForm]    Status code:', apiResponse.status);
           }
         } catch (fetchError) {
           console.error('[ContactForm] ❌ Fallback API also failed:', fetchError);

@@ -29,6 +29,7 @@ export async function POST(request: Request) {
   console.log(`[API] Timestamp: ${new Date().toISOString()}`);
   console.log(`[API] Method: ${request.method}`);
   console.log(`[API] URL: ${request.url}`);
+  console.log(`[API] Environment: ${process.env.NODE_ENV || 'unknown'}`);
   
   try {
     console.log('[API] 🔄 Step 1: Parsing request body...');
@@ -59,30 +60,58 @@ export async function POST(request: Request) {
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
     const chatIdsRaw = process.env.TELEGRAM_CHAT_ID;
     
-    console.log(`[API]    - TELEGRAM_BOT_TOKEN: ${botToken ? '✓ Present' : '✗ Missing'}`);
-    console.log(`[API]    - TELEGRAM_CHAT_ID: ${chatIdsRaw ? '✓ Present' : '✗ Missing'}`);
+    // Детальная диагностика переменных окружения
+    console.log('[API] Environment variables diagnostic:');
+    console.log(`[API]    - TELEGRAM_BOT_TOKEN type: ${typeof botToken}`);
+    console.log(`[API]    - TELEGRAM_BOT_TOKEN length: ${botToken?.length || 0}`);
+    console.log(`[API]    - TELEGRAM_BOT_TOKEN present: ${botToken ? '✓ YES' : '✗ NO'}`);
+    console.log(`[API]    - TELEGRAM_BOT_TOKEN value: ${botToken ? botToken.substring(0, 10) + '...' : 'UNDEFINED'}`);
+    console.log(`[API]    - TELEGRAM_CHAT_ID type: ${typeof chatIdsRaw}`);
+    console.log(`[API]    - TELEGRAM_CHAT_ID length: ${chatIdsRaw?.length || 0}`);
+    console.log(`[API]    - TELEGRAM_CHAT_ID present: ${chatIdsRaw ? '✓ YES' : '✗ NO'}`);
+    console.log(`[API]    - TELEGRAM_CHAT_ID value: "${chatIdsRaw || 'UNDEFINED'}"`);
 
-    if (!botToken || !chatIdsRaw) {
-      console.error('[API] ❌ CONFIG ERROR: Environment variables missing');
+    // Проверяем наличие всех переменных окружения
+    const missingVars = [];
+    if (!botToken) missingVars.push('TELEGRAM_BOT_TOKEN');
+    if (!chatIdsRaw) missingVars.push('TELEGRAM_CHAT_ID');
+
+    if (missingVars.length > 0) {
+      console.error('[API] ❌ CONFIG ERROR: Missing environment variables');
+      console.error(`[API]    Missing variables: ${missingVars.join(', ')}`);
+      console.error('[API]    Please check:');
+      console.error('[API]    1. Vercel environment variables are set');
+      console.error('[API]    2. Variables are assigned to correct environment (Production/Preview/Development)');
+      console.error('[API]    3. Project has been redeployed after adding variables');
+      
+      // Более информативное сообщение об ошибке
       return NextResponse.json(
-        { error: 'Сервис временно недоступен. Не настроены переменные окружения.' },
-        { status: 500 }
+        { 
+          error: 'Временные технические неполадки. Пожалуйста, позвоните нам: 8-930-193-34-20',
+          details: process.env.NODE_ENV === 'development' ? `Missing: ${missingVars.join(', ')}` : undefined
+        },
+        { status: 503 }
       );
     }
-    console.log('[API] ✅ Environment variables OK');
+    console.log('[API] ✅ All required environment variables are present');
 
     console.log('[API] 🔄 Step 5: Parsing chat IDs...');
     // Разделяем chat_id по запятой и очищаем пробелы
-    const chatIds = chatIdsRaw.split(',').map(id => id.trim()).filter(Boolean);
+    // После проверки выше, chatIdsRaw гарантированно определен
+    const chatIds = chatIdsRaw!.split(',').map(id => id.trim()).filter(Boolean);
     console.log(`[API]    - Raw value: "${chatIdsRaw}"`);
     console.log(`[API]    - Parsed: [${chatIds.join(', ')}]`);
     console.log(`[API]    - Count: ${chatIds.length}`);
     
     if (chatIds.length === 0) {
       console.error('[API] ❌ No valid chat IDs found');
+      console.error('[API]    TELEGRAM_CHAT_ID is set but contains no valid IDs');
       return NextResponse.json(
-        { error: 'Сервис временно недоступен. Не настроены получатели.' },
-        { status: 500 }
+        { 
+          error: 'Временные технические неполадки. Пожалуйста, позвоните нам: 8-930-193-34-20',
+          details: process.env.NODE_ENV === 'development' ? 'No valid chat IDs' : undefined
+        },
+        { status: 503 }
       );
     }
     console.log('[API] ✅ Chat IDs parsed successfully');
@@ -112,7 +141,7 @@ export async function POST(request: Request) {
       console.log(`[API] 📤 Send #${index + 1}/${chatIds.length}: Starting for chat ${chatId}`);
       
       try {
-        const apiUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+        const apiUrl = `https://api.telegram.org/bot${botToken!}/sendMessage`;
         const payload = { chat_id: chatId, text };
         
         console.log(`[API]    - URL: https://api.telegram.org/bot*****/sendMessage`);
@@ -125,7 +154,9 @@ export async function POST(request: Request) {
             'Content-Type': 'application/json',
             'User-Agent': 'Zolotoy-Dub-API/1.0'
           },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(payload),
+          // Добавляем таймаут для надежности
+          signal: AbortSignal.timeout(10000) // 10 секунд
         });
 
         const responseTime = Date.now() - sendStartTime;
@@ -138,14 +169,27 @@ export async function POST(request: Request) {
 
         if (!tgResp.ok) {
           console.error(`[API] ❌ Failed to send to ${chatId}:`);
+          console.error(`[API]    - Status: ${tgResp.status}`);
           console.error(`[API]    - Error: ${responseData.description || 'Unknown error'}`);
+          console.error(`[API]    - Error code: ${responseData.error_code || 'N/A'}`);
           console.error(`[API]    - Full response:`, JSON.stringify(responseData, null, 2));
-          return { chatId, success: false, error: responseData.description || 'Unknown error' };
+          
+          // Специфичные ошибки Telegram API
+          let errorMsg = responseData.description || 'Unknown error';
+          if (responseData.error_code === 400) {
+            errorMsg = 'Неверный формат chat ID или токена';
+          } else if (responseData.error_code === 401) {
+            errorMsg = 'Неверный токен бота';
+          } else if (responseData.error_code === 403) {
+            errorMsg = 'Бот заблокирован пользователем или не имеет прав';
+          }
+          
+          return { chatId, success: false, error: errorMsg, errorCode: responseData.error_code };
         }
 
         console.log(`[API] ✅ Successfully sent to ${chatId}`);
         console.log(`[API]    - Message ID: ${responseData.result?.message_id || 'N/A'}`);
-        return { chatId, success: true };
+        return { chatId, success: true, messageId: responseData.result?.message_id };
       } catch (error) {
         const errorTime = Date.now() - sendStartTime;
         console.error(`[API] ❌ Network error sending to ${chatId} (${errorTime}ms):`);
@@ -195,8 +239,10 @@ export async function POST(request: Request) {
     // Если хотя бы одна отправка успешна - считаем успехом
     if (successful > 0) {
       console.log('[API] ✅ Request completed successfully (at least one delivery succeeded)');
+      console.log(`[API] Success rate: ${successful}/${results.length} (${Math.round(successful/results.length * 100)}%)`);
       return NextResponse.json({ 
         ok: true, 
+        message: 'Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.',
         delivered: successful, 
         failed: failed,
         total: results.length 
@@ -205,9 +251,22 @@ export async function POST(request: Request) {
 
     // Все отправки провалились
     console.error('[API] ❌ Request failed (all deliveries failed)');
+    console.error('[API] This likely indicates a configuration issue with the Telegram bot');
+    
+    // Собираем информацию об ошибках
+    const errorSummary = results
+      .filter(r => r.status === 'fulfilled' && !r.value.success)
+      .map(r => r.status === 'fulfilled' ? r.value.error : 'Unknown')
+      .join('; ');
+    
+    console.error(`[API] Error summary: ${errorSummary}`);
+    
     return NextResponse.json(
-      { error: 'Не удалось отправить сообщение ни одному получателю' },
-      { status: 502 }
+      { 
+        error: 'Временные технические неполадки. Пожалуйста, позвоните нам: 8-930-193-34-20',
+        details: process.env.NODE_ENV === 'development' ? errorSummary : undefined
+      },
+      { status: 503 }
     );
 
   } catch (error) {
@@ -217,17 +276,36 @@ export async function POST(request: Request) {
     console.error('═══════════════════════════════════════════════════════════');
     console.error('[API] Error type:', error?.constructor?.name || 'Unknown');
     
+    let errorMessage = 'Произошла непредвиденная ошибка';
+    let statusCode = 500;
+    
     if (error instanceof Error) {
       console.error('[API] Error name:', error.name);
       console.error('[API] Error message:', error.message);
       console.error('[API] Stack trace:');
       console.error(error.stack);
+      
+      // Специфичные типы ошибок
+      if (error.name === 'SyntaxError') {
+        errorMessage = 'Некорректный формат данных';
+        statusCode = 400;
+      } else if (error.message.includes('fetch')) {
+        errorMessage = 'Ошибка сетевого соединения';
+        statusCode = 503;
+      } else if (error.message.includes('timeout')) {
+        errorMessage = 'Превышено время ожидания';
+        statusCode = 504;
+      }
     } else {
       console.error('[API] Raw error:', error);
     }
     
     console.error('═══════════════════════════════════════════════════════════');
-    return NextResponse.json({ error: 'Некорректные данные' }, { status: 400 });
+    
+    return NextResponse.json({ 
+      error: 'Временные технические неполадки. Пожалуйста, позвоните нам: 8-930-193-34-20',
+      details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+    }, { status: statusCode });
   }
 }
 
