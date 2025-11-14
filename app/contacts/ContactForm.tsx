@@ -122,49 +122,87 @@ export default function ContactForm() {
   }
 
   return (
-    <form ref={formRef} className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-6 shadow-lg" onSubmit={handleSubmit}>
+    <form
+      ref={formRef}
+      className="rounded-2xl border border-[#12484C] bg-[#12484C]/20 p-6 shadow-[0_25px_70px_rgba(4,8,10,0.55)] backdrop-blur"
+      onSubmit={handleSubmit}
+    >
       <div className="grid gap-5">
         <div>
-          <label htmlFor="name" className="mb-1 block text-sm font-medium text-neutral-200">Имя</label>
-          <input id="name" name="name" required placeholder="Как к вам обращаться?"
-                 className="w-full rounded-md border border-neutral-700 bg-neutral-800 px-3 py-2 text-neutral-100 placeholder:text-neutral-500 shadow-sm outline-none ring-brand-500 focus:border-brand-500 focus:ring-2" />
+          <label htmlFor="name" className="mb-1 block text-sm font-medium text-[#E2E2E0]">
+            Имя
+          </label>
+          <input
+            id="name"
+            name="name"
+            required
+            placeholder="Как к вам обращаться?"
+            className="w-full rounded-xl border border-[#12484C]/60 bg-[#0E2931] px-3 py-2 text-[#E2E2E0] placeholder:text-[#E2E2E0]/40 shadow-inner outline-none transition focus:border-[#2B7574] focus:ring-2 focus:ring-[#2B7574]/70"
+          />
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2">
           <div>
-            <label htmlFor="phone" className="mb-1 block text-sm font-medium text-neutral-200">Телефон</label>
-            <input id="phone" name="phone" type="tel" placeholder="+7 (___) ___-__-__"
-                   className="w-full rounded-md border border-neutral-700 bg-neutral-800 px-3 py-2 text-neutral-100 placeholder:text-neutral-500 shadow-sm outline-none ring-brand-500 focus:border-brand-500 focus:ring-2" />
+            <label htmlFor="phone" className="mb-1 block text-sm font-medium text-[#E2E2E0]">
+              Телефон
+            </label>
+            <input
+              id="phone"
+              name="phone"
+              type="tel"
+              placeholder="+7 (___) ___-__-__"
+              className="w-full rounded-xl border border-[#12484C]/60 bg-[#0E2931] px-3 py-2 text-[#E2E2E0] placeholder:text-[#E2E2E0]/40 shadow-inner outline-none transition focus:border-[#2B7574] focus:ring-2 focus:ring-[#2B7574]/70"
+            />
           </div>
           <div>
-            <label htmlFor="email" className="mb-1 block text-sm font-medium text-neutral-200">E-mail</label>
-            <input id="email" name="email" type="email" placeholder="you@example.com"
-                   className="w-full rounded-md border border-neutral-700 bg-neutral-800 px-3 py-2 text-neutral-100 placeholder:text-neutral-500 shadow-sm outline-none ring-brand-500 focus:border-brand-500 focus:ring-2" />
+            <label htmlFor="email" className="mb-1 block text-sm font-medium text-[#E2E2E0]">
+              E-mail
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="you@example.com"
+              className="w-full rounded-xl border border-[#12484C]/60 bg-[#0E2931] px-3 py-2 text-[#E2E2E0] placeholder:text-[#E2E2E0]/40 shadow-inner outline-none transition focus:border-[#2B7574] focus:ring-2 focus:ring-[#2B7574]/70"
+            />
           </div>
         </div>
 
         <div>
-          <label htmlFor="message" className="mb-1 block text-sm font-medium text-neutral-200">Сообщение</label>
-          <textarea id="message" name="message" rows={5}
-                    placeholder="Опишите задачу, размеры помещения или интересующий стиль"
-                    className="w-full resize-y rounded-md border border-neutral-700 bg-neutral-800 px-3 py-2 text-neutral-100 placeholder:text-neutral-500 shadow-sm outline-none ring-brand-500 focus:border-brand-500 focus:ring-2" />
+          <label htmlFor="message" className="mb-1 block text-sm font-medium text-[#E2E2E0]">
+            Сообщение
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            rows={5}
+            placeholder="Опишите задачу, размеры помещения или интересующий стиль"
+            className="w-full resize-y rounded-xl border border-[#12484C]/60 bg-[#0E2931] px-3 py-2 text-[#E2E2E0] placeholder:text-[#E2E2E0]/40 shadow-inner outline-none transition focus:border-[#2B7574] focus:ring-2 focus:ring-[#2B7574]/70"
+          />
         </div>
 
-        <label className="flex items-start gap-3 text-sm text-neutral-300">
-          <input type="checkbox" required className="mt-1 h-4 w-4 rounded border-neutral-700 bg-neutral-800 text-brand-500 focus:ring-brand-500" />
+        <label className="flex items-start gap-3 text-sm text-[#E2E2E0]/75">
+          <input
+            type="checkbox"
+            required
+            className="mt-1 h-4 w-4 rounded border-[#12484C] bg-[#0E2931] text-[#2B7574] focus:ring-[#2B7574]"
+          />
           <span>Я согласен(на) на обработку персональных данных и принимаю условия политики конфиденциальности.</span>
         </label>
 
-        <button type="submit" disabled={status === 'loading'}
-                className="mt-2 inline-flex items-center justify-center rounded-md bg-brand-500 px-5 py-2.5 text-white shadow hover:bg-brand-600 transition disabled:opacity-60">
+        <button
+          type="submit"
+          disabled={status === 'loading'}
+          className="mt-2 inline-flex items-center justify-center rounded-full bg-[#861211] px-5 py-3 text-sm font-semibold text-[#E2E2E0] shadow-[0_15px_40px_rgba(134,18,17,0.45)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#a41b1a] disabled:translate-y-0 disabled:opacity-60"
+        >
           {status === 'loading' ? 'Отправка…' : 'Отправить заявку'}
         </button>
 
         {status === 'success' && (
-          <p className="text-sm text-green-400">Заявка отправлена! Мы свяжемся с вами в ближайшее время.</p>
+          <p className="text-sm text-[#43d17a]">Заявка отправлена! Мы свяжемся с вами в ближайшее время.</p>
         )}
         {status === 'error' && (
-          <p className="text-sm text-red-400">{error || 'Произошла ошибка. Попробуйте позже.'}</p>
+          <p className="text-sm text-[#f87171]">{error || 'Произошла ошибка. Попробуйте позже.'}</p>
         )}
       </div>
     </form>

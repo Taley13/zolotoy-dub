@@ -48,14 +48,17 @@ export default function GalleryPage() {
   const images = getGalleryImages();
   
   return (
-    <div className="min-h-screen bg-gradient-to-b from-neutral-950 to-neutral-900">
+    <div className="min-h-screen bg-[#0E2931] text-[#E2E2E0]">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         {/* Заголовок страницы */}
         <div className="mb-8 text-center">
-          <h1 className="font-elegant text-4xl font-bold text-neutral-100 sm:text-5xl">
-            Наши <span className="text-brand-400">работы</span>
+          <h1 className="font-elegant text-4xl font-bold text-[#E2E2E0] sm:text-5xl">
+            Наши{' '}
+            <span className="bg-gradient-to-r from-[#12484C] via-[#2B7574] to-[#861211] bg-clip-text text-transparent">
+              работы
+            </span>
           </h1>
-          <p className="mt-4 text-lg text-neutral-400">
+          <p className="mt-4 text-lg text-[#E2E2E0]/75">
             Более {images.length} реализованных проектов в различных стилях
           </p>
         </div>
@@ -65,7 +68,7 @@ export default function GalleryPage() {
           {Array.from(new Set(kitchenWorks.map(w => w.style))).map((style) => (
             <button
               key={style}
-              className="rounded-full border border-neutral-700 bg-neutral-800/50 px-4 py-2 text-sm text-neutral-300 transition hover:border-brand-500 hover:bg-brand-500/10 hover:text-brand-400"
+              className="rounded-full border border-[#12484C] bg-[#12484C]/30 px-4 py-2 text-sm text-[#E2E2E0] transition hover:-translate-y-0.5 hover:border-[#2B7574] hover:bg-[#2B7574]/40 hover:text-[#E2E2E0]"
             >
               {style}
             </button>
@@ -76,29 +79,33 @@ export default function GalleryPage() {
         {images.length > 0 ? (
           <ImageGallery images={images} className="mt-8" />
         ) : (
-          <div className="mt-12 rounded-xl border border-neutral-800 bg-neutral-900/50 p-8 text-center text-neutral-300">
-            <p>Пока нет фотографий. Загрузите файлы в папку <code className="rounded bg-neutral-800 px-2 py-1 text-neutral-200">public/images</code> (форматы: JPG, PNG, WEBP, AVIF).</p>
+          <div className="mt-12 rounded-2xl border border-[#12484C] bg-[#12484C]/20 p-8 text-center text-[#E2E2E0]/80">
+            <p>
+              Пока нет фотографий. Загрузите файлы в папку{' '}
+              <code className="rounded bg-[#0E2931] px-2 py-1 text-[#E2E2E0]">public/images</code> (форматы: JPG, PNG, WEBP,
+              AVIF).
+            </p>
           </div>
         )}
 
         {/* Call to Action */}
-        <div className="mt-16 rounded-2xl border border-brand-500/20 bg-gradient-to-br from-brand-500/10 to-neutral-900/50 p-8 text-center backdrop-blur-sm">
-          <h2 className="font-elegant text-2xl font-semibold text-neutral-100">
+        <div className="mt-16 rounded-3xl border border-[#12484C] bg-gradient-to-br from-[#12484C]/25 via-[#0E2931]/90 to-[#0E2931] p-8 text-center shadow-[0_30px_80px_rgba(3,7,9,0.65)] backdrop-blur">
+          <h2 className="font-elegant text-2xl font-semibold text-[#E2E2E0]">
             Хотите кухню своей мечты?
           </h2>
-          <p className="mt-3 text-neutral-400">
+          <p className="mt-3 text-[#E2E2E0]/75">
             Оставьте заявку, и мы разработаем индивидуальный проект специально для вас
           </p>
           <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:justify-center">
             <a
               href="/contacts"
-              className="inline-flex items-center justify-center rounded-lg bg-brand-500 px-6 py-3 font-medium text-white shadow-lg shadow-brand-500/30 transition hover:bg-brand-600 hover:shadow-xl hover:shadow-brand-500/40"
+              className="inline-flex items-center justify-center rounded-full bg-[#861211] px-6 py-3 font-semibold text-[#E2E2E0] shadow-[0_18px_50px_rgba(134,18,17,0.4)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#a41b1a]"
             >
               Оставить заявку
             </a>
             <a
               href="/"
-              className="inline-flex items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800/50 px-6 py-3 font-medium text-neutral-200 transition hover:border-brand-500/50 hover:bg-neutral-800"
+              className="inline-flex items-center justify-center rounded-full border border-[#2B7574] bg-transparent px-6 py-3 font-semibold text-[#2B7574] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#2B7574]/15 hover:text-[#E2E2E0]"
             >
               Рассчитать стоимость
             </a>

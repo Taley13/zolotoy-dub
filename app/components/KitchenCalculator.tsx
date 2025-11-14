@@ -165,41 +165,41 @@ export default function KitchenCalculator() {
 
   return (
     <>
-      <div className="rounded-3xl border border-[var(--color-brand-outline)] bg-[var(--color-brand-primary)]/85 p-8 md:p-12 shadow-[0_30px_80px_rgba(4,10,12,0.65)]">
-        <h2 className="text-center font-display text-4xl font-bold mb-3 text-[var(--color-brand-neutral)]">
+      <div className="rounded-3xl border border-[#12484C] bg-[#0E2931] p-8 text-[#E2E2E0] shadow-[0_30px_80px_rgba(4,10,12,0.65)] md:p-12">
+        <h2 className="mb-3 text-center font-display text-4xl font-bold text-[#E2E2E0]">
           Калькулятор стоимости
         </h2>
         
         {discountActive && (
-          <div className="mb-6 mx-auto max-w-2xl bg-brand-teal/15 border border-brand-teal/40 rounded-2xl p-5 shadow-[0_20px_60px_rgба(18,72,76,0.4)]">
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
+          <div className="mx-auto mb-6 max-w-2xl rounded-2xl border border-[#2B7574] bg-[#2B7574]/15 p-5 shadow-[0_20px_60px_rgba(18,72,76,0.4)]">
+            <div className="flex items-center justify-between gap-6">
+              <div className="flex items-center gap-4">
                 <span className="text-3xl">🎉</span>
                 <div>
-                  <p className="text-brand-neutral font-bold text-lg">Скидка 15% активирована!</p>
-                  <p className="text-brand-neutral/70 text-sm">Специальное предложение для вас</p>
+                  <p className="text-lg font-bold text-[#E2E2E0]">Скидка 15% активирована!</p>
+                  <p className="text-sm text-[#E2E2E0]/70">Специальное предложение для вас</p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-xs text-brand-neutral/60 mb-1">Действует:</p>
-                <p className="text-brand-neutral font-mono font-bold text-xl">{timeRemaining}</p>
+                <p className="mb-1 text-xs text-[#E2E2E0]/60">Действует:</p>
+                <p className="font-mono text-xl font-bold text-[#E2E2E0]">{timeRemaining}</p>
               </div>
             </div>
           </div>
         )}
         
-        <p className="text-center text-[var(--color-brand-neutral)]/70 mb-10">
+        <p className="mb-10 text-center text-[#E2E2E0]/70">
           Рассчитайте стоимость вашей кухни • Прозрачное ценообразование
         </p>
 
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="mx-auto max-w-4xl space-y-8">
           {/* 1. КОНФИГУРАЦИЯ КУХНИ (первый блок) */}
           <div className="space-y-4">
-            <h3 className="font-display text-xl font-semibold text-[var(--color-brand-neutral)] flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20 text-sm">1</span>
+            <h3 className="flex items-center gap-2 font-display text-xl font-semibold text-[#E2E2E0]">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2B7574]/30 text-sm text-[#2B7574]">1</span>
               Конфигурация кухни
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
               {([
                 { type: 'Прямая', desc: 'Классическая планировка', icon: '━' },
                 { type: 'Угловая', desc: 'Оптимальное использование пространства', icon: '⌞' },
@@ -209,16 +209,16 @@ export default function KitchenCalculator() {
                   key={type}
                   onClick={() => setConfiguration(type)}
                   className={`
-                    p-5 rounded-xl border transition-all duration-300
+                    rounded-2xl border p-5 text-left transition-all duration-300
                     ${configuration === type
-                      ? 'border-brand-teal bg-brand-teal/15 text-brand-neutral shadow-lg shadow-brand-teal/20 scale-105'
-                      : 'border-brand-outline bg-brand-surface text-brand-neutral/70 hover:border-brand-teal/50 hover:bg-brand-teal/10'
+                      ? 'border-[#2B7574] bg-[#2B7574]/20 text-[#E2E2E0] shadow-[0_18px_45px_rgba(0,0,0,0.45)]'
+                      : 'border-[#12484C] bg-[#12484C]/20 text-[#E2E2E0]/70 hover:border-[#2B7574]/70 hover:bg-[#2B7574]/10'
                     }
                   `}
                 >
-                  <div className="text-3xl mb-2">{icon}</div>
-                  <div className="font-semibold mb-1">{type}</div>
-                  <div className="text-xs text-neutral-400 mt-1">{desc}</div>
+                  <div className="mb-2 text-3xl text-[#2B7574]">{icon}</div>
+                  <div className="mb-1 font-semibold">{type}</div>
+                  <div className="text-xs text-[#E2E2E0]/60">{desc}</div>
                 </button>
               ))}
             </div>
@@ -226,11 +226,11 @@ export default function KitchenCalculator() {
 
           {/* 2. ФАСАДЫ (второй блок) */}
           <div className="space-y-4">
-            <h3 className="font-display text-xl font-semibold text-[var(--color-brand-neutral)] flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20 text-sm">2</span>
+            <h3 className="flex items-center gap-2 font-display text-xl font-semibold text-[#E2E2E0]">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2B7574]/30 text-sm text-[#2B7574]">2</span>
               Фасады
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
               {([
                 { type: 'ДСП', desc: 'Надежный эконом-вариант' },
                 { type: 'МДФ', desc: 'Оптимальное качество' },
@@ -240,15 +240,15 @@ export default function KitchenCalculator() {
                   key={type}
                   onClick={() => setFacade(type)}
                   className={`
-                    p-4 rounded-xl border transition-all duration-300
+                    rounded-2xl border p-4 text-left transition-all duration-300
                     ${facade === type
-                      ? 'border-brand-teal bg-brand-teal/15 text-brand-neutral shadow-lg shadow-brand-teal/20 scale-105'
-                      : 'border-brand-outline bg-brand-surface text-brand-neutral/70 hover:border-brand-teal/50 hover:bg-brand-teal/10'
+                      ? 'border-[#2B7574] bg-[#2B7574]/20 text-[#E2E2E0]'
+                      : 'border-[#12484C] bg-[#12484C]/20 text-[#E2E2E0]/70 hover:border-[#2B7574]/70 hover:bg-[#2B7574]/10'
                     }
                   `}
                 >
-                  <div className="font-semibold mb-1">{type}</div>
-                  <div className="text-xs text-neutral-400 mt-1">{desc}</div>
+                  <div className="mb-1 font-semibold">{type}</div>
+                  <div className="text-xs text-[#E2E2E0]/60">{desc}</div>
                 </button>
               ))}
             </div>
@@ -256,11 +256,11 @@ export default function KitchenCalculator() {
 
           {/* 3. ФУРНИТУРА (третий блок) */}
           <div className="space-y-4">
-            <h3 className="font-display text-xl font-semibold text-yellow-400 flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20 text-sm">3</span>
+            <h3 className="flex items-center gap-2 font-display text-xl font-semibold text-[#E2E2E0]">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2B7574]/30 text-sm text-[#2B7574]">3</span>
               Фурнитура
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {([
                 { type: 'Стандарт', desc: 'Качественная базовая' },
                 { type: 'Премиум Blum', desc: 'Максимальная долговечность' }
@@ -269,15 +269,15 @@ export default function KitchenCalculator() {
                   key={type}
                   onClick={() => setFittings(type)}
                   className={`
-                    p-4 rounded-xl border-2 transition-all duration-300
+                    rounded-2xl border p-4 text-left transition-all duration-300
                     ${fittings === type
-                      ? 'border-yellow-500 bg-yellow-500/20 text-yellow-400 shadow-lg shadow-yellow-500/20 scale-105'
-                      : 'border-white/10 bg-white/5 text-neutral-300 hover:border-yellow-500/50 hover:bg-white/10'
+                      ? 'border-[#2B7574] bg-[#2B7574]/20 text-[#E2E2E0]'
+                      : 'border-[#12484C] bg-[#12484C]/20 text-[#E2E2E0]/70 hover:border-[#2B7574]/60 hover:bg-[#2B7574]/10'
                     }
                   `}
                 >
-                  <div className="font-semibold mb-1">{type}</div>
-                  <div className="text-xs text-neutral-400 mt-1">{desc}</div>
+                  <div className="mb-1 font-semibold">{type}</div>
+                  <div className="text-xs text-[#E2E2E0]/60">{desc}</div>
                 </button>
               ))}
             </div>
@@ -285,11 +285,11 @@ export default function KitchenCalculator() {
 
           {/* 4. СТОЛЕШНИЦА (четвёртый блок) */}
           <div className="space-y-4">
-            <h3 className="font-display text-xl font-semibold text-yellow-400 flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20 text-sm">4</span>
+            <h3 className="flex items-center gap-2 font-display text-xl font-semibold text-[#E2E2E0]">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2B7574]/30 text-sm text-[#2B7574]">4</span>
               Столешница
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
               {([
                 { type: 'HPL', desc: 'Износостойкая практичная' },
                 { type: 'Искусственный камень', desc: 'Элегантная классика' },
@@ -299,15 +299,15 @@ export default function KitchenCalculator() {
                   key={type}
                   onClick={() => setCountertop(type)}
                   className={`
-                    p-4 rounded-xl border-2 transition-all duration-300
+                    rounded-2xl border p-4 text-left transition-all duration-300
                     ${countertop === type
-                      ? 'border-yellow-500 bg-yellow-500/20 text-yellow-400 shadow-lg shadow-yellow-500/20 scale-105'
-                      : 'border-white/10 bg-white/5 text-neutral-300 hover:border-yellow-500/50 hover:bg-white/10'
+                      ? 'border-[#2B7574] bg-[#2B7574]/20 text-[#E2E2E0]'
+                      : 'border-[#12484C] bg-[#12484C]/20 text-[#E2E2E0]/70 hover:border-[#2B7574]/60 hover:bg-[#2B7574]/10'
                     }
                   `}
                 >
-                  <div className="font-semibold mb-1 text-sm">{type}</div>
-                  <div className="text-xs text-neutral-400 mt-1">{desc}</div>
+                  <div className="mb-1 text-sm font-semibold">{type}</div>
+                  <div className="text-xs text-[#E2E2E0]/60">{desc}</div>
                 </button>
               ))}
             </div>
@@ -315,14 +315,14 @@ export default function KitchenCalculator() {
 
           {/* 5. РАЗМЕРЫ (пятый блок) */}
           <div className="space-y-4">
-            <h3 className="font-display text-xl font-semibold text-yellow-400 flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20 text-sm">5</span>
+            <h3 className="flex items-center gap-2 font-display text-xl font-semibold text-[#E2E2E0]">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2B7574]/30 text-sm text-[#2B7574]">5</span>
               Размеры
             </h3>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-neutral-300">Длина кухни:</span>
-                <span className="text-2xl font-bold text-yellow-400">{length} м</span>
+                <span className="text-[#E2E2E0]/75">Длина кухни:</span>
+                <span className="text-2xl font-bold text-[#2B7574]">{length} м</span>
               </div>
               <input
                 type="range"
@@ -331,12 +331,12 @@ export default function KitchenCalculator() {
                 step="0.5"
                 value={length}
                 onChange={(e) => setLength(parseFloat(e.target.value))}
-                className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer slider-thumb"
+                className="slider-thumb h-2 w-full cursor-pointer appearance-none rounded-lg bg-[#12484C]"
                 style={{
-                  background: `linear-gradient(to right, rgb(234 179 8) 0%, rgb(234 179 8) ${((length - 1) / 9) * 100}%, rgba(255,255,255,0.1) ${((length - 1) / 9) * 100}%, rgba(255,255,255,0.1) 100%)`
+                  background: `linear-gradient(to right, #2B7574 0%, #2B7574 ${((length - 1) / 9) * 100}%, rgba(255,255,255,0.1) ${((length - 1) / 9) * 100}%, rgba(255,255,255,0.1) 100%)`
                 }}
               />
-              <div className="flex justify-between text-xs text-neutral-500">
+              <div className="flex justify-between text-xs text-[#E2E2E0]/50">
                 <span>1 м</span>
                 <span>5 м</span>
                 <span>10 м</span>
@@ -345,34 +345,34 @@ export default function KitchenCalculator() {
           </div>
 
           {/* ПРОЗРАЧНЫЙ РАСЧЁТ */}
-          <div className="bg-white/5 border border-yellow-500/30 rounded-2xl p-6">
-            <h4 className="font-display text-lg font-semibold text-yellow-400 mb-4">
+          <div className="rounded-2xl border border-[#12484C] bg-[#12484C]/20 p-6">
+            <h4 className="mb-4 font-display text-lg font-semibold text-[#E2E2E0]">
               💡 Ваша конфигурация:
             </h4>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between items-center">
-                <span className="text-neutral-400">Конфигурация:</span>
-                <span className="text-neutral-200 font-medium">{configuration}</span>
+                <span className="text-[#E2E2E0]/60">Конфигурация:</span>
+                <span className="font-medium text-[#E2E2E0]">{configuration}</span>
               </div>
               
               <div className="flex justify-between items-center">
-                <span className="text-neutral-400">Фасады:</span>
-                <span className="text-neutral-200 font-medium">{facade}</span>
+                <span className="text-[#E2E2E0]/60">Фасады:</span>
+                <span className="font-medium text-[#E2E2E0]">{facade}</span>
               </div>
               
               <div className="flex justify-between items-center">
-                <span className="text-neutral-400">Фурнитура:</span>
-                <span className="text-neutral-200 font-medium">{fittings}</span>
+                <span className="text-[#E2E2E0]/60">Фурнитура:</span>
+                <span className="font-medium text-[#E2E2E0]">{fittings}</span>
               </div>
               
               <div className="flex justify-between items-center">
-                <span className="text-neutral-400">Столешница:</span>
-                <span className="text-neutral-200 font-medium">{countertop}</span>
+                <span className="text-[#E2E2E0]/60">Столешница:</span>
+                <span className="font-medium text-[#E2E2E0]">{countertop}</span>
               </div>
               
               <div className="flex justify-between items-center">
-                <span className="text-neutral-400">Длина:</span>
-                <span className="text-neutral-200 font-medium">{length} м</span>
+                <span className="text-[#E2E2E0]/60">Длина:</span>
+                <span className="font-medium text-[#E2E2E0]">{length} м</span>
               </div>
 
               <div className="border-t border-white/10 pt-3 mt-3"></div>
@@ -386,8 +386,8 @@ export default function KitchenCalculator() {
               )}
               
               <div className="flex justify-between items-center text-lg">
-                <span className="text-neutral-200 font-semibold">Итоговая стоимость:</span>
-                <span className={`font-bold text-2xl ${discountActive ? 'text-green-400' : 'text-yellow-400'}`}>
+                <span className="font-semibold text-[#E2E2E0]">Итоговая стоимость:</span>
+                <span className={`text-2xl font-bold ${discountActive ? 'text-[#43d17a]' : 'text-[#E2E2E0]'}`}>
                   {price.toLocaleString('ru-RU')} ₽
                 </span>
               </div>
@@ -397,14 +397,14 @@ export default function KitchenCalculator() {
           {/* Кнопка получения расчёта */}
           <button
             onClick={handleGetQuote}
-            className="w-full group relative overflow-hidden rounded-xl bg-gradient-to-r from-yellow-500 to-amber-600 px-8 py-5 text-xl font-semibold text-black shadow-2xl transition-all duration-300 hover:from-yellow-400 hover:to-amber-500 hover:shadow-yellow-500/50 hover:scale-[1.02] active:scale-95"
+            className="relative w-full overflow-hidden rounded-2xl bg-[#861211] px-8 py-5 text-xl font-semibold text-[#E2E2E0] shadow-[0_20px_70px_rgba(134,18,17,0.45)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#a41b1a] active:translate-y-0"
           >
             <span className="relative z-10">Получить точный расчёт</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+            <div className="absolute inset-0 translate-x-[-100%] bg-gradient-to-r from-white/0 via-white/30 to-white/0 transition-transform duration-700 hover:translate-x-[100%]" />
           </button>
 
           {/* Примечание */}
-          <p className="text-center text-sm text-neutral-500">
+          <p className="text-center text-sm text-[#E2E2E0]/60">
             Финальная цена уточняется после замера • Гарантия 2 года • Установка под ключ
           </p>
         </div>
@@ -415,18 +415,18 @@ export default function KitchenCalculator() {
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            background: rgb(234 179 8);
+            background: #2B7574;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(234, 179, 8, 0.5);
+            box-shadow: 0 0 10px rgba(43, 117, 116, 0.5);
           }
           .slider-thumb::-moz-range-thumb {
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            background: rgb(234 179 8);
+            background: #2B7574;
             cursor: pointer;
             border: none;
-            box-shadow: 0 0 10px rgba(234, 179, 8, 0.5);
+            box-shadow: 0 0 10px rgba(43, 117, 116, 0.5);
           }
         `}</style>
       </div>

@@ -47,7 +47,7 @@ export default function ImageGallery({ images, works, className }: ImageGalleryP
         {enrichedImages.map((img, idx) => (
           <article
             key={img.src + idx}
-            className="group relative overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900/50 transition-all hover:border-brand-500/50 hover:shadow-xl hover:shadow-brand-500/10"
+            className="group relative overflow-hidden rounded-2xl border border-[#12484C] bg-[#12484C]/25 transition-all hover:-translate-y-1 hover:border-[#2B7574] hover:shadow-[0_25px_70px_rgba(2,6,8,0.55)]"
           >
             {/* Контейнер изображения */}
             <button
@@ -69,7 +69,7 @@ export default function ImageGallery({ images, works, className }: ImageGalleryP
                 
                 {/* Бадж стиля */}
                 {img.style && (
-                  <div className="absolute right-3 top-3 rounded-full bg-brand-500/90 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                  <div className="absolute right-3 top-3 rounded-full bg-[#2B7574] px-3 py-1 text-xs font-medium text-[#0E2931] backdrop-blur-sm">
                     {img.style}
                   </div>
                 )}
@@ -77,21 +77,21 @@ export default function ImageGallery({ images, works, className }: ImageGalleryP
             </button>
 
             {/* Информационная панель */}
-            <div className="p-4">
-              <h3 className="font-elegant text-lg font-semibold text-neutral-100 group-hover:text-brand-400 transition">
+            <div className="p-4 text-[#E2E2E0]">
+              <h3 className="font-elegant text-lg font-semibold text-[#E2E2E0] transition group-hover:text-[#2B7574]">
                 {img.title || 'Кухня на заказ'}
               </h3>
               {img.description && (
-                <p className="mt-2 text-sm text-neutral-400 line-clamp-2">
+                <p className="mt-2 line-clamp-2 text-sm text-[#E2E2E0]/70">
                   {img.description}
                 </p>
               )}
               {img.price && (
                 <div className="mt-3 flex items-center justify-between">
-                  <span className="text-sm font-medium text-brand-400">
+                  <span className="text-sm font-medium text-[#2B7574]">
                     {img.price}
                   </span>
-                  <span className="text-xs text-neutral-500">за проект</span>
+                  <span className="text-xs text-[#E2E2E0]/50">за проект</span>
                 </div>
               )}
               
@@ -99,7 +99,7 @@ export default function ImageGallery({ images, works, className }: ImageGalleryP
               <button
                 type="button"
                 onClick={() => setActiveIndex(idx)}
-                className="mt-4 w-full rounded-lg bg-neutral-800/50 py-2 text-sm text-neutral-300 transition hover:bg-brand-500/20 hover:text-brand-400"
+                className="mt-4 w-full rounded-full border border-[#12484C]/70 bg-[#0E2931] py-2 text-sm text-[#E2E2E0] transition hover:border-[#2B7574] hover:bg-[#2B7574]/20"
               >
                 Посмотреть подробнее →
               </button>
@@ -111,7 +111,7 @@ export default function ImageGallery({ images, works, className }: ImageGalleryP
       {/* Модальное окно для полноэкранного просмотра */}
       {activeIndex !== null && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
           onClick={() => setActiveIndex(null)}
           role="dialog"
           aria-modal
@@ -131,25 +131,25 @@ export default function ImageGallery({ images, works, className }: ImageGalleryP
             </div>
 
             {/* Информация под изображением */}
-            <div className="mt-4 rounded-lg bg-neutral-900/90 p-4 backdrop-blur">
+            <div className="mt-4 rounded-2xl border border-[#12484C]/60 bg-[#0E2931]/95 p-4 text-[#E2E2E0] backdrop-blur">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                  <h3 className="font-elegant text-xl font-semibold text-neutral-100">
+                  <h3 className="font-elegant text-xl font-semibold text-[#E2E2E0]">
                     {enrichedImages[activeIndex].title}
                   </h3>
                   {enrichedImages[activeIndex].description && (
-                    <p className="mt-2 text-neutral-300">
+                    <p className="mt-2 text-[#E2E2E0]/75">
                       {enrichedImages[activeIndex].description}
                     </p>
                   )}
                   <div className="mt-3 flex flex-wrap items-center gap-4">
                     {enrichedImages[activeIndex].style && (
-                      <span className="rounded-full bg-brand-500/20 px-3 py-1 text-sm text-brand-400">
+                      <span className="rounded-full bg-[#2B7574]/20 px-3 py-1 text-sm text-[#2B7574]">
                         {enrichedImages[activeIndex].style}
                       </span>
                     )}
                     {enrichedImages[activeIndex].price && (
-                      <span className="text-lg font-semibold text-brand-400">
+                      <span className="text-lg font-semibold text-[#2B7574]">
                         {enrichedImages[activeIndex].price}
                       </span>
                     )}
@@ -162,7 +162,7 @@ export default function ImageGallery({ images, works, className }: ImageGalleryP
             <button
               type="button"
               onClick={() => setActiveIndex(null)}
-              className="absolute -right-4 -top-4 rounded-full bg-neutral-900 p-3 text-neutral-200 shadow-xl hover:bg-neutral-800 hover:text-white transition"
+              className="absolute -right-4 -top-4 rounded-full bg-[#12484C]/90 p-3 text-[#E2E2E0] shadow-xl transition hover:bg-[#2B7574]"
               aria-label="Закрыть"
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -171,7 +171,7 @@ export default function ImageGallery({ images, works, className }: ImageGalleryP
             </button>
 
             {/* Навигация */}
-            <div className="absolute left-1/2 top-4 -translate-x-1/2 transform rounded-full bg-neutral-900/70 px-4 py-2 text-sm text-neutral-300 backdrop-blur">
+            <div className="absolute left-1/2 top-4 -translate-x-1/2 transform rounded-full bg-[#0E2931]/80 px-4 py-2 text-sm text-[#E2E2E0]/85 backdrop-blur">
               {activeIndex + 1} / {enrichedImages.length}
             </div>
 
@@ -183,7 +183,7 @@ export default function ImageGallery({ images, works, className }: ImageGalleryP
                   e.stopPropagation();
                   setActiveIndex(activeIndex - 1);
                 }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 transform rounded-full bg-neutral-900/70 p-3 text-neutral-200 backdrop-blur hover:bg-neutral-800 hover:text-white transition"
+                className="absolute left-4 top-1/2 -translate-y-1/2 transform rounded-full bg-[#12484C]/80 p-3 text-[#E2E2E0] backdrop-blur transition hover:bg-[#2B7574]"
                 aria-label="Предыдущее изображение"
               >
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -199,7 +199,7 @@ export default function ImageGallery({ images, works, className }: ImageGalleryP
                   e.stopPropagation();
                   setActiveIndex(activeIndex + 1);
                 }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 transform rounded-full bg-neutral-900/70 p-3 text-neutral-200 backdrop-blur hover:bg-neutral-800 hover:text-white transition"
+                className="absolute right-4 top-1/2 -translate-y-1/2 transform rounded-full bg-[#12484C]/80 p-3 text-[#E2E2E0] backdrop-blur transition hover:bg-[#2B7574]"
                 aria-label="Следующее изображение"
               >
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
