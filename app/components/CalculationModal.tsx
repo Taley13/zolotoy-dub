@@ -238,16 +238,16 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-brand-primary/90 backdrop-blur-md animate-fadeIn"
       onClick={(e) => {
         if (e.target === e.currentTarget) handleClose();
       }}
     >
-      <div className="relative w-full max-w-md bg-gradient-to-br from-neutral-900 to-neutral-950 border border-yellow-500/30 rounded-2xl shadow-2xl shadow-yellow-500/20 p-8 animate-slideUp">
+      <div className="relative w-full max-w-md rounded-2xl border border-[var(--color-brand-outline)] bg-[var(--color-brand-primary)] p-8 shadow-[0_30px_100px_rgba(1,5,8,0.75)] animate-slideUp">
         {/* Кнопка закрытия */}
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 text-neutral-400 hover:text-white transition-colors"
+          className="absolute top-4 right-4 text-brand-neutral/50 hover:text-brand-neutral transition-colors"
           aria-label="Закрыть"
         >
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -257,57 +257,57 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
 
         {/* Заголовок */}
         <div className="mb-6">
-          <h3 className="font-display text-2xl font-bold text-yellow-400 mb-2">
+          <h3 className="font-display text-2xl font-bold text-brand-neutral mb-2">
             Получить точный расчёт
           </h3>
           
           {/* Баннер скидки если активна */}
           {hasDiscount && (
-            <div className="mt-3 bg-gradient-to-r from-green-500/20 to-emerald-600/20 border border-green-500/50 rounded-lg p-3 mb-3">
+            <div className="mt-3 bg-brand-teal/10 border border-brand-teal/40 rounded-lg p-3 mb-3">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-xl">🎁</span>
-                <p className="text-green-400 font-bold text-sm">Скидка 15% активна!</p>
+                <p className="text-brand-neutral font-bold text-sm">Скидка 15% активна!</p>
               </div>
-              <p className="text-green-300 text-xs">Действует до: {discountEndDate}</p>
+              <p className="text-brand-neutral/80 text-xs">Действует до: {discountEndDate}</p>
             </div>
           )}
           
-          <p className="text-neutral-400 text-sm">
+          <p className="text-brand-neutral/70 text-sm">
             Заполните контактные данные и мы свяжемся с вами в течение 15 минут
           </p>
         </div>
 
         {/* Сводка выбранных параметров */}
-        <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-6">
-          <h4 className="text-neutral-300 font-semibold mb-3 text-sm">Ваш выбор:</h4>
+        <div className="bg-brand-surface/60 border border-[var(--color-brand-outline)] rounded-xl p-4 mb-6">
+          <h4 className="text-brand-neutral font-semibold mb-3 text-sm">Ваш выбор:</h4>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between items-center">
-              <span className="text-neutral-400">Конфигурация:</span>
-              <span className="text-yellow-400 font-medium">{params.configuration}</span>
+              <span className="text-brand-neutral/60">Конфигурация:</span>
+              <span className="text-brand-neutral font-medium">{params.configuration}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-neutral-400">Фасады:</span>
-              <span className="text-yellow-400 font-medium">{params.facade}</span>
+              <span className="text-brand-neutral/60">Фасады:</span>
+              <span className="text-brand-neutral font-medium">{params.facade}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-neutral-400">Фурнитура:</span>
-              <span className="text-yellow-400 font-medium">{params.hardware}</span>
+              <span className="text-brand-neutral/60">Фурнитура:</span>
+              <span className="text-brand-neutral font-medium">{params.hardware}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-neutral-400">Столешница:</span>
-              <span className="text-yellow-400 font-medium">{params.countertop}</span>
+              <span className="text-brand-neutral/60">Столешница:</span>
+              <span className="text-brand-neutral font-medium">{params.countertop}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-neutral-400">Длина:</span>
-              <span className="text-yellow-400 font-medium">{params.length} м</span>
+              <span className="text-brand-neutral/60">Длина:</span>
+              <span className="text-brand-neutral font-medium">{params.length} м</span>
             </div>
             <div className="border-t border-white/10 pt-3 mt-3 space-y-2">
               {/* Если скидка активна - показываем обе цены */}
               {hasDiscount ? (
                 <>
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-neutral-400">Расчетная стоимость:</span>
-                    <span className="text-neutral-400 line-through">{Math.round(params.calculatedPrice / 0.85).toLocaleString('ru-RU')} ₽</span>
+                    <span className="text-brand-neutral/60">Расчетная стоимость:</span>
+                    <span className="text-brand-neutral/60 line-through">{Math.round(params.calculatedPrice / 0.85).toLocaleString('ru-RU')} ₽</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-green-400 font-semibold">🎉 Со скидкой 15%:</span>
@@ -322,8 +322,8 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
                 </>
               ) : (
                 <div className="flex justify-between items-center">
-                  <span className="text-neutral-300 font-semibold">Примерная стоимость:</span>
-                  <span className="text-yellow-400 font-bold text-lg">
+                  <span className="text-brand-neutral font-semibold">Примерная стоимость:</span>
+                  <span className="text-brand-neutral font-bold text-lg">
                     {params.calculatedPrice.toLocaleString('ru-RU')} ₽
                   </span>
                 </div>
@@ -336,7 +336,7 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Поле имени */}
           <div>
-            <label htmlFor="name" className="block text-neutral-300 text-sm mb-2 font-medium">
+            <label htmlFor="name" className="block text-brand-neutral text-sm mb-2 font-medium">
               Ваше имя <span className="text-red-400">*</span>
             </label>
             <input
@@ -344,7 +344,7 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
               type="text"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-neutral-500 focus:border-yellow-500/50 focus:bg-white/10 focus:outline-none transition-all"
+              className="w-full bg-brand-surface/60 border border-[var(--color-brand-outline)] rounded-xl px-4 py-3 text-brand-neutral placeholder-brand-neutral/40 focus:border-brand-teal focus:bg-brand-surface focus:outline-none transition-all"
               placeholder="Иван Иванов"
               required
               disabled={isSubmitting}
@@ -353,7 +353,7 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
 
           {/* Поле телефона */}
           <div>
-            <label htmlFor="phone" className="block text-neutral-300 text-sm mb-2 font-medium">
+            <label htmlFor="phone" className="block text-brand-neutral text-sm mb-2 font-medium">
               Телефон <span className="text-red-400">*</span>
             </label>
             <input
@@ -361,7 +361,7 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
               type="tel"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-neutral-500 focus:border-yellow-500/50 focus:bg-white/10 focus:outline-none transition-all"
+              className="w-full bg-brand-surface/60 border border-[var(--color-brand-outline)] rounded-xl px-4 py-3 text-brand-neutral placeholder-brand-neutral/40 focus:border-brand-teal focus:bg-brand-surface focus:outline-none transition-all"
               placeholder="+7 (999) 123-45-67"
               required
               disabled={isSubmitting}
@@ -370,7 +370,7 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
 
           {/* Поле Email */}
           <div>
-            <label htmlFor="email" className="block text-neutral-300 text-sm mb-2 font-medium">
+            <label htmlFor="email" className="block text-brand-neutral text-sm mb-2 font-medium">
               Email <span className="text-neutral-500">(опционально)</span>
             </label>
             <input
@@ -378,7 +378,7 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-neutral-500 focus:border-yellow-500/50 focus:bg-white/10 focus:outline-none transition-all"
+              className="w-full bg-brand-surface/60 border border-[var(--color-brand-outline)] rounded-xl px-4 py-3 text-brand-neutral placeholder-brand-neutral/40 focus:border-brand-teal focus:bg-brand-surface focus:outline-none transition-all"
               placeholder="example@mail.ru"
               disabled={isSubmitting}
             />
@@ -386,26 +386,26 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
 
           {/* Статус отправки - успех */}
           {submitStatus === 'success' && (
-            <div className="bg-green-500/20 border border-green-500/50 rounded-xl p-4 text-green-400 text-sm flex items-start gap-3">
+            <div className="bg-brand-teal/15 border border-brand-teal/40 rounded-xl p-4 text-brand-neutral text-sm flex items-start gap-3">
               <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
               <div>
-                <div className="font-semibold">Заявка отправлена!</div>
-                <div className="text-xs mt-1 text-green-300">Мы свяжемся с вами в ближайшее время</div>
+                <div className="font-semibold text-brand-neutral">Заявка отправлена!</div>
+                <div className="text-xs mt-1 text-brand-neutral/70">Мы свяжемся с вами в ближайшее время</div>
               </div>
             </div>
           )}
 
           {/* Статус отправки - ошибка */}
           {submitStatus === 'error' && (
-            <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-4 text-red-400 text-sm flex items-start gap-3">
+            <div className="bg-brand-cta/15 border border-brand-cta/40 rounded-xl p-4 text-brand-neutral text-sm flex items-start gap-3">
               <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
               </svg>
               <div>
-                <div className="font-semibold">Ошибка отправки</div>
-                <div className="text-xs mt-1 text-red-300">Попробуйте позже или позвоните: 8-930-193-34-20</div>
+                <div className="font-semibold text-brand-neutral">Ошибка отправки</div>
+                <div className="text-xs mt-1 text-brand-neutral/70">Попробуйте позже или позвоните: 8-930-193-34-20</div>
               </div>
             </div>
           )}
@@ -414,7 +414,7 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
           <button
             type="submit"
             disabled={isSubmitting || submitStatus === 'success'}
-            className="w-full group relative overflow-hidden bg-gradient-to-r from-yellow-500 to-amber-600 text-black font-semibold py-4 rounded-xl hover:from-yellow-400 hover:to-amber-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-yellow-500/50"
+            className="w-full group relative overflow-hidden rounded-xl bg-brand-cta/90 text-brand-neutral font-semibold py-4 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_20px_60px_rgba(134,18,17,0.45)] hover:bg-brand-cta"
           >
             <span className="relative z-10">
               {isSubmitting ? (
@@ -437,7 +437,7 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
           </button>
 
           {/* Конфиденциальность */}
-          <p className="text-xs text-neutral-500 text-center mt-4">
+          <p className="text-xs text-brand-neutral/60 text-center mt-4">
             Нажимая кнопку, вы соглашаетесь на обработку персональных данных
           </p>
         </form>

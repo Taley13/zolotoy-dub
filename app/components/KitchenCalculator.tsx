@@ -165,40 +165,37 @@ export default function KitchenCalculator() {
 
   return (
     <>
-      <div className="glass-neon p-8 md:p-12">
-        <h2 className="text-center font-display text-4xl font-bold mb-3">
-          <span className="bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent">
-            Калькулятор стоимости
-          </span>
+      <div className="rounded-3xl border border-[var(--color-brand-outline)] bg-[var(--color-brand-primary)]/85 p-8 md:p-12 shadow-[0_30px_80px_rgba(4,10,12,0.65)]">
+        <h2 className="text-center font-display text-4xl font-bold mb-3 text-[var(--color-brand-neutral)]">
+          Калькулятор стоимости
         </h2>
         
-        {/* Баннер скидки */}
         {discountActive && (
-          <div className="mb-6 mx-auto max-w-2xl bg-gradient-to-r from-green-500/20 to-emerald-600/20 border-2 border-green-500/50 rounded-xl p-4 shadow-lg shadow-green-500/20 animate-pulse">
+          <div className="mb-6 mx-auto max-w-2xl bg-brand-teal/15 border border-brand-teal/40 rounded-2xl p-5 shadow-[0_20px_60px_rgба(18,72,76,0.4)]">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <span className="text-3xl">🎉</span>
                 <div>
-                  <p className="text-green-400 font-bold text-lg">Скидка 15% активирована!</p>
-                  <p className="text-green-300 text-sm">Специальное предложение для вас</p>
+                  <p className="text-brand-neutral font-bold text-lg">Скидка 15% активирована!</p>
+                  <p className="text-brand-neutral/70 text-sm">Специальное предложение для вас</p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-xs text-green-300 mb-1">Действует:</p>
-                <p className="text-green-400 font-mono font-bold text-xl">{timeRemaining}</p>
+                <p className="text-xs text-brand-neutral/60 mb-1">Действует:</p>
+                <p className="text-brand-neutral font-mono font-bold text-xl">{timeRemaining}</p>
               </div>
             </div>
           </div>
         )}
         
-        <p className="text-center text-neutral-400 mb-10">
+        <p className="text-center text-[var(--color-brand-neutral)]/70 mb-10">
           Рассчитайте стоимость вашей кухни • Прозрачное ценообразование
         </p>
 
         <div className="max-w-4xl mx-auto space-y-8">
           {/* 1. КОНФИГУРАЦИЯ КУХНИ (первый блок) */}
           <div className="space-y-4">
-            <h3 className="font-display text-xl font-semibold text-yellow-400 flex items-center gap-2">
+            <h3 className="font-display text-xl font-semibold text-[var(--color-brand-neutral)] flex items-center gap-2">
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20 text-sm">1</span>
               Конфигурация кухни
             </h3>
@@ -212,10 +209,10 @@ export default function KitchenCalculator() {
                   key={type}
                   onClick={() => setConfiguration(type)}
                   className={`
-                    p-5 rounded-xl border-2 transition-all duration-300
+                    p-5 rounded-xl border transition-all duration-300
                     ${configuration === type
-                      ? 'border-yellow-500 bg-yellow-500/20 text-yellow-400 shadow-lg shadow-yellow-500/20 scale-105'
-                      : 'border-white/10 bg-white/5 text-neutral-300 hover:border-yellow-500/50 hover:bg-white/10'
+                      ? 'border-brand-teal bg-brand-teal/15 text-brand-neutral shadow-lg shadow-brand-teal/20 scale-105'
+                      : 'border-brand-outline bg-brand-surface text-brand-neutral/70 hover:border-brand-teal/50 hover:bg-brand-teal/10'
                     }
                   `}
                 >
@@ -229,7 +226,7 @@ export default function KitchenCalculator() {
 
           {/* 2. ФАСАДЫ (второй блок) */}
           <div className="space-y-4">
-            <h3 className="font-display text-xl font-semibold text-yellow-400 flex items-center gap-2">
+            <h3 className="font-display text-xl font-semibold text-[var(--color-brand-neutral)] flex items-center gap-2">
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-500/20 text-sm">2</span>
               Фасады
             </h3>
@@ -243,10 +240,10 @@ export default function KitchenCalculator() {
                   key={type}
                   onClick={() => setFacade(type)}
                   className={`
-                    p-4 rounded-xl border-2 transition-all duration-300
+                    p-4 rounded-xl border transition-all duration-300
                     ${facade === type
-                      ? 'border-yellow-500 bg-yellow-500/20 text-yellow-400 shadow-lg shadow-yellow-500/20 scale-105'
-                      : 'border-white/10 bg-white/5 text-neutral-300 hover:border-yellow-500/50 hover:bg-white/10'
+                      ? 'border-brand-teal bg-brand-teal/15 text-brand-neutral shadow-lg shadow-brand-teal/20 scale-105'
+                      : 'border-brand-outline bg-brand-surface text-brand-neutral/70 hover:border-brand-teal/50 hover:bg-brand-teal/10'
                     }
                   `}
                 >
