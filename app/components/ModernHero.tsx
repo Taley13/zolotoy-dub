@@ -106,7 +106,7 @@ export default function ModernHero() {
       <div className="container mx-auto px-3 sm:px-4 text-center relative z-10 flex flex-col justify-center min-h-screen py-12 sm:py-16 md:py-20">
         {/* Верхняя часть - основной заголовок и подзаголовок */}
         <div className="flex-1 flex flex-col items-center justify-center">
-          {/* ЗОЛОТОЙ ЖЕЛУДЬ С ЭПИЧНОЙ ПОДСВЕТКОЙ */}
+          {/* ЗОЛОТОЙ ДУБ С ЭПИЧНОЙ ПОДСВЕТКОЙ */}
           <button
             onClick={() => {
               // Активируем скидку (SSR-безопасно)
@@ -137,7 +137,7 @@ export default function ModernHero() {
                           group-hover/acorn:bg-amber-300/70 transition-all duration-300 
                           animate-glow-pulse-inner"></div>
             
-            {/* Сам желудь с фильтрами - адаптивный размер */}
+            {/* Сам символ дуба с фильтрами - адаптивный размер */}
             <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 drop-shadow-2xl 
                           transform group-hover/acorn:scale-110 transition-all duration-300 
                           filter brightness-110 contrast-110
@@ -146,13 +146,17 @@ export default function ModernHero() {
                    filter: 'drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)) drop-shadow(0 0 40px rgba(255, 193, 37, 0.5)) drop-shadow(0 0 60px rgba(255, 140, 0, 0.3))',
                  }}>
               <Image 
-                src="/images/acorn.png"
-                alt="Золотой желудь - символ скидки 15%"
+                src="/images/dub.png"
+                alt="Золотой дуб — символ скидки 15%"
                 fill
-                className="object-contain"
+                className="object-contain mix-blend-multiply"
                 priority
                 quality={100}
               />
+              <div className="absolute inset-0 pointer-events-none"
+                   style={{
+                     background: 'radial-gradient(circle at center, rgba(255, 215, 0, 0.35), transparent 65%)'
+                   }} />
             </div>
             
             {/* Tooltip с информацией о скидке - адаптивный */}
