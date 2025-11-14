@@ -106,6 +106,19 @@ export default function ModernHero() {
       <div className="container mx-auto px-3 sm:px-4 text-center relative z-10 flex flex-col justify-center min-h-screen py-12 sm:py-16 md:py-20">
         {/* Верхняя часть - основной заголовок и подзаголовок */}
         <div className="flex-1 flex flex-col items-center justify-center">
+          <div className="relative w-full flex items-center justify-center mb-6 sm:mb-8">
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <Image
+                src="/images/zdub.png"
+                alt="Золотой Дуб"
+                width={1400}
+                height={1400}
+                priority
+                className="opacity-20 w-full max-w-4xl"
+              />
+            </div>
+          </div>
+
           {/* Кнопка активации скидки */}
           <button
             onClick={() => {
