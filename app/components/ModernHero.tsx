@@ -1,5 +1,7 @@
 'use client';
 
+import React from 'react';
+
 export default function ModernHero() {
   return (
     <section className="min-h-screen bg-black text-white flex items-center justify-center px-4 py-12">
