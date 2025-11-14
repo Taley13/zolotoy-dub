@@ -6,20 +6,25 @@ import StructuredData from './components/StructuredData';
 import { Playfair_Display, Inter } from 'next/font/google';
 
 // Элегантный serif для заголовков с золотым градиентом
+// Оптимизировано: только нужные начертания для лучшей производительности
 const playfair = Playfair_Display({
   subsets: ['cyrillic', 'latin'],
-  weight: ['400', '500', '600', '700', '800', '900'],
-  display: 'swap',
+  weight: ['500', '700'], // Только используемые: medium и bold
+  display: 'swap', // Показывать fallback шрифт пока загружается
   variable: '--font-playfair',
-  style: ['normal', 'italic']
+  preload: true, // Предзагрузка для быстрого отображения
+  fallback: ['Georgia', 'serif']
 });
 
 // Современный sans-serif для основного текста и кнопок
+// Оптимизировано: убраны редко используемые начертания
 const inter = Inter({
   subsets: ['cyrillic', 'latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
+  weight: ['400', '600', '700'], // Только используемые: regular, semibold, bold
   display: 'swap',
-  variable: '--font-inter'
+  variable: '--font-inter',
+  preload: true,
+  fallback: ['system-ui', '-apple-system', 'sans-serif']
 });
 
 export const metadata: Metadata = {
@@ -84,6 +89,62 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ru" className={`${playfair.variable} ${inter.variable}`}>
       <body className="min-h-screen bg-ultra text-neutral-100 antialiased font-sans">
+        {/* Сообщение для пользователей без JavaScript */}
+        <noscript>
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: '#0a0a0f',
+            color: '#FFD700',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+            padding: '20px'
+          }}>
+            <div style={{
+              maxWidth: '500px',
+              textAlign: 'center',
+              backgroundColor: 'rgba(255, 255, 255, 0.05)',
+              padding: '40px',
+              borderRadius: '20px',
+              border: '1px solid rgba(255, 215, 0, 0.2)'
+            }}>
+              <div style={{ fontSize: '64px', marginBottom: '20px' }}>🌰</div>
+              <h1 style={{ fontSize: '32px', marginBottom: '20px', color: '#FFD700' }}>
+                Золотой Дуб
+              </h1>
+              <h2 style={{ fontSize: '24px', marginBottom: '20px', color: '#FDB931' }}>
+                ⚠️ JavaScript отключен
+              </h2>
+              <p style={{ fontSize: '16px', lineHeight: '1.6', marginBottom: '30px', color: '#DDD' }}>
+                Для корректной работы сайта необходимо включить JavaScript в настройках вашего браузера.
+              </p>
+              <div style={{ marginBottom: '20px' }}>
+                <a href="tel:+79301933420" style={{
+                  display: 'inline-block',
+                  backgroundColor: '#FFD700',
+                  color: '#000',
+                  padding: '15px 30px',
+                  borderRadius: '10px',
+                  textDecoration: 'none',
+                  fontWeight: 'bold',
+                  fontSize: '18px'
+                }}>
+                  📞 Позвонить: 8-930-193-34-20
+                </a>
+              </div>
+              <p style={{ fontSize: '14px', color: '#999' }}>
+                📍 Воронеж<br />
+                🌐 zol-dub.online
+              </p>
+            </div>
+          </div>
+        </noscript>
+
         <StructuredData />
         <div className="flex min-h-screen flex-col">
           <Header />

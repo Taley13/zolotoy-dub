@@ -195,45 +195,8 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
       
       let result: { success: boolean; error?: string };
       
-      try {
-        // Пытаемся использовать server action
-        result = await submitContactForm(formDataToSend);
-      } catch (serverActionError) {
-        console.warn('[CalculationModal] ⚠️ Server action failed, trying fallback API...');
-        console.warn('[CalculationModal]    Server action error:', serverActionError);
-        
-        // Fallback: прямой HTTP fetch к API route
-        try {
-          const formObject = {
-            name: formData.name,
-            phone: formData.phone,
-            email: formData.email || undefined,
-            message: message
-          };
-          
-          console.log('[CalculationModal] 📡 Sending direct POST to /api/contact...');
-          const apiResponse = await fetch('/api/contact', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formObject)
-          });
-          
-          console.log(`[CalculationModal] 📊 API Response: ${apiResponse.status} ${apiResponse.statusText}`);
-          
-          if (apiResponse.ok) {
-            const apiData = await apiResponse.json();
-            result = { success: true };
-            console.log('[CalculationModal] ✅ Fallback API succeeded:', apiData);
-          } else {
-            const errorData = await apiResponse.json().catch(() => ({ error: 'Unknown error' }));
-            result = { success: false, error: errorData.error || `HTTP ${apiResponse.status}` };
-            console.error('[CalculationModal] ❌ Fallback API failed:', errorData);
-          }
-        } catch (fetchError) {
-          console.error('[CalculationModal] ❌ Fallback API also failed:', fetchError);
-          throw serverActionError; // Пробрасываем оригинальную ошибку
-        }
-      }
+      // Используем Server Action (для Vercel)
+      result = await submitContactForm(formDataToSend);
       
       const duration = Date.now() - startTime;
       console.log(`[CalculationModal] ✅ Request completed in ${duration}ms`);

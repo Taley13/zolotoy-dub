@@ -37,7 +37,7 @@ export default function ContactForm() {
       let res: { success: boolean; error?: string };
       
       try {
-        // Пытаемся использовать server action
+        // Используем Server Action (для Vercel)
         res = await submitContactForm(formData);
       } catch (serverActionError) {
         console.warn('[ContactForm] ⚠️ Server action failed, trying fallback API...');

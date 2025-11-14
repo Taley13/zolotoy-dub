@@ -1,0 +1,41 @@
+
+> zolotoy-dub@0.1.0 build
+> next build
+
+   ▲ Next.js 14.0.0
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+
+./app/components/KitchenCalculator.tsx
+86:6  Warning: React Hook useCallback has missing dependencies: 'MARKUP.configuration', 'MARKUP.countertop', 'MARKUP.facade', and 'MARKUP.fittings'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
+   Collecting page data ...
+   Generating static pages (0/7) ...
+⚠️ No data found for acorn.png
+⚠️ No data found for acorn.png
+   Generating static pages (1/7) 
+   Generating static pages (3/7) 
+   Generating static pages (5/7) 
+ ✓ Generating static pages (7/7) 
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    13.8 kB         107 kB
+├ ○ /_not-found                          875 B          88.7 kB
+├ ○ /catalog                             5.01 kB        98.6 kB
+├ ○ /contacts                            2.89 kB        90.8 kB
+└ ○ /gallery                             1.91 kB        95.5 kB
++ First Load JS shared by all            87.9 kB
+  ├ chunks/472-cb885355bb71a2e4.js       32.5 kB
+  ├ chunks/fd9d1056-15fd34ba6cdcb612.js  53.3 kB
+  ├ chunks/main-app-c471ee1dcce2a52b.js  231 B
+  └ chunks/webpack-7b210e34801d3d6a.js   1.84 kB
+
+
+○  (Static)  prerendered as static HTML
+

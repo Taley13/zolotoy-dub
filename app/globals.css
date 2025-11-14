@@ -8,6 +8,25 @@
   --neon-cyan: #00FFFF;
 }
 
+/* Оптимизация загрузки шрифтов */
+@font-face {
+  font-family: 'Playfair Display Fallback';
+  src: local('Georgia'), local('Times New Roman');
+  size-adjust: 100%;
+  ascent-override: 95%;
+  descent-override: 25%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('-apple-system'), local('BlinkMacSystemFont'), local('system-ui');
+  size-adjust: 100%;
+  ascent-override: 90%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
 /* Базовые стили для заголовков с Playfair Display */
 @layer base {
   h1, h2, h3, h4, h5, h6 {
