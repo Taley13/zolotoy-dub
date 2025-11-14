@@ -60,10 +60,22 @@ interface Application {
   source: string;
   priority: string;
   status: string;
+  serviceType?: string | null;
+  deletedAt?: string | null;
   createdAt: string;
   updatedAt: string;
-  actions: any[];
-  notes: any[];
+  actions: Array<{
+    type: 'status' | 'call' | 'comment' | 'delete';
+    by: number;
+    at: string;
+    details?: string;
+  }>;
+  notes: Array<{
+    text: string;
+    by: number;
+    name?: string;
+    createdAt: string;
+  }>;
 }
 
 // ════════════════════════════════════════════════════════════
@@ -331,6 +343,37 @@ async function deleteUserSession(chatId: number): Promise<void> {
   }
 }
 
+interface AdminCommentSession {
+  applicationId: string;
+  messageId: number;
+}
+
+async function setAdminCommentSession(chatId: number, session: AdminCommentSession): Promise<void> {
+  try {
+    await kv.set(`admin_comment:${chatId}`, session, { ex: 600 });
+  } catch (error) {
+    console.error('Ошибка сохранения админской сессии комментария:', error);
+  }
+}
+
+async function getAdminCommentSession(chatId: number): Promise<AdminCommentSession | null> {
+  try {
+    const session = await kv.get<AdminCommentSession>(`admin_comment:${chatId}`);
+    return session || null;
+  } catch (error) {
+    console.error('Ошибка получения админской сессии комментария:', error);
+    return null;
+  }
+}
+
+async function deleteAdminCommentSession(chatId: number): Promise<void> {
+  try {
+    await kv.del(`admin_comment:${chatId}`);
+  } catch (error) {
+    console.error('Ошибка удаления админской сессии комментария:', error);
+  }
+}
+
 // ════════════════════════════════════════════════════════════
 // УПРАВЛЕНИЕ ЗАЯВКАМИ (Simple API)
 // ════════════════════════════════════════════════════════════
@@ -345,6 +388,8 @@ async function createApplication(data: Partial<Application>): Promise<Applicatio
     source: data.source || 'telegram_bot',
     priority: data.priority || 'normal',
     status: 'new',
+    serviceType: data.serviceType || null,
+    deletedAt: null,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     actions: [],
@@ -363,6 +408,207 @@ async function createApplication(data: Partial<Application>): Promise<Applicatio
   } catch (error) {
     console.error('[Telegram API] Ошибка создания заявки:', error);
     throw error;
+  }
+}
+
+async function getApplicationById(applicationId: string): Promise<Application | null> {
+  try {
+    const application = await kv.get<Application>(`application:${applicationId}`);
+    return application || null;
+  } catch (error) {
+    console.error(`[Telegram API] Ошибка чтения заявки ${applicationId}:`, error);
+    return null;
+  }
+}
+
+async function saveApplication(application: Application): Promise<void> {
+  try {
+    application.updatedAt = new Date().toISOString();
+    await kv.set(`application:${application.id}`, application);
+  } catch (error) {
+    console.error(`[Telegram API] Ошибка сохранения заявки ${application.id}:`, error);
+  }
+}
+
+function getStatusLabel(status: string): string {
+  const map: Record<string, string> = {
+    new: '🔔 Новая',
+    in_progress: '⏳ В работе',
+    call_completed: '📞 Звонок совершен',
+    processed: '✅ Обработано',
+    deleted: '🗑️ Удалена'
+  };
+  return map[status] || 'ℹ️ Неизвестно';
+}
+
+function formatApplicationMessage(application: Application): string {
+  const createdAt = new Date(application.createdAt).toLocaleString('ru-RU');
+  const updatedAt = new Date(application.updatedAt).toLocaleString('ru-RU');
+  const statusLabel = getStatusLabel(application.status);
+  const comments =
+    application.notes && application.notes.length > 0
+      ? '\n📝 *Комментарии:*\n' +
+        application.notes
+          .slice(-3)
+          .map((note) => {
+            const author = note.name ? escapeMarkdown(note.name) : 'Администратор';
+            const time = new Date(note.createdAt).toLocaleString('ru-RU');
+            return `• ${escapeMarkdown(note.text)} _(от ${author}, ${escapeMarkdown(time)})_`;
+          })
+          .join('\n')
+      : '';
+
+  return (
+    '🌰 *ЗАЯВКА ИЗ TELEGRAM БОТА*\n\n' +
+    `👤 Имя: ${escapeMarkdown(application.name)}\n` +
+    `📞 Телефон: ${escapeMarkdown(application.phone)}\n` +
+    (application.serviceType ? `📋 Услуга: ${escapeMarkdown(application.serviceType)}\n` : '') +
+    `📅 Создана: ${escapeMarkdown(createdAt)}\n` +
+    `📌 Статус: ${statusLabel}\n` +
+    `🆔 ID: \`${application.id}\`\n` +
+    `🛠 Обновлено: ${escapeMarkdown(updatedAt)}` +
+    comments
+  );
+}
+
+async function updateAdminApplicationMessage(chatId: number, messageId: number, application: Application) {
+  const replyMarkup = application.status === 'deleted' ? undefined : getApplicationButtons(application.id);
+  try {
+    await safeEditMessage(formatApplicationMessage(application), {
+      chat_id: chatId,
+      message_id: messageId,
+      parse_mode: 'Markdown',
+      reply_markup: replyMarkup
+    });
+  } catch (error) {
+    console.error(`[Telegram API] Не удалось обновить сообщение для заявки ${application.id}:`, error);
+  }
+}
+
+async function handleAdminCommentInput(
+  chatId: number,
+  msg: TelegramBot.Message,
+  text: string,
+  session: AdminCommentSession
+) {
+  const application = await getApplicationById(session.applicationId);
+  if (!application) {
+    await deleteAdminCommentSession(chatId);
+    await safeSendMessage(chatId, '❌ Заявка не найдена. Возможно, она была удалена.');
+    return;
+  }
+
+  const comment: Application['notes'][number] = {
+    text,
+    by: chatId,
+    name: msg.from?.first_name || msg.from?.username || undefined,
+    createdAt: new Date().toISOString()
+  };
+
+  application.notes = application.notes || [];
+  application.notes.push(comment);
+  application.actions = application.actions || [];
+  application.actions.push({
+    type: 'comment',
+    by: chatId,
+    at: new Date().toISOString(),
+    details: 'Комментарий добавлен'
+  });
+
+  await saveApplication(application);
+  await deleteAdminCommentSession(chatId);
+
+  await safeSendMessage(chatId, '✏️ Комментарий добавлен к заявке.');
+  await updateAdminApplicationMessage(chatId, session.messageId, application);
+}
+
+type AdminActionType = 'process' | 'call' | 'comment' | 'delete';
+
+async function handleAdminActionCallback(
+  action: AdminActionType,
+  applicationId: string,
+  chatId: number,
+  messageId: number,
+  callbackQueryId: string
+) {
+  const application = await getApplicationById(applicationId);
+  if (!application) {
+    await safeAnswerCallback(callbackQueryId, {
+      text: 'Заявка не найдена или уже удалена',
+      show_alert: true
+    });
+
+    await safeEditMessage(
+      '⚠️ *Заявка недоступна или была удалена оригинальным отправителем.*',
+      {
+        chat_id: chatId,
+        message_id: messageId,
+        parse_mode: 'Markdown'
+      }
+    );
+    return;
+  }
+
+  const now = new Date().toISOString();
+  application.actions = application.actions || [];
+
+  switch (action) {
+    case 'process': {
+      application.status = 'processed';
+      application.actions.push({
+        type: 'status',
+        by: chatId,
+        at: now,
+        details: 'processed'
+      });
+      await saveApplication(application);
+      await updateAdminApplicationMessage(chatId, messageId, application);
+      await safeAnswerCallback(callbackQueryId, { text: '✅ Статус заявки обновлён', show_alert: true });
+      break;
+    }
+    case 'call': {
+      if (application.status === 'new' || application.status === 'in_progress') {
+        application.status = 'call_completed';
+      }
+      application.actions.push({
+        type: 'call',
+        by: chatId,
+        at: now,
+        details: 'call_completed'
+      });
+      await saveApplication(application);
+      await updateAdminApplicationMessage(chatId, messageId, application);
+      const phone = application.phone ? `📞 ${application.phone}` : 'Телефон не указан';
+      await safeAnswerCallback(callbackQueryId, { text: `${phone}\n\nЗвонок отмечен.`, show_alert: true });
+      break;
+    }
+    case 'comment': {
+      await setAdminCommentSession(chatId, { applicationId: application.id, messageId });
+      await safeAnswerCallback(callbackQueryId, {
+        text: '✏️ Отправьте комментарий одним следующим сообщением',
+        show_alert: true
+      });
+      await safeSendMessage(
+        chatId,
+        `✏️ Напишите комментарий для заявки \`${escapeMarkdown(application.id)}\` (или напишите "отмена" для выхода).`,
+        { parse_mode: 'Markdown' }
+      );
+      break;
+    }
+    case 'delete': {
+      application.status = 'deleted';
+      application.deletedAt = now;
+      application.actions.push({
+        type: 'delete',
+        by: chatId,
+        at: now,
+        details: 'deleted'
+      });
+      await saveApplication(application);
+      await updateAdminApplicationMessage(chatId, messageId, application);
+      await safeAnswerCallback(callbackQueryId, { text: '🗑️ Заявка помечена как удалённая', show_alert: true });
+      break;
+    }
   }
 }
 
@@ -408,15 +654,14 @@ function getApplicationButtons(applicationId: string) {
   return {
     inline_keyboard: [
       [
-        { text: '✅ Обработано', callback_data: `app_done_${applicationId}` },
-        { text: '⏳ В работе', callback_data: `app_work_${applicationId}` }
+        { text: '✅ Обработано', callback_data: `admin_process_${applicationId}` },
+        { text: '📞 Позвонить', callback_data: `admin_call_${applicationId}` }
       ],
       [
-        { text: '📞 Позвонить', callback_data: `app_call_${applicationId}` },
-        { text: '💬 Написать', callback_data: `app_message_${applicationId}` }
+        { text: '✏️ Комментарий', callback_data: `admin_comment_${applicationId}` }
       ],
       [
-        { text: '🗑 Удалить', callback_data: `app_delete_${applicationId}` }
+        { text: '🗑️ Удалить', callback_data: `admin_delete_${applicationId}` }
       ]
     ]
   };
@@ -862,7 +1107,27 @@ async function handleTextMessage(msg: TelegramBot.Message) {
   const chatId = msg.chat.id;
   const text = msg.text;
   
-  if (!text || text.startsWith('/')) return;
+  if (!text) return;
+
+  const adminCommentSession = await getAdminCommentSession(chatId);
+  if (adminCommentSession && isAdmin(chatId)) {
+    const trimmed = text.trim();
+    if (trimmed.toLowerCase() === 'отмена' || trimmed === '/cancel') {
+      await deleteAdminCommentSession(chatId);
+      await safeSendMessage(chatId, '✏️ Добавление комментария отменено.');
+      return;
+    }
+
+    if (trimmed.startsWith('/')) {
+      await safeSendMessage(chatId, '❗ Отправьте комментарий обычным текстом или напишите "отмена" для выхода из режима.');
+      return;
+    }
+
+    await handleAdminCommentInput(chatId, msg, text, adminCommentSession);
+    return;
+  }
+  
+  if (text.startsWith('/')) return;
   
   // Проверяем rate limit
   const rateLimitOk = await checkRateLimit(chatId, 'message');
@@ -989,6 +1254,7 @@ async function handleTextMessage(msg: TelegramBot.Message) {
         name: session.name!,
         phone: session.phone!,
         message: `Заявка из Telegram бота: ${serviceType}`,
+        serviceType,
         source: 'telegram_bot',
         priority: 'normal'
       });
@@ -997,14 +1263,8 @@ async function handleTextMessage(msg: TelegramBot.Message) {
       await setApplicationCooldown(chatId);
       
       // Отправляем уведомление всем получателям (админам и менеджерам)
-      const adminText = 
-        '🌰 *НОВАЯ ЗАЯВКА ИЗ TELEGRAM БОТА*\n\n' +
-        `📋 Услуга: ${escapeMarkdown(serviceType)}\n` +
-        `👤 Имя: ${escapeMarkdown(session.name!)}\n` +
-        `📱 Telegram: ${username} (ID: ${chatId})\n` +
-        `📞 Телефон: ${escapeMarkdown(session.phone!)}\n` +
-        `📅 Дата: ${new Date().toLocaleString('ru-RU')}\n` +
-        `🆔 ID заявки: \`${application.id}\``;
+      application.serviceType = serviceType;
+      const adminText = formatApplicationMessage(application);
       
       // Отправляем всем получателям из CHAT_IDS параллельно
       const notificationPromises = CHAT_IDS.map(async (recipientId) => {
@@ -1123,6 +1383,19 @@ async function handleCallbackQuery(callbackQuery: TelegramBot.CallbackQuery) {
   if (!isAdmin(chatId)) {
     await safeAnswerCallback(callbackQuery.id);
     // Тихо игнорируем админские callback от обычных пользователей
+    return;
+  }
+
+  const adminActionMatch = data.match(/^admin_(process|call|comment|delete)_(.+)$/);
+  if (adminActionMatch) {
+    const [, action, applicationId] = adminActionMatch;
+    await handleAdminActionCallback(
+      action as AdminActionType,
+      applicationId,
+      chatId,
+      messageId,
+      callbackQuery.id
+    );
     return;
   }
 
