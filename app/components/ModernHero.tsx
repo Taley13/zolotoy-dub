@@ -1,4 +1,30 @@
 'use client';
+
+export default function ModernHero() {
+  return (
+    <section className="min-h-screen bg-black text-white flex items-center justify-center px-4 py-12">
+      <div className="text-center space-y-6 max-w-3xl">
+        <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">Золотой дуб</h1>
+
+        <p className="text-xl sm:text-2xl text-[#f2c97c]">Уют и комфорт</p>
+
+        <p className="text-lg sm:text-xl text-[#f2c97c]">ДСП • МДФ • Эмаль</p>
+
+        <p className="text-base sm:text-lg text-gray-300">Индивидуальный дизайн и установка под ключ</p>
+
+        <div className="pt-4">
+          <a
+            href="#calculator"
+            className="inline-block px-10 py-3 border border-[#f2c97c] text-[#f2c97c] rounded-full text-sm sm:text-base tracking-wide"
+          >
+            Рассчитать стоимость
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+'use client';
 import Image from 'next/image';
 import { safeLocalStorage } from '@/lib/safeStorage';
 
