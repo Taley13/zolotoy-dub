@@ -106,7 +106,7 @@ export default function ModernHero() {
       <div className="container mx-auto px-3 sm:px-4 text-center relative z-10 flex flex-col justify-center min-h-screen py-12 sm:py-16 md:py-20">
         {/* Верхняя часть - основной заголовок и подзаголовок */}
         <div className="flex-1 flex flex-col items-center justify-center">
-          {/* ЗОЛОТОЙ ДУБ С ЭПИЧНОЙ ПОДСВЕТКОЙ */}
+          {/* Кнопка активации скидки */}
           <button
             onClick={() => {
               // Активируем скидку (SSR-безопасно)
@@ -137,16 +137,15 @@ export default function ModernHero() {
                           group-hover/acorn:bg-amber-300/70 transition-all duration-300 
                           animate-glow-pulse-inner"></div>
             
-            {/* Сам символ дуба - адаптивный размер */}
-            <div className="relative flex items-center justify-center w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-60 lg:h-60
-                          drop-shadow-[0_0_45px_rgba(255,191,0,0.45)] group-hover/acorn:scale-110 transition-all duration-300">
+            {/* Эпичный фон с золотым дубом */}
+            <div className="absolute inset-0 flex items-center justify-center">
               <Image
                 src="/images/zdub.png"
-                alt="Золотой дуб"
-                width={512}
-                height={512}
+                alt="Золотой Дуб"
+                width={1400}
+                height={1400}
                 priority
-                className="object-contain w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 lg:w-56 lg:h-56"
+                className="opacity-20 w-full max-w-4xl"
               />
             </div>
             
