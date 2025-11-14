@@ -1,3 +1,9 @@
+
+/* БЫЛО (ошибка): */
+@apply rounded-xl border border-brand-teal px-6 py-3 text-brand-teal/90 backdrop-blur-sm transition-all;
+
+/* СТАЛО (правильно): */
+@apply rounded-xl border border-brand-teal px-6 py-3 text-brand-teal backdrop-blur-sm transition-all;
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -175,7 +181,7 @@ html, body {
 }
 
 .btn-outline {
-  @apply rounded-xl border border-brand-teal px-6 py-3 text-brand-teal backdrop-blur-sm transition-all;
+  @apply rounded-xl border border-brand-teal px-6 py-3 text-brand-teal/90 backdrop-blur-sm transition-all;
   box-shadow: 0 0 0 1px rgba(43, 117, 116, 0.15);
 }
 
