@@ -83,7 +83,19 @@ export default function KitchenCalculator() {
     }
     
     return Math.round(totalPrice);
-  }, [configuration, facade, fittings, countertop, length, discountActive]);
+  }, [
+    configuration,
+    facade,
+    fittings,
+    countertop,
+    length,
+    discountActive,
+    MARKUP.configuration,
+    MARKUP.facade,
+    MARKUP.fittings,
+    MARKUP.countertop,
+    BASE_PRICE
+  ]);
 
   const price = calculatePrice();
 
