@@ -137,26 +137,17 @@ export default function ModernHero() {
                           group-hover/acorn:bg-amber-300/70 transition-all duration-300 
                           animate-glow-pulse-inner"></div>
             
-            {/* Сам символ дуба с фильтрами - адаптивный размер */}
-            <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 drop-shadow-2xl 
-                          transform group-hover/acorn:scale-110 transition-all duration-300 
-                          filter brightness-110 contrast-110
-                          group-hover/acorn:brightness-125 group-hover/acorn:contrast-125"
-                 style={{
-                   filter: 'drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)) drop-shadow(0 0 40px rgba(255, 193, 37, 0.5)) drop-shadow(0 0 60px rgba(255, 140, 0, 0.3))',
-                 }}>
-              <Image 
-                src="/images/dub.png"
-                alt="Золотой дуб — символ скидки 15%"
-                fill
-                className="object-contain mix-blend-multiply"
+            {/* Сам символ дуба - адаптивный размер */}
+            <div className="relative flex items-center justify-center w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-60 lg:h-60
+                          drop-shadow-[0_0_45px_rgba(255,191,0,0.45)] group-hover/acorn:scale-110 transition-all duration-300">
+              <Image
+                src="/images/zdub.png"
+                alt="Золотой дуб"
+                width={512}
+                height={512}
                 priority
-                quality={100}
+                className="object-contain w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 lg:w-56 lg:h-56"
               />
-              <div className="absolute inset-0 pointer-events-none"
-                   style={{
-                     background: 'radial-gradient(circle at center, rgba(255, 215, 0, 0.35), transparent 65%)'
-                   }} />
             </div>
             
             {/* Tooltip с информацией о скидке - адаптивный */}
