@@ -192,25 +192,80 @@ export default function CalculationModal({ isOpen, onClose, params }: Calculatio
 
       console.log('[CalculationModal] 🚀 Calling submitContactForm server action...');
       const startTime = Date.now();
-      
-      let result: { success: boolean; error?: string };
-      
-      // Используем Server Action (для Vercel)
-      result = await submitContactForm(formDataToSend);
-      
-      const duration = Date.now() - startTime;
-      console.log(`[CalculationModal] ✅ Request completed in ${duration}ms`);
-      console.log('[CalculationModal] 📊 Final response:', result);
 
-      if (result.success) {
+      const serverActionTimeoutMs = 12000;
+      const serverActionPromise = submitContactForm(formDataToSend);
+      const timeoutPromise = new Promise<{ success: boolean; error?: string }>((_, reject) =>
+        setTimeout(() => reject(new Error('Server action timeout')), serverActionTimeoutMs)
+      );
+
+      let result: { success: boolean; error?: string } | null = null;
+
+      try {
+        result = await Promise.race([serverActionPromise, timeoutPromise]);
+      } catch (err) {
+        console.warn('[CalculationModal] ⚠️ Server action failed or timed out:', err instanceof Error ? err.message : err);
+      }
+
+      const duration = Date.now() - startTime;
+      console.log(`[CalculationModal] ✅ Server action finished in ${duration}ms`);
+      console.log('[CalculationModal] 📊 Server action response:', result);
+
+      if (result?.success) {
         console.log('[CalculationModal] ✅ SUCCESS: Calculator form submitted successfully');
         setSubmitStatus('success');
         setTimeout(() => {
           handleClose();
         }, 2000);
-      } else {
-        console.error('[CalculationModal] ❌ FAILURE: Server returned error');
-        console.error('[CalculationModal]    Error:', result.error);
+        return;
+      }
+
+      console.warn('[CalculationModal] ⚠️ Server action failed, trying fallback /api/contact');
+
+      const fallbackPayload = {
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email || undefined,
+        message: [
+          'Источник: калькулятор кухни',
+          `Конфигурация: ${params.configuration}`,
+          `Фасады: ${params.facade}`,
+          `Фурнитура: ${params.hardware}`,
+          `Столешница: ${params.countertop}`,
+          `Длина: ${params.length} м`,
+          `Итоговая стоимость: ${params.calculatedPrice.toLocaleString('ru-RU')} ₽`,
+          '',
+          message
+        ].join('\n')
+      };
+
+      const controller = new AbortController();
+      const fallbackTimeout = setTimeout(() => controller.abort(), 12000);
+
+      try {
+        const fallbackResponse = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(fallbackPayload),
+          signal: controller.signal
+        });
+
+        clearTimeout(fallbackTimeout);
+
+        if (!fallbackResponse.ok) {
+          const errorData = await fallbackResponse.json().catch(() => ({}));
+          throw new Error(errorData.error || `API error ${fallbackResponse.status}`);
+        }
+
+        console.log('[CalculationModal] ✅ Fallback /api/contact succeeded');
+        setSubmitStatus('success');
+        setTimeout(() => {
+          handleClose();
+        }, 2000);
+        return;
+      } catch (fallbackError) {
+        clearTimeout(fallbackTimeout);
+        console.error('[CalculationModal] ❌ Fallback /api/contact failed:', fallbackError);
         setSubmitStatus('error');
       }
     } catch (error) {
