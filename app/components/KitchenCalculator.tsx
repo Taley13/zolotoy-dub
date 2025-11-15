@@ -189,7 +189,7 @@ export default function KitchenCalculator() {
         )}
         
         <p className="mb-10 text-center text-[#E2E2E0]/70">
-          Рассчитайте стоимость вашей кухни • Прозрачное ценообразование
+          Помогаем выбрать и приобрести кухни по выгодной цене с грамотной консультацией
         </p>
 
         <div className="mx-auto max-w-4xl space-y-8">
@@ -211,8 +211,8 @@ export default function KitchenCalculator() {
                   className={`
                     rounded-2xl border p-5 text-left transition-all duration-300
                     ${configuration === type
-                      ? 'border-[#2B7574] bg-[#2B7574]/20 text-[#E2E2E0] shadow-[0_18px_45px_rgba(0,0,0,0.45)]'
-                      : 'border-[#12484C] bg-[#12484C]/20 text-[#E2E2E0]/70 hover:border-[#2B7574]/70 hover:bg-[#2B7574]/10'
+                      ? 'border-[#f7e5b1] bg-[#f7e5b1]/15 text-[#E2E2E0] shadow-[0_18px_45px_rgba(0,0,0,0.45)]'
+                      : 'border-[#12484C] bg-[#12484C]/20 text-[#E2E2E0]/70 hover:border-[#f7e5b1]/60 hover:bg-[#f7e5b1]/10'
                     }
                   `}
                 >
@@ -242,13 +242,15 @@ export default function KitchenCalculator() {
                   className={`
                     rounded-2xl border p-4 text-left transition-all duration-300
                     ${facade === type
-                      ? 'border-[#2B7574] bg-[#2B7574]/20 text-[#E2E2E0]'
-                      : 'border-[#12484C] bg-[#12484C]/20 text-[#E2E2E0]/70 hover:border-[#2B7574]/70 hover:bg-[#2B7574]/10'
+                      ? 'border-[#f7e5b1] bg-[#f7e5b1]/15 text-[#E2E2E0]'
+                      : 'border-[#12484C] bg-[#12484C]/20 text-[#E2E2E0]/70 hover:border-[#f7e5b1]/60 hover:bg-[#f7e5b1]/10'
                     }
                   `}
                 >
                   <div className="mb-1 font-semibold">{type}</div>
-                  <div className="text-xs text-[#E2E2E0]/60">{desc}</div>
+                  <div className="text-xs text-[#E2E2E0]/60">
+                    {type === 'МДФ' || type === 'Эмаль' ? `${desc} • готовность 3–4 недели` : desc}
+                  </div>
                 </button>
               ))}
             </div>
@@ -271,8 +273,8 @@ export default function KitchenCalculator() {
                   className={`
                     rounded-2xl border p-4 text-left transition-all duration-300
                     ${fittings === type
-                      ? 'border-[#2B7574] bg-[#2B7574]/20 text-[#E2E2E0]'
-                      : 'border-[#12484C] bg-[#12484C]/20 text-[#E2E2E0]/70 hover:border-[#2B7574]/60 hover:bg-[#2B7574]/10'
+                      ? 'border-[#f7e5b1] bg-[#f7e5b1]/15 text-[#E2E2E0]'
+                      : 'border-[#12484C] bg-[#12484C]/20 text-[#E2E2E0]/70 hover:border-[#f7e5b1]/60 hover:bg-[#f7e5b1]/10'
                     }
                   `}
                 >
@@ -301,8 +303,8 @@ export default function KitchenCalculator() {
                   className={`
                     rounded-2xl border p-4 text-left transition-all duration-300
                     ${countertop === type
-                      ? 'border-[#2B7574] bg-[#2B7574]/20 text-[#E2E2E0]'
-                      : 'border-[#12484C] bg-[#12484C]/20 text-[#E2E2E0]/70 hover:border-[#2B7574]/60 hover:bg-[#2B7574]/10'
+                      ? 'border-[#f7e5b1] bg-[#f7e5b1]/15 text-[#E2E2E0]'
+                      : 'border-[#12484C] bg-[#12484C]/20 text-[#E2E2E0]/70 hover:border-[#f7e5b1]/60 hover:bg-[#f7e5b1]/10'
                     }
                   `}
                 >
@@ -405,7 +407,7 @@ export default function KitchenCalculator() {
 
           {/* Примечание */}
           <p className="text-center text-sm text-[#E2E2E0]/60">
-            Финальная цена уточняется после замера • Гарантия 2 года • Установка под ключ
+            Финальная цена уточняется после замера • Гарантия 1 год • Поставка и запуск под ключ
           </p>
         </div>
 
