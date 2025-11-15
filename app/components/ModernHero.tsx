@@ -24,7 +24,7 @@ export default function ModernHero() {
       <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col justify-center gap-12 px-4 py-20 sm:px-8 lg:flex-row lg:items-center lg:gap-16">
         <div className="space-y-6 text-center lg:text-left">
           <div className="space-y-4">
-            <h1 className="font-alone text-4xl leading-tight text-transparent bg-[var(--color-brand-gradient)] bg-clip-text sm:text-5xl lg:text-6xl animate-fade-up delay-100">
+            <h1 className="font-alone text-4xl leading-tight text-transparent bg-[linear-gradient(120deg,#f7e5b1,#e0b05c,#f7e5b1)] bg-clip-text sm:text-5xl lg:text-6xl animate-fade-up delay-100">
               Золотой Дуб
             </h1>
             <p className="font-alone text-2xl text-[#E2E2E0]/85 animate-fade-up delay-150">Уют и комфорт</p>
