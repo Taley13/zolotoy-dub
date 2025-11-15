@@ -24,17 +24,16 @@ export default function ModernHero() {
       <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col justify-center gap-12 px-4 py-20 sm:px-8 lg:flex-row lg:items-center lg:gap-16">
         <div className="space-y-6 text-center lg:text-left">
           <p className="text-xs uppercase tracking-[0.6em] text-[#2B7574] animate-fade-in delay-75">
-            ATELIER {new Date().getFullYear()}
+            Ателье {new Date().getFullYear()}
           </p>
           <div className="space-y-4">
-            <p className="text-sm uppercase tracking-[0.8em] text-[#E2E2E0]/70 animate-fade-up delay-100">Tailored Living</p>
+            <p className="text-sm uppercase tracking-[0.8em] text-[#E2E2E0]/70 animate-fade-up delay-100">Уют и комфорт</p>
             <h1 className="font-alone text-4xl leading-tight text-[#E2E2E0] sm:text-5xl lg:text-6xl animate-fade-up delay-150">
-              Atelier 2025 <span className="text-[#2B7574]">Signature Edition</span>
+              Золотой Дуб
             </h1>
           </div>
           <p className="text-base text-[#E2E2E0]/85 sm:text-lg animate-fade-up delay-200">
-            Кухни и гардеробные с архитектурным подходом: матовые поверхности, латунные акценты и интеллектуальные сценарии хранения.
-            Производим под ключ за 14–21 дней.
+            Мы создаём кухни и шкафы под ключ. Индивидуальный дизайн, качественные материалы и профессиональная установка — от первой идеи до готового интерьера.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-[#E2E2E0]/80 lg:justify-start animate-fade-up delay-300">
