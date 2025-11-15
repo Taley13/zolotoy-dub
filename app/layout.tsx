@@ -3,7 +3,7 @@ import './globals.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import StructuredData from './components/StructuredData';
-import { Playfair_Display, Inter } from 'next/font/google';
+import { Playfair_Display, Inter, Russo_One } from 'next/font/google';
 
 // Элегантный serif для заголовков с золотым градиентом
 // Оптимизировано: только нужные начертания для лучшей производительности
@@ -25,6 +25,15 @@ const inter = Inter({
   variable: '--font-inter',
   preload: true,
   fallback: ['system-ui', '-apple-system', 'sans-serif']
+});
+
+const russo = Russo_One({
+  subsets: ['cyrillic', 'latin'],
+  weight: '400',
+  display: 'swap',
+  variable: '--font-alone',
+  preload: true,
+  fallback: ['Impact', 'sans-serif']
 });
 
 export const metadata: Metadata = {
@@ -87,7 +96,7 @@ export const viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru" className={`${playfair.variable} ${inter.variable}`}>
+    <html lang="ru" className={`${playfair.variable} ${inter.variable} ${russo.variable}`}>
       <body className="min-h-screen bg-ultra text-neutral-100 antialiased font-sans">
         {/* Сообщение для пользователей без JavaScript */}
         <noscript>

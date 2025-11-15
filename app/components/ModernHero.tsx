@@ -2,55 +2,71 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function ModernHero() {
   return (
     <section className="relative overflow-hidden bg-[#0E2931] text-[#E2E2E0]">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(43,117,116,0.45),_transparent_58%),radial-gradient(circle_at_80%_20%,_rgba(134,18,17,0.35),_transparent_55%),radial-gradient(circle_at_20%_80%,_rgba(18,72,76,0.3),_transparent_60%)]" />
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0E2931] via-transparent to-[#12484C]/60 opacity-80" />
+      <div className="pointer-events-none absolute inset-0">
+        <Image
+          src="/images/fon1.png"
+          alt=""
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+          aria-hidden
+        />
+      </div>
+      <div className="pointer-events-none absolute inset-0 bg-black/75" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#0E2931] via-transparent to-[#12484C]/80" />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col justify-center gap-12 px-4 py-20 sm:px-8 lg:flex-row lg:items-center lg:gap-16">
         <div className="space-y-6 text-center lg:text-left">
-          <p className="text-xs uppercase tracking-[0.6em] text-[#2B7574]">atelier {new Date().getFullYear()}</p>
-          <h1 className="text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
-            Кухни и гардеробные в новой палитре{' '}
-            <span className="text-[#2B7574]">Золотого дуба</span>
-          </h1>
-          <p className="text-base text-[#E2E2E0]/85 sm:text-lg">
-            Современная геометрия, натуральные текстуры и продуманные сценарии хранения.
-            Производим и устанавливаем под ключ за 14–21 день.
+          <p className="text-xs uppercase tracking-[0.6em] text-[#2B7574] animate-fade-in delay-75">
+            ATELIER {new Date().getFullYear()}
+          </p>
+          <div className="space-y-4">
+            <p className="text-sm uppercase tracking-[0.8em] text-[#E2E2E0]/70 animate-fade-up delay-100">Tailored Living</p>
+            <h1 className="font-alone text-4xl leading-tight text-[#E2E2E0] sm:text-5xl lg:text-6xl animate-fade-up delay-150">
+              Atelier 2025 <span className="text-[#2B7574]">Signature Edition</span>
+            </h1>
+          </div>
+          <p className="text-base text-[#E2E2E0]/85 sm:text-lg animate-fade-up delay-200">
+            Кухни и гардеробные с архитектурным подходом: матовые поверхности, латунные акценты и интеллектуальные сценарии хранения.
+            Производим под ключ за 14–21 дней.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-[#E2E2E0]/70 lg:justify-start">
-            {['ДСП', 'МДФ', 'Эмаль', 'Кварцевые столешницы', 'Blum & Hettich'].map((item) => (
-              <span key={item} className="rounded-full border border-[#12484C] px-4 py-1.5">
+          <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-[#E2E2E0]/80 lg:justify-start animate-fade-up delay-300">
+            {["ДСП", "МДФ", "Эмаль", "Каменные столешницы", "Blum & Hettich"].map((item) => (
+              <span key={item} className="rounded-full border border-[#2B7574]/50 bg-black/10 px-4 py-1.5">
                 {item}
               </span>
             ))}
           </div>
 
-          <div className="flex flex-col gap-4 pt-4 sm:flex-row sm:justify-center lg:justify-start">
+          <div className="flex flex-col gap-4 pt-4 sm:flex-row sm:justify-center lg:justify-start animate-fade-up delay-400">
             <Link
               href="#calculator"
-              className="inline-flex items-center justify-center rounded-full bg-[#861211] px-10 py-4 text-base font-semibold text-[#E2E2E0] shadow-[0_18px_45px_rgba(134,18,17,0.45)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#a41b1a]"
+              className="inline-flex items-center justify-center rounded-full bg-[#861211] px-10 py-4 text-base font-semibold text-[#E2E2E0] shadow-[0_25px_60px_rgba(134,18,17,0.55)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#a41b1a]"
             >
               Рассчитать проект
             </Link>
             <a
               href="tel:+79301933420"
-              className="inline-flex items-center justify-center rounded-full border border-[#2B7574] px-10 py-4 text-base font-semibold text-[#2B7574] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#2B7574]/10"
+              className="inline-flex items-center justify-center rounded-full border border-[#2B7574] px-10 py-4 text-base font-semibold text-[#E2E2E0] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#2B7574]/20"
             >
               +7 (930) 193-34-20
             </a>
           </div>
         </div>
 
-        <div className="grid w-full gap-6 text-sm text-[#E2E2E0]/80 sm:grid-cols-2">
+        <div className="grid w-full gap-6 text-sm text-[#E2E2E0]/80 sm:grid-cols-2 animate-fade-up delay-500">
           {[
-            { label: 'Опыт производства', value: '12 лет' },
-            { label: 'Площадь проектов', value: '7000+ м²' },
-            { label: 'Гарантия', value: '36 месяцев' },
-            { label: 'Срок изготовления', value: '14–21 день' },
+            { label: "Опыт производства", value: "12 лет" },
+            { label: "Площадь проектов", value: "7000+ м²" },
+            { label: "Гарантия", value: "36 месяцев" },
+            { label: "Срок изготовления", value: "14–21 день" },
           ].map((stat) => (
             <div
               key={stat.label}
@@ -65,4 +81,3 @@ export default function ModernHero() {
     </section>
   );
 }
-

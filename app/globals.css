@@ -69,6 +69,12 @@
     @apply font-normal;
     color: var(--color-brand-neutral);
   }
+
+  .font-alone {
+    font-family: var(--font-alone), var(--font-playfair), serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
   
   /* Кнопки - Inter 600 */
   button, .btn, a[class*="btn"] {
