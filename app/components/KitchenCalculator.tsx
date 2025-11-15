@@ -41,29 +41,29 @@ export default function KitchenCalculator() {
   const [discountActive, setDiscountActive] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState<string>('');
 
-  // Базовая цена за погонный метр
-  const BASE_PRICE = 45000;
+  // Базовая цена за погонный метр (включает стандартную фурнитуру и наполнение)
+  const BASE_PRICE = 39000;
 
   // Наценки в процентах
   const MARKUP = {
     configuration: {
       'Прямая': 0,
-      'Угловая': 0.25,
-      'Индивидуальная': 0.40
+      'Угловая': 0.18,
+      'Индивидуальная': 0.28
     },
     facade: {
       'ДСП': 0,
-      'МДФ': 0.30,
-      'Эмаль': 0.70
+      'МДФ': 0.22,
+      'Эмаль': 0.50
     },
     fittings: {
       'Стандарт': 0,
-      'Премиум Blum': 0.40
+      'Премиум Blum': 0.28
     },
     countertop: {
       'HPL': 0,
-      'Искусственный камень': 0.90,
-      'Кварцевый агломерат': 1.60
+      'Искусственный камень': 0.65,
+      'Кварцевый агломерат': 1.15
     }
   };
 
