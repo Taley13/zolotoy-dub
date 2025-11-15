@@ -59,10 +59,10 @@ export default function ModernHero() {
 
         <div className="grid w-full gap-6 text-sm text-[#E2E2E0]/80 sm:grid-cols-2 animate-fade-up delay-500">
           {[
-            { label: "Опыт производства", value: "12 лет" },
-            { label: "Площадь проектов", value: "7000+ м²" },
-            { label: "Гарантия", value: "36 месяцев" },
-            { label: "Срок изготовления", value: "14–21 день" },
+            { label: "Опыт работы", value: "15 лет" },
+            { label: "Поставлено проектов", value: "7000+ м²" },
+            { label: "Гарантия", value: "1 год" },
+            { label: "Срок поставки", value: "14–21 день" },
           ].map((stat) => (
             <div
               key={stat.label}
