@@ -1,7 +1,14 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
-import dayjs from "dayjs";
+// Replaced dayjs with lightweight native helpers for performance and to avoid external deps
+const DAY_MS = 24 * 60 * 60 * 1000;
+const isAfterDays = (iso: string, days: number) =>
+  new Date(iso).getTime() >= Date.now() - days * DAY_MS;
+const formatDateRU = (iso: string) =>
+  new Date(iso).toLocaleDateString("ru-RU");
+const formatTimeRU = (iso: string) =>
+  new Date(iso).toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
 
 type AdminApplication = {
   id: string;
@@ -61,9 +68,7 @@ export default function AdminDashboard({ applications }: Props) {
     return applications.filter((app) => {
       const matchStatus = statusFilter === "all" || app.status === statusFilter;
       const matchDate =
-        dateRange === "all"
-          ? true
-          : dayjs(app.createdAt).isAfter(dayjs().subtract(Number(dateRange), "day"));
+        dateRange === "all" ? true : isAfterDays(app.createdAt, Number(dateRange));
       return matchStatus && matchDate;
     });
   }, [applications, statusFilter, dateRange]);
@@ -74,9 +79,7 @@ export default function AdminDashboard({ applications }: Props) {
       acc[app.status] = (acc[app.status] || 0) + 1;
       return acc;
     }, {});
-    const last7 = applications.filter((app) =>
-      dayjs(app.createdAt).isAfter(dayjs().subtract(7, "day"))
-    ).length;
+    const last7 = applications.filter((app) => isAfterDays(app.createdAt, 7)).length;
     return { total, byStatus, last7 };
   }, [applications]);
 
@@ -224,8 +227,8 @@ export default function AdminDashboard({ applications }: Props) {
                       </div>
                     </td>
                     <td className="py-4 pr-4 align-top text-white/70 text-sm">
-                      <p>{dayjs(app.createdAt).format("DD.MM.YYYY")}</p>
-                      <p className="text-xs">{dayjs(app.createdAt).format("HH:mm")}</p>
+                      <p>{formatDateRU(app.createdAt)}</p>
+                      <p className="text-xs">{formatTimeRU(app.createdAt)}</p>
                     </td>
                     <td className="py-4 align-top space-y-2">
                       {app.phone && (

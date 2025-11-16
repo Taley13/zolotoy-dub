@@ -6,7 +6,6 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import TelegramBot from 'node-telegram-bot-api';
 import { kv } from '@vercel/kv';
 
 // ════════════════════════════════════════════════════════════
@@ -37,8 +36,164 @@ if (CHAT_IDS.length === 0) {
 console.log(`[Telegram] Админы: ${ADMIN_IDS.join(', ')}`);
 console.log(`[Telegram] Получатели уведомлений: ${CHAT_IDS.join(', ')}`);
 
-// Создаем бота БЕЗ polling (для вебхуков)
-const bot = new TelegramBot(BOT_TOKEN, { polling: false });
+// Лёгкая обёртка над HTTP API Telegram (без node-telegram-bot-api)
+const TG_API_BASE = `https://api.telegram.org/bot${BOT_TOKEN}`;
+const isProd = process.env.NODE_ENV === 'production';
+const log = (...args: any[]) => { if (!isProd) console.log(...args); };
+const warn = (...args: any[]) => { if (!isProd) console.warn(...args); };
+// Ошибки логируем всегда
+const err = (...args: any[]) => { console.error(...args); };
+
+type TgUser = { id: number; first_name?: string; username?: string };
+type TgChat = { id: number; type?: string };
+type TgMessage = { message_id: number; chat: TgChat; from?: TgUser; text?: string };
+type TgCallbackQuery = {
+  id: string;
+  from: TgUser;
+  message?: TgMessage;
+  data?: string;
+};
+
+type SendMessageOptions = {
+  parse_mode?: 'HTML' | 'Markdown' | 'MarkdownV2';
+  reply_markup?: any;
+  disable_web_page_preview?: boolean;
+};
+
+// Клавиатура выбора услуг
+const serviceKeyboard = {
+  inline_keyboard: [
+    [
+      { 
+        text: '🚗 Выезд дизайнера на объект', 
+        callback_data: 'service_designer_visit' 
+      }
+    ],
+    [
+      { 
+        text: '🎨 3D-визуализация кухни', 
+        callback_data: 'service_3d_visualization' 
+      }
+    ],
+    [
+      { 
+        text: '📏 Точные замеры помещения', 
+        callback_data: 'service_accurate_measurements' 
+      }
+    ],
+    [
+      { 
+        text: '🎨 Подбор материалов и цветов', 
+        callback_data: 'service_material_selection' 
+      }
+    ],
+    [
+      { 
+        text: '💰 Расчет полной стоимости', 
+        callback_data: 'service_cost_calculation' 
+      }
+    ],
+    [
+      {
+        text: '« Назад в меню',
+        callback_data: 'back_to_main'
+      }
+    ]
+  ]
+} as const;
+
+// Функция уведомления операторов
+async function notifyOperators(applicationData: {
+  service: string;
+  userName: string;
+  userId: number;
+  userUsername?: string;
+  contactInfo?: string;
+}) {
+  const adminIds = process.env.TELEGRAM_ADMIN_IDS?.split(",") || 
+                   process.env.TELEGRAM_CHAT_ID?.split(",") || [];
+
+  console.log("🔔 NOTIFY OPERATORS CALLED:", {
+    adminIds,
+    applicationData,
+    botToken: process.env.TELEGRAM_BOT_TOKEN ? "SET" : "NOT_SET"
+  });
+
+  if (adminIds.length === 0) {
+    console.error("❌ NO OPERATOR IDs FOUND! Check TELEGRAM_ADMIN_IDS or TELEGRAM_CHAT_ID");
+    return;
+  }
+
+  if (!process.env.TELEGRAM_BOT_TOKEN) {
+    console.error("❌ NO BOT TOKEN FOUND! Check TELEGRAM_BOT_TOKEN");
+    return;
+  }
+
+  const message = `🏠 *НОВАЯ ЗАЯВКА* 🏠
+
+*Услуга:* ${escapeHtml(applicationData.service)}
+*Клиент:* ${escapeHtml(applicationData.userName)}
+${applicationData.userUsername ? `*Username:* @${applicationData.userUsername}` : ""}
+*ID:* ${applicationData.userId}
+${applicationData.contactInfo ? `*Контакты:* ${escapeHtml(applicationData.contactInfo)}` : ""}
+*Время:* ${new Date().toLocaleString("ru-RU")}
+
+📞 *Срочно свяжитесь с клиентом!*`;
+
+  console.log("📤 SENDING TO OPERATORS:", adminIds);
+
+  const sendPromises = adminIds.map(async (adminId) => {
+    try {
+      console.log(`📨 Sending to operator ${adminId}...`);
+      
+      const response = await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: adminId.trim(),
+          text: message,
+          parse_mode: "HTML"
+        })
+      });
+
+      const result = await response.json();
+      console.log(`📬 Operator ${adminId} response:`, result);
+
+      if (!result.ok) {
+        console.error(`❌ Failed to send to ${adminId}:`, result);
+      }
+
+    } catch (error) {
+      console.error(`❌ Error sending to operator ${adminId}:`, error);
+    }
+  });
+
+  await Promise.all(sendPromises);
+  console.log("✅ ALL NOTIFICATIONS SENT");
+}
+
+// Экранирование HTML
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// Функция ответа на callback
+async function answerCallbackQuery(callbackId: string, text: string) {
+  await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/answerCallbackQuery`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      callback_query_id: callbackId,
+      text: text,
+      show_alert: false
+    })
+  });
+}
 
 // ════════════════════════════════════════════════════════════
 // ТИПЫ
@@ -94,35 +249,32 @@ function isAdmin(chatId: number): boolean {
  * Безопасная отправка сообщения с обработкой ошибок
  */
 async function safeSendMessage(
-  chatId: number, 
-  text: string, 
-  options?: TelegramBot.SendMessageOptions
-): Promise<TelegramBot.Message | null> {
+  chatId: number,
+  text: string,
+  options?: SendMessageOptions
+): Promise<any | null> {
   try {
-    return await bot.sendMessage(chatId, text, options);
-  } catch (error: any) {
-    console.error(`[Telegram] Ошибка отправки сообщения ${chatId}:`, error.message);
-    
-    // Бот заблокирован пользователем - это нормально
-    if (error.message?.includes('bot was blocked')) {
-      console.log(`[Telegram] Бот заблокирован пользователем ${chatId}`);
+    const payload = {
+      chat_id: chatId,
+      text,
+      parse_mode: 'HTML',
+      ...(options ?? {})
+    };
+    const res = await fetch(`${TG_API_BASE}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.ok) {
+      err('[Telegram] sendMessage error', { status: res.status, data });
       return null;
     }
-    
-    // Чат не найден
-    if (error.message?.includes('chat not found')) {
-      console.log(`[Telegram] Чат ${chatId} не найден`);
-      return null;
-    }
-    
-    // Недостаточно прав
-    if (error.message?.includes('not enough rights')) {
-      console.log(`[Telegram] Недостаточно прав для отправки в ${chatId}`);
-      return null;
-    }
-    
-    // Для остальных ошибок - выбрасываем дальше
-    throw error;
+    log('[Telegram] ➡️ sent', { chatId, id: data.result?.message_id });
+    return data.result ?? null;
+  } catch (error) {
+    err('[Telegram] sendMessage exception', error);
+    return null;
   }
 }
 
@@ -131,27 +283,29 @@ async function safeSendMessage(
  */
 async function safeEditMessage(
   text: string,
-  options: TelegramBot.EditMessageTextOptions
-): Promise<TelegramBot.Message | boolean | null> {
+  options: { chat_id?: number; message_id?: number; inline_message_id?: string; parse_mode?: 'HTML' | 'Markdown' | 'MarkdownV2'; reply_markup?: any }
+): Promise<any | boolean | null> {
   try {
-    return await bot.editMessageText(text, options);
-  } catch (error: any) {
-    console.error('[Telegram] Ошибка редактирования сообщения:', error.message);
-    
-    // Сообщение не изменилось - игнорируем
-    if (error.message?.includes('message is not modified')) {
+    const payload = { ...options, text, parse_mode: 'HTML' as const };
+    const res = await fetch(`${TG_API_BASE}/editMessageText`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.ok) {
+      const desc = String(data?.description ?? '');
+      if (desc.includes('message is not modified') || desc.includes("message can't be edited") || desc.includes('message to edit not found')) {
+        log('[Telegram] editMessage benign:', desc);
+        return null;
+      }
+      err('[Telegram] editMessage error', data);
       return null;
     }
-    
-    // Сообщение не найдено или слишком старое
-    if (error.message?.includes('message to edit not found') || 
-        error.message?.includes('message can\'t be edited')) {
-      console.log('[Telegram] Сообщение не может быть отредактировано');
-      return null;
-    }
-    
-    // Для остальных ошибок - выбрасываем дальше
-    throw error;
+    return data.result ?? true;
+  } catch (error) {
+    err('[Telegram] editMessage exception', error);
+    return null;
   }
 }
 
@@ -163,15 +317,20 @@ async function safeAnswerCallback(
   options?: { text?: string; show_alert?: boolean }
 ): Promise<boolean> {
   try {
-    return await bot.answerCallbackQuery(callbackQueryId, options);
-  } catch (error: any) {
-    console.error('[Telegram] Ошибка ответа на callback:', error.message);
-    
-    // Query слишком старый - игнорируем
-    if (error.message?.includes('query is too old')) {
+    const payload = { callback_query_id: callbackQueryId, ...(options ?? {}) };
+    const res = await fetch(`${TG_API_BASE}/answerCallbackQuery`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.ok) {
+      err('[Telegram] answerCallback error', data);
       return false;
     }
-    
+    return true;
+  } catch (error) {
+    err('[Telegram] answerCallback exception', error);
     return false;
   }
 }
@@ -196,13 +355,20 @@ async function checkRateLimit(chatId: number, action: string = 'general'): Promi
     
     // Максимум 10 действий в минуту
     if (count > 10) {
-      console.warn(`[Security] Rate limit exceeded для ${chatId} (${action}): ${count} запросов`);
+      warn(`[Security] Rate limit exceeded для ${chatId} (${action}): ${count} запросов`);
+      // Явное уведомление пользователю вместо тишины
+      await safeSendMessage(
+        chatId,
+        '⚠️ <b>Слишком много действий.</b>\n\n' +
+        'Пожалуйста, подождите 10–15 секунд и попробуйте снова.',
+        { parse_mode: 'HTML' }
+      );
       return false;
     }
     
     return true;
   } catch (error) {
-    console.error('[Security] Ошибка проверки rate limit:', error);
+    err('[Security] Ошибка проверки rate limit:', error);
     // В случае ошибки - разрешаем (fail-open)
     return true;
   }
@@ -432,11 +598,11 @@ async function saveApplication(application: Application): Promise<void> {
 
 function getStatusLabel(status: string): string {
   const map: Record<string, string> = {
-    new: '🔔 Новая',
-    in_progress: '⏳ В работе',
-    call_completed: '📞 Звонок совершен',
-    processed: '✅ Обработано',
-    deleted: '🗑️ Удалена'
+    new: '🔔 <b>Новая</b>',
+    in_progress: '⏳ <b>В работе</b>',
+    call_completed: '📞 <b>Позвонили</b>',
+    processed: '✅ <b>Завершена</b>',
+    deleted: '🗓 <b>Удалена</b>'
   };
   return map[status] || 'ℹ️ Неизвестно';
 }
@@ -445,28 +611,30 @@ function formatApplicationMessage(application: Application): string {
   const createdAt = new Date(application.createdAt).toLocaleString('ru-RU');
   const updatedAt = new Date(application.updatedAt).toLocaleString('ru-RU');
   const statusLabel = getStatusLabel(application.status);
+  const esc = (s?: string) =>
+    (s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const comments =
     application.notes && application.notes.length > 0
-      ? '\n📝 *Комментарии:*\n' +
+      ? '\n📝 <b>Комментарии:</b>\n' +
         application.notes
           .slice(-3)
           .map((note) => {
-            const author = note.name ? escapeMarkdown(note.name) : 'Администратор';
-            const time = new Date(note.createdAt).toLocaleString('ru-RU');
-            return `• ${escapeMarkdown(note.text)} _(от ${author}, ${escapeMarkdown(time)})_`;
+            const author = esc(note.name || 'Администратор');
+            const time = esc(new Date(note.createdAt).toLocaleString('ru-RU'));
+            return `• ${esc(note.text)} (от ${author}, ${time})`;
           })
           .join('\n')
       : '';
 
   return (
-    '🌰 *ЗАЯВКА ИЗ TELEGRAM БОТА*\n\n' +
-    `👤 Имя: ${escapeMarkdown(application.name)}\n` +
-    `📞 Телефон: ${escapeMarkdown(application.phone)}\n` +
-    (application.serviceType ? `📋 Услуга: ${escapeMarkdown(application.serviceType)}\n` : '') +
-    `📅 Создана: ${escapeMarkdown(createdAt)}\n` +
+    '🌰 <b>ЗАЯВКА ИЗ TELEGRAM БОТА</b>\n\n' +
+    `👤 Имя: ${esc(application.name)}\n` +
+    `📞 Телефон: ${esc(application.phone)}\n` +
+    (application.serviceType ? `📋 Услуга: ${esc(application.serviceType)}\n` : '') +
+    `📅 Создана: ${esc(createdAt)}\n` +
     `📌 Статус: ${statusLabel}\n` +
-    `🆔 ID: \`${application.id}\`\n` +
-    `🛠 Обновлено: ${escapeMarkdown(updatedAt)}` +
+    `🆔 ID: <code>${esc(application.id)}</code>\n` +
+    `🛠 Обновлено: ${esc(updatedAt)}` +
     comments
   );
 }
@@ -477,7 +645,7 @@ async function updateAdminApplicationMessage(chatId: number, messageId: number, 
     await safeEditMessage(formatApplicationMessage(application), {
       chat_id: chatId,
       message_id: messageId,
-      parse_mode: 'Markdown',
+      parse_mode: 'HTML',
       reply_markup: replyMarkup
     });
   } catch (error) {
@@ -487,7 +655,7 @@ async function updateAdminApplicationMessage(chatId: number, messageId: number, 
 
 async function handleAdminCommentInput(
   chatId: number,
-  msg: TelegramBot.Message,
+  msg: TgMessage,
   text: string,
   session: AdminCommentSession
 ) {
@@ -539,11 +707,11 @@ async function handleAdminActionCallback(
     });
 
     await safeEditMessage(
-      '⚠️ *Заявка недоступна или была удалена оригинальным отправителем.*',
+      '⚠️ <b>Заявка недоступна или была удалена оригинальным отправителем.</b>',
       {
         chat_id: chatId,
         message_id: messageId,
-        parse_mode: 'Markdown'
+        parse_mode: 'HTML'
       }
     );
     return;
@@ -590,8 +758,8 @@ async function handleAdminActionCallback(
       });
       await safeSendMessage(
         chatId,
-        `✏️ Напишите комментарий для заявки \`${escapeMarkdown(application.id)}\` (или напишите "отмена" для выхода).`,
-        { parse_mode: 'Markdown' }
+        `✏️ Напишите комментарий для заявки <code>${application.id}</code> (или напишите «отмена» для выхода).`,
+        { parse_mode: 'HTML' }
       );
       break;
     }
@@ -685,13 +853,13 @@ async function handleStartCommand(chatId: number, firstName: string) {
   if (isAdmin(chatId)) {
     await safeSendMessage(
       chatId,
-      '🌰 *ПАНЕЛЬ УПРАВЛЕНИЯ «ЗОЛОТОЙ ДУБ»*\n\n' +
+      '🌰 <b>ПАНЕЛЬ УПРАВЛЕНИЯ «ЗОЛОТОЙ ДУБ»</b>\n\n' +
       'Добро пожаловать в систему обработки заявок!\n\n' +
       '📨 Новые заявки будут приходить автоматически\n' +
       '🔘 Используйте кнопки для управления\n' +
       '💾 Статус сохраняется автоматически',
       {
-        parse_mode: 'Markdown',
+        parse_mode: 'HTML',
         reply_markup: getAdminMenu()
       }
     );
@@ -729,13 +897,13 @@ async function handleMenuCommand(chatId: number) {
   }
 
   if (isAdmin(chatId)) {
-    await safeSendMessage(chatId, '🌰 *ПАНЕЛЬ АДМИНИСТРАТОРА*', {
-      parse_mode: 'Markdown',
+    await safeSendMessage(chatId, '🌰 <b>ПАНЕЛЬ АДМИНИСТРАТОРА</b>', {
+      parse_mode: 'HTML',
       reply_markup: getAdminMenu()
     });
   } else {
-    await safeSendMessage(chatId, '🌰 *ГЛАВНОЕ МЕНЮ*', {
-      parse_mode: 'Markdown',
+    await safeSendMessage(chatId, '🌰 <b>ГЛАВНОЕ МЕНЮ</b>', {
+      parse_mode: 'HTML',
       reply_markup: getPublicMenu()
     });
   }
@@ -746,7 +914,7 @@ async function handleMenuCommand(chatId: number) {
 // ════════════════════════════════════════════════════════════
 
 async function handlePublicCallbacks(
-  callbackQuery: TelegramBot.CallbackQuery,
+  callbackQuery: TgCallbackQuery,
   data: string,
   chatId: number,
   messageId: number,
@@ -1018,7 +1186,7 @@ async function handlePublicCallbacks(
     
     await safeSendMessage(
       chatId,
-      '🌐 *НАШ САЙТ*\n\n' +
+      '🌐 <b>НАШ САЙТ</b>\n\n' +
       'Посетите наш сайт для просмотра:\n' +
       '• Галереи выполненных работ\n' +
       '• Каталога кухонь\n' +
@@ -1026,7 +1194,7 @@ async function handlePublicCallbacks(
       '• Контактной информации\n\n' +
       '🔗 https://zol-dub.online',
       {
-        parse_mode: 'Markdown',
+        parse_mode: 'HTML',
         reply_markup: {
           inline_keyboard: [[
             { text: '🌐 Открыть сайт', url: 'https://zol-dub.online' }
@@ -1097,13 +1265,40 @@ async function handlePublicCallbacks(
     );
     return;
   }
+
+  // Совместимость с новой клавиатурой: возврат в главное меню
+  if (data === 'back_to_main') {
+    await safeAnswerCallback(callbackQuery.id);
+    await deleteUserSession(chatId);
+    
+    await safeEditMessage(
+      `👋 <b>${firstName}</b>!\n\n` +
+      '🌰 <b>ЗОЛОТОЙ ДУБ</b> — Кухни на заказ\n' +
+      '━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n' +
+      '⚡ <b>СПЕЦИАЛЬНОЕ ПРЕДЛОЖЕНИЕ:</b>\n' +
+      '🎁 Скидка <b>15%</b> при заказе через бота!\n\n' +
+      '✨ <b>Что мы предлагаем:</b>\n' +
+      '📏 Бесплатный замер и 3D-дизайн\n' +
+      '🎨 Кухни из массива дуба\n' +
+      '🏆 Гарантия 5 лет\n\n' +
+      '━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n' +
+      '👇 <b>Выберите действие:</b>',
+      {
+        chat_id: chatId,
+        message_id: messageId,
+        parse_mode: 'HTML',
+        reply_markup: getPublicMenu()
+      }
+    );
+    return;
+  }
 }
 
 // ════════════════════════════════════════════════════════════
 // ОБРАБОТЧИК ТЕКСТОВЫХ СООБЩЕНИЙ (ФОРМЫ)
 // ════════════════════════════════════════════════════════════
 
-async function handleTextMessage(msg: TelegramBot.Message) {
+async function handleTextMessage(msg: TgMessage) {
   const chatId = msg.chat.id;
   const text = msg.text;
   
@@ -1184,11 +1379,11 @@ async function handleTextMessage(msg: TelegramBot.Message) {
     
     await safeSendMessage(
       chatId,
-      `Отлично, ${escapeMarkdown(text.trim())}! 👍\n\n` +
-      'Теперь укажите ваш *телефон* для связи:\n' +
-      '_(например: +79001234567 или 8-900-123-45-67)_',
+      `Отлично, <b>${(text.trim()).replace(/&/g,'&amp;').replace(/</g,'&lt;')}</b>! 👍\n\n` +
+      'Теперь укажите ваш <b>телефон</b> для связи:\n' +
+      '<i>(например: +79001234567 или 8-900-123-45-67)</i>',
       {
-        parse_mode: 'Markdown',
+        parse_mode: 'HTML',
         reply_markup: {
           inline_keyboard: [[
             { text: '❌ Отменить', callback_data: 'public_back_menu' }
@@ -1225,11 +1420,11 @@ async function handleTextMessage(msg: TelegramBot.Message) {
       const minutes = Math.ceil(cooldownCheck.remainingSeconds! / 60);
       await safeSendMessage(
         chatId,
-        `⏳ *Пожалуйста, подождите ${minutes} мин.*\n\n` +
+        `⏳ <b>Пожалуйста, подождите ${minutes} мин.</b>\n\n` +
         'Вы можете отправить новую заявку через несколько минут.\n\n' +
         '💡 Это защита от случайного дублирования заявок.',
         {
-          parse_mode: 'Markdown',
+          parse_mode: 'HTML',
           reply_markup: {
             inline_keyboard: [[
               { text: '« Вернуться в меню', callback_data: 'public_back_menu' }
@@ -1275,7 +1470,7 @@ async function handleTextMessage(msg: TelegramBot.Message) {
             : undefined;
             
           await safeSendMessage(recipientId, adminText, {
-            parse_mode: 'Markdown',
+            parse_mode: 'HTML',
             reply_markup: replyMarkup
           });
         } catch (error) {
@@ -1289,13 +1484,13 @@ async function handleTextMessage(msg: TelegramBot.Message) {
       // Подтверждение клиенту
       await safeSendMessage(
         chatId,
-        '✅ *Заявка успешно отправлена!*\n\n' +
-        `Спасибо, ${escapeMarkdown(session.name!)}!\n\n` +
+        '✅ <b>Заявка успешно отправлена!</b>\n\n' +
+        `Спасибо, <b>${(session.name!).replace(/&/g,'&amp;').replace(/</g,'&lt;')}</b>!\n\n` +
         'Наш менеджер свяжется с вами в ближайшее время по телефону:\n' +
-        `📞 ${escapeMarkdown(session.phone!)}\n\n` +
+        `📞 <b>${(session.phone!).replace(/&/g,'&amp;').replace(/</g,'&lt;')}</b>\n\n` +
         '💡 Обычно мы перезваниваем в течение 15 минут!',
         {
-          parse_mode: 'Markdown',
+          parse_mode: 'HTML',
           reply_markup: {
             inline_keyboard: [[
               { text: '« Вернуться в меню', callback_data: 'public_back_menu' }
@@ -1333,7 +1528,7 @@ async function handleTextMessage(msg: TelegramBot.Message) {
 // ОБРАБОТЧИК CALLBACK QUERY
 // ════════════════════════════════════════════════════════════
 
-async function handleCallbackQuery(callbackQuery: TelegramBot.CallbackQuery) {
+async function handleCallbackQuery(callbackQuery: TgCallbackQuery) {
   const msg = callbackQuery.message!;
   const chatId = msg.chat.id;
   const messageId = msg.message_id;
@@ -1403,21 +1598,21 @@ async function handleCallbackQuery(callbackQuery: TelegramBot.CallbackQuery) {
   if (data === 'admin_help') {
     await safeAnswerCallback(callbackQuery.id);
     await safeEditMessage(
-      '❓ *СПРАВКА ДЛЯ АДМИНИСТРАТОРОВ*\n\n' +
-      '*Команды:*\n' +
+      '❓ <b>СПРАВКА ДЛЯ АДМИНИСТРАТОРОВ</b>\n\n' +
+      '<b>Команды:</b>\n' +
       '/start - запуск бота\n' +
       '/menu - главное меню\n\n' +
-      '*Кнопки заявки:*\n' +
+      '<b>Кнопки заявки:</b>\n' +
       '✅ Обработано - заявка завершена\n' +
       '⏳ В работе - заявка в процессе\n' +
       '📞 Позвонить - показать телефон клиента\n' +
       '💬 Написать - показать контакты\n' +
       '🗑 Удалить - удалить заявку\n\n' +
-      '💡 *Совет:* используйте кнопки сразу после получения заявки',
+      '💡 <b>Совет:</b> используйте кнопки сразу после получения заявки',
       {
         chat_id: chatId,
         message_id: messageId,
-        parse_mode: 'Markdown',
+        parse_mode: 'HTML',
         reply_markup: {
           inline_keyboard: [[
             { text: '« Назад в меню', callback_data: 'admin_menu' }
@@ -1430,10 +1625,10 @@ async function handleCallbackQuery(callbackQuery: TelegramBot.CallbackQuery) {
 
   if (data === 'admin_menu') {
     await safeAnswerCallback(callbackQuery.id);
-    await safeEditMessage('🌰 *ПАНЕЛЬ АДМИНИСТРАТОРА*', {
+    await safeEditMessage('🌰 <b>ПАНЕЛЬ АДМИНИСТРАТОРА</b>', {
       chat_id: chatId,
       message_id: messageId,
-      parse_mode: 'Markdown',
+      parse_mode: 'HTML',
       reply_markup: getAdminMenu()
     });
     return;
@@ -1477,7 +1672,7 @@ export async function POST(req: NextRequest) {
     
     // Обработка команд
     if (body.message) {
-      const msg = body.message as TelegramBot.Message;
+      const msg = body.message as TgMessage;
       const chatId = msg.chat.id;
       const text = msg.text;
       const firstName = msg.from?.first_name || 'друг';
@@ -1493,7 +1688,70 @@ export async function POST(req: NextRequest) {
     
     // Обработка callback queries
     if (body.callback_query) {
-      await handleCallbackQuery(body.callback_query as TelegramBot.CallbackQuery);
+      const callback = body.callback_query as TgCallbackQuery;
+      const user = callback.from;
+
+      // Обработка выбора услуг из меню
+if (callback.data && callback.data.startsWith("service_")) {
+  console.log("🚨 SERVICE MENU TRIGGERED:", {
+    callbackData: callback.data,
+    userId: user.id,
+    userName: `${user.first_name || ""} ${((user as any).last_name || "")}`.trim(),
+    timestamp: new Date().toISOString()
+  });
+
+  const serviceMap: { [key: string]: string } = {
+    "service_designer_visit": "Выезд дизайнера на объект",
+    "service_3d_visualization": "3D-визуализация кухни",
+    "service_accurate_measurements": "Точные замеры помещения",
+    "service_material_selection": "Подбор материалов и цветов",
+    "service_cost_calculation": "Расчет полной стоимости"
+  };
+  const serviceName = serviceMap[callback.data] || callback.data.replace("service_", "");
+
+  console.log("📞 CALLING notifyOperators...", { serviceName });
+
+  await notifyOperators({
+    service: serviceName,
+    userName: `${user.first_name || ""} ${((user as any).last_name || "")}`.trim(),
+    userId: user.id,
+    userUsername: user.username,
+    contactInfo: "Клиент выбрал услугу через меню бота"
+  });
+
+  console.log("💾 SAVING TO KV...");
+
+  try {
+    const applicationId = `app_${Date.now()}_${user.id}`;
+    await kv.hset(`application:${applicationId}`, {
+      id: applicationId,
+      service: serviceName,
+      userName: `${user.first_name || ""} ${((user as any).last_name || "")}`.trim(),
+      userId: String(user.id),
+      userUsername: user.username || "",
+      status: "new",
+      createdAt: new Date().toISOString(),
+      contactInfo: "Клиент выбрал услугу через меню бота",
+      source: "telegram_menu"
+    });
+    await kv.zadd("applications:index", {
+      score: Date.now(),
+      member: applicationId
+    });
+    console.log("✅ KV SAVED:", applicationId);
+  } catch (kvError) {
+    console.error("❌ KV ERROR:", kvError);
+  }
+
+  console.log("📝 SENDING USER CONFIRMATION...");
+  await answerCallbackQuery(callback.id, "✅ Спасибо! Ваш выбор записан. Менеджер свяжется с вами в ближайшее время.");
+  
+  console.log("🎯 SERVICE FLOW COMPLETED");
+  return NextResponse.json({ ok: true });
+}
+      }
+
+      await handleCallbackQuery(callback);
     }
     
     // Обработка отредактированных сообщений (игнорируем)
